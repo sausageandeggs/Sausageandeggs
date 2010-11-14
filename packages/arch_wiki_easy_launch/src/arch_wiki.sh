@@ -1,1 +1,0 @@
-/projects/builds/my-pjts/arch_wiki_easy_launch/arch_wiki.sh
