@@ -1,0 +1,14 @@
+#!/bin/bash
+guayadeque &
+sleep 30
+/usr/bin/conkyGuayadeque-GetCoverart &
+
+conkgq=$(pgrep guayadeque)
+
+while [[ ! -z $conkgq ]];do
+	sleep 30
+	conkgq=$(pgrep guayadeque)
+done
+pkill -f /usr/share/conkyguayadeque/conkyGuayadeque-GetCoverart.py
+rm /tmp/guayadeque-coverart.jpg
+

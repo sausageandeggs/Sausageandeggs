@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Arch-Wiki (Offline)
+GenericName=Arch Wiki (Offline)
+Comment=Offline Arch Wiki docs
+Icon=/usr/share/icons/hydroxygen/72x72/places/start-here-arch.png
+TryExec=arch_wiki
+Exec=arch_wiki
+Terminal=false
+Categories=Application;Other;Network;
+Name[en_GB]=Arch Wiki(Offline)
+MimeType=text/html;text/xml;application/xhtml+xml;

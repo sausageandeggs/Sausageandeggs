@@ -1,0 +1,23 @@
+# Contributor: Sausageandeggs <s.stoakley@gmail.com>
+pkgname=my_func
+pkgver=156
+pkgrel=1
+pkgdesc="My functions"
+arch=(any)
+url=""
+license=('GPL')
+groups=(mine)
+depends=('tar' 'gvim' 'ranger')
+makedepends=()
+optdepends=()
+#install=($pkgname.install)
+source=($pkgname 'funcdo')
+noextract=()
+package() {
+  cd $srcdir
+	install -Dm 644 my_func 		$pkgdir/usr/lib/sas/my_func
+	install -Dm 755 funcdo		$pkgdir/usr/lib/sas/funcdo
+}
+
+md5sums=('f29d7c3855da551e89307e75b01d1109'
+         'aa954393fdd7d198133fb04fe0f9c9c9')

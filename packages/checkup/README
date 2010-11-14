@@ -1,0 +1,40 @@
+Checkup Ver 1.4
+===============
+Copyright (C) 2009-2010 Simon Stoakley.
+Contact: s_stoakley at g.mail.co.uk
+
+Usage
+======
+Just type checkup in a shell amd follow the prompts.
+
+Introduction
+============
+Checkup will look for a kernel pkg when you update, if it finds one it will look for an 
+Nvidia pkg. If one is found it will update normally ,if no Nvidia pkg is found it will 
+give you the option to either, skip the update entirely, update while skipping the kernel
+pkg(s), update everything and then automatically build an Nvidia pkg useing Bauerbill 
+or you can update normally (Although obviously this defeats the whole purpose of the 
+program). If no kernel pkg is found it will update mormally , whether or not there is an
+Nvidia update.
+	Also while performing any update you are given the option to ignore any packages 
+that are due to update.
+
+Requirements
+=============
+Pacman-color, Bauerbill, Sudo
+
+Legal stuff
+==========
+Checkup is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Checkup is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with checkup.  If not, see <http://www.gnu.org/licenses/>.
+

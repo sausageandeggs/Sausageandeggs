@@ -1,0 +1,30 @@
+post_install() {
+  echo "        ============================================================="
+  echo "                You need to source /usr/lib/sas/{my_func,bash_sudo}"
+  echo "                     Do yo want to do that now ? Y or N : "
+  read -n 1 ans
+  echo
+  echo "        ============================================================="
+  if [[ "$ans" == "y" ]]; then
+        echo 
+        echo " Executing...... "
+        echo ". /usr/lib/sas/my_func" >> /home/sas/.bashrc || return 1
+        echo ". /usr/lib/sas/bash_sudo" >> /home/sas/.bashrc || return 1
+        echo " Done !"
+        echo "              /usr/lib/sas/my_func now sourced in .bashrc"
+        echo "              /usr/lib/sas/bash_sudo now sourced in .bashrc"
+  else
+        echo
+        echo "               Nothing changed ....... "
+        echo "               You will need to source the files in .bashrc for the functions to work"
+   fi
+}
+
+post_upgrade() {
+# post_install $1
+}
+
+post_remove() {
+  post_install $1
+}
+

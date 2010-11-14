@@ -1,0 +1,27 @@
+# Contributor: Sausageandeggs <s_stoakley@hotmail.co.uk>
+pkgname=checkup
+pkgver=152
+pkgrel=1
+pkgdesc="Check if theres an Nvidia pkg when theres a kernel pkg before updating"
+arch=(any)
+url=
+license=('GPL')
+groups=(sas)
+depends=('pacman-color' 'sudo' 'bauerbill')
+source=(checkup.sh numpkg.sh checkup version_history README)
+noextract=()
+
+build() {
+	cd $srcdir
+	install -D -m 0755 checkup.sh         $pkgdir/usr/lib/sas/checkup.sh
+	install -D -m 0755 numpkg.sh         $pkgdir/usr/lib/sas/numpkg.sh
+	install -D -m 0755 checkup    $pkgdir/usr/bin/checkup
+	install -D -m 0644 version_history    $pkgdir/usr/share/doc/checkup/sas/version_history
+	install -D -m 0644 README    $pkgdir/usr/share/doc/checkup/sas/README
+}
+
+md5sums=('dce0cb8258f292cbd58fa64661749b82'
+         '18447c2204bc013f3e7a8a03f622a183'
+         'a2d9392a2b0ae75ca37d7e19e923596a'
+         '4b75c6c9200caa753bf527a54325b64e'
+         '8cc2ec45d705a8f3bc65b7e43a4bb0d7')

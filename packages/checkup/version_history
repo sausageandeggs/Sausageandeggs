@@ -1,0 +1,46 @@
+Checkup Version History
+=======================
+
+Vers 0.1-9	The beginnings....
+
+Ver 1.0 	First full working version
+
+Ver 1.0.1 	Bug fix
+
+Ver 1.1 	Added code to show old version to new package versions
+
+Ver 1.2 	Changed code that showed old and new package versions
+
+Ver 1.3	    Changed code that showed old and new packages versions, split into main 
+    		script and numpkg script for ease of reading, cosmetic changes, 
+	    	created first package
+
+Ver 1.3.1 	Bug fixes
+
+Ver 1.3.2 	More bugs
+
+Ver 1.3.3	Added option to stop database refresh
+
+Ver 1.3.4	Slight changes to numpkg.sh
+
+Ver 1.3.5	Added option to ignore other packages
+
+Ver 1.4     Added Bauerbill option to build new nvidia pkg after installing kernel. 
+		    Basic functionality and layout works fine not tested how BrBl integrates
+    		due to lack of net acess
+    		Replaced temp files with variables
+			
+Ver 1.4	    Added auto local db backup
+
+Ver 1.4.1-6 Bug fixes
+
+Ver 1.4.7	Cleaned up code a little
+	    	Altered bkpkg to leave extra local db backup
+
+Ver 1.4.8   More cleanup
+
+Ver 1.5     Added lib32-nvidia-utils check
+            Added force and custom cmd(twice?)
+            Clean up
+            Bug fixes
+            

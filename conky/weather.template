@@ -1,0 +1,30 @@
+${voffset -0}  ${font Arial:bold:size=10}${color2}WEATHER ${font liberation:size=8} ${color3} ${hr 2}
+
+    ${color2}Conditions: ${color1}[--datatype=CC]${color}
+    Currrent temp: ${color1}[--datatype=HT --imperial]${color} ( Feels like ${color1}[--datatype=LT --imperial]${color} )
+    Chance of rain: ${color1}[--datatype=PC]${color}
+    Winds at ${color1}[--datatype=WS --imperial]${color} Gusting to ${color1}[--datatype=WG --imperial]${color}
+${voffset -60}${goto 240}${font Arrows:size=46}${color0}[--datatype=BF]${color}${font}
+${color6}${voffset -46}${goto 241}${font ConkyWeather:size=46}[--datatype=WF]${font}${color}
+${voffset -60}${goto 240}${font ConkyWeather:size=46}[--datatype=WF]${font}
+${color6}${voffset -46}${goto 321}${font Moon Phases:size=32}[--datatype=MF]${font}${color}
+${voffset -46}${goto 320}${font Moon Phases:size=32}[--datatype=MF]${font}
+
+  ${font Arial:bold:size=10}${color2}[--datatype=DW --startday=1] ${font liberation:size=8} ${color3}${hr 1}${color}
+
+    Conditions will be ${color1}[--datatype=CT --startday=1].${color}${alignr}Rain Chance: ${color1}[--datatype=PC --startday=1]${color}   
+    Winds will come from the ${color1}[--datatype=WD --startday=1]${color} at ${color1}[--datatype=WS --startday=1 --imperial].${color}${alignr}Humidity: ${color1}[--datatype=HM --startday=1]${color}   
+    Sunrise: ${color1}[--datatype=SR --startday=1]${color}${alignr}Sunset: ${color1}[--datatype=SS --startday=1]${color}   
+    Pollen Count: ${color1}${execi 3600 curl --silent -q -d "affiliateid=6176&zip=73034" http://www.pollen.com/forecast.asp | cut -d'|' -f5} / 12${color}
+      ( ${color1}${execi 3600 curl --silent -q -d "affiliateid=6176&zip=73034" http://www.pollen.com/forecast.asp | cut -d'|' -f11}${color} )
+
+  ${font Arial:bold:size=10}${color2}Four day forecast ${font liberation:size=8}${color3}${hr 1}${color}
+
+${color2}${font Liberation Mono:size=8}${goto 20}[--datatype=DW --startday=1]${goto 110}[--datatype=DW --startday=2]${goto 200}[--datatype=DW --startday=3]${goto 290}[--datatype=DW --startday=4]${font}${color}
+${color1}${font Liberation Mono:size=8}${goto 20}[--datatype=HT --startday=1 --imperial]/[--datatype=LT --startday=1 --imperial]${goto 110}[--datatype=HT --startday=2 --imperial]/[--datatype=LT --startday=2 --imperial]${goto 200}[--datatype=HT --startday=3 --imperial]/[--datatype=LT --startday=3 --imperial]${goto 290}[--datatype=HT --startday=4 --imperial]/[--datatype=LT --startday=4 --imperial]$font
+${color0}${font Arrows:size=36}${goto 20}[--datatype=BF --startday=1]${font Liberation Sans:size=8}${voffset -23}[--datatype=WS --startday=1 --imperial]${font Arrows:size=36}${goto 110}[--datatype=BF --startday=2]${font Liberation Sans:size=8}${voffset -23}[--datatype=WS --startday=2 --imperial]${font Arrows:size=36}${goto 200}[--datatype=BF --startday=3]${font Liberation Sans:size=8}${voffset -23}[--datatype=WS --startday=3 --imperial]${font Arrows:size=36}${goto 290}[--datatype=BF --startday=4]${font Liberation Sans:size=8}${voffset -23}[--datatype=WS --startday=4 --imperial]${font}${color}
+${color6}${voffset -13}${font ConkyWeather:size=36}${goto 21}[--datatype=WF --startday=1]${goto 111}[--datatype=WF --startday=2]${goto 201}[--datatype=WF --startday=3]${goto 291}[--datatype=WF --startday=4]${font}${color}
+${voffset -45}${font ConkyWeather:size=36}${goto 20}[--datatype=WF --startday=1]${goto 110}[--datatype=WF --startday=2]${goto 200}[--datatype=WF --startday=3]${goto 290}[--datatype=WF --startday=4]${font}
+
+ #${color2}${execi 3600 python2 ~/.conkycolors/conkyparts/conkyLatLong.py}${color}  
+ #${color2}${execi 3600 ~/.conkycolors/conkyparts/conkyLatLong.py}${color}  
