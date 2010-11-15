@@ -265,5 +265,12 @@ set autowrite 			" autosave when switching buffers
 " Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
 
+" Automatically set exec perms when save file with shebang
+au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
+
+
+
+
+
 
 set ts=4 sw=4 fdm=marker ft=vim
