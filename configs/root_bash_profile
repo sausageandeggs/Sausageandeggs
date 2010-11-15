@@ -5,7 +5,6 @@
 . /etc/profile
 . /usr/lib/sas/my_func
 . /usr/share/cdargs/cdargs-bash.sh
-. /usr/lib/sas/funcdo
 # }}}
 
 #### Var Settings #### {{{
@@ -36,15 +35,7 @@ eval $(dircolors /etc/DIR_COLORS)
 
 #### Aliass' #### {{{
 
-alias ..bash='. /home/sas/.bashrc'
-alias abs='sudo abs'
-alias add='git add'
-alias all='git add .'
-alias aurupd='sudo bauerbill -Syu --aur'
-alias bauerbill='sudo bauerbill'
-alias bbb='bauerbill -S'
-alias bbqu="echo ; bauerbill -Qu | grep -Ev '(core|extra|community)' | grep -v ^$ ; echo" 
-alias bbs='bauerbill -Ss'
+alias ..bash='. /root/.bash_profile'
 alias cd~='cd ~'
 alias cd-='cd -'
 alias cd.='cd ..'
@@ -54,15 +45,14 @@ alias cd#='cd ~'
 alias chkit='pgrep -fl'
 alias ck4up='ck4up -v'
 alias clone='git clone'
-alias commit='git commit'
 alias cr='clear ; archey'
 alias crontab='fcrontab -u systab -e'
 alias dc='cd'
 alias diff='colordiff'
 alias egrep='egrep --color=auto'
+alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristic-scan-precedence=yes &'
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
-alias gitdif='git diff'
 alias gv='gvim'
 alias gdifo='gvimdiff -o'
 alias getflush='/usr/bin/get_iplayer --flush'
@@ -75,16 +65,9 @@ alias la='ls -ah --group-directories-first'
 alias lla='ls -lha --group-directories-first'
 alias ll='ls -lh --group-directories-first'
 alias lns='ln -s'
+alias loginsound='cp $(find /usr/share/sounds/login-sounds |shuf -n 1) /usr/share/sounds/desktop-login.wav'
 alias ls='ls --color=auto'
 alias lscron='fcrondyn -x ls'
-alias makepkgbld='makepkg -g >> PKGBUILD && pkgb'
-alias makepkgd='makepkg -d'
-alias makepkgf='makepkg -f'
-alias makepkgfi='makepkg -fi noconfirm'
-alias makepkgif='makepkg -fi --noconfirm'
-alias makepkgi='makepkg -i --noconfirm'
-alias makepkgs='makepkg -s'
-alias makepkgss='makepkg --source'
 alias mdds='cd /media/data/downloads'
 alias orph='pacman -Qdt'
 alias pacaman='sudo pacman-color'
@@ -92,8 +75,8 @@ alias pacman='sudo pacman-color'
 alias pacmn='sudo pacman-color'
 alias pacup='. /home/sas/scripts/pacupdis &'
 alias paper='gconftool-2 --type string --set /desktop/gnome/background/picture_filename $(find /home/sas/pictures |shuf -n 1)'
-alias pcman='sudo pacman-color'
-alias pcmn='sudo pacman-color'
+alias pcman='pacman-color'
+alias pcmn='pacman-color'
 alias pgrepf='pgrep -fl'
 alias pgrwp='pgrep'
 alias pgrwpf='pgrep -fl'
@@ -101,7 +84,6 @@ alias pjts='cd /projects'
 alias pkgb='edit pkgb'
 alias pkillf='pkill -f'
 alias pkgv='edit -v pkgb'
-alias powerpill='sudo powerpill'
 alias ppl='pacman -Ql'
 alias ppi='pacman -Qi'
 alias ppo='pacman -Qo'
@@ -116,12 +98,8 @@ alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_P
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
 alias pull='git pull'
-alias push='git push'
 alias rebase='sudo rebase'
-alias reboot='sudo reboot'
-alias shutdown='sudo shutdown'
 alias sl='ls'
-alias status='git status'
 alias su-='su - root'
 alias tta='/usr/bin/todo.sh a'
 alias ttd='/usr/bin/todo.sh -f del'
@@ -131,10 +109,9 @@ alias ttt='/usr/bin/todo.sh'
 alias v='vim'
 alias vdif='vimdiff'
 alias vdifo='vimdiff -o'
+#alias visudo='export EDITOR=vim ; visudo' 
 alias wdp='pwd'
 alias wpd='pwd'
-alias !='sudo'
-alias !!='funcdo'
 # }}}
 
 #### Text Colours #### {{{
@@ -249,7 +226,7 @@ bash_prompt() {
 ### root's color ###
 	[ $UID -eq "0" ] && UC=$EMR   
 
-    PS1="$TITLEBAR ${EMG}[${UC}\u ${EMB}\${NEW_PWD}${EMG}]${UC}\\$ ${NONE}"
+    PS1="$TITLEBAR ${EMR}[${UC}\u ${EMB}\${NEW_PWD}${EMR}]${UC}\\$ ${NONE}"
     # without colors: PS1="[\u@\h \${NEW_PWD}]\\$ "
     # extra backslash in front of \$ to make bash colorize the prompt
 }
@@ -258,7 +235,7 @@ bash_prompt() {
 #### Kingbash #### {{{
 
 function kingbash.fn() {
-   echo -en "$TITLEBAR ${bldgrn}[sas ${bldblu}${NEW_PWD}${bldgrn}]$ ${txtrst}$READLINE_LINE" #Where "KingBash> " looks best if it resembles your PS1, at least in length.
+   echo -en "$TITLEBAR ${bldred}[root ${bldblu}${NEW_PWD}${bldred}]# ${txtrst}$READLINE_LINE" #Where "KingBash> " looks best if it resembles your PS1, at least in length.
   OUTPUT=`/usr/bin/kingbash --plustoall --bashcompletion "$(compgen -ab -A function)" --extrafiles "$(compgen -v -P $)"`
   READLINE_POINT=`echo "$OUTPUT" | tail -n 1`
   READLINE_LINE=`echo "$OUTPUT" | head -n -1`
@@ -269,14 +246,14 @@ bind -x '"\t":kingbash.fn'
 
 function kingbash.hs() {
   old_line=$READLINE_LINE
-  echo -en "$TITLEBAR ${bldgrn}[sas ${bldblu}${NEW_PWD}${bldgrn}]$ ${txtrst} $READLINE_LINE"
+  echo -en "$TITLEBAR ${bldred}[root ${bldblu}${NEW_PWD}${bldred}]# ${txtrst} $READLINE_LINE"
   history -a
   #OUTPUT=`kingbash -r <(tac $HISTFILE)`
 #Alternatively, for unique entries:
   OUTPUT=`kingbash --historytabcompletion -r <(tac $HISTFILE | cat -n - | sort -u -k 2 | sort -n | cut -f2-)`
   READLINE_POINT=`echo "$OUTPUT" | tail -n 1`
   READLINE_LINE=`echo "$OUTPUT" | head -n -1`
-  echo -ne "\r\e[2K"
+  echo -ne "\r\e[2K" 
   #Press Enter Automatically:
   #[ "$old_line" != "$READLINE_LINE" ] && { sleep 0.1; xdotool key --clearmodifiers Return; }
 }
@@ -289,5 +266,5 @@ PROMPT_COMMAND=bash_prompt_command
 bash_prompt
 unset bash_prompt
 
-archey
+archey -c red
 
