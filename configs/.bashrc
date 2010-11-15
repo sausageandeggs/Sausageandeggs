@@ -18,14 +18,16 @@ PROMPT_COMMAND="history -a"
 export HISTSIZE PROMPT_COMMAND
 shopt -s cdspell
 shopt -s histappend
+export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:ll*:cv:checkup:ranger'
 
-export PATH="$PATH:/home/sas/scripts"	#scripts path
+export PATH="$PATH:/home/sas/scripts"
 export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 
 export EDITOR=vim
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 complete -cf sudo
+complete -cf !
 
 eval $(dircolors /etc/DIR_COLORS)
 
@@ -63,6 +65,7 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
+alias gti='git'
 alias gv='gvim'
 alias gdifo='gvimdiff -o'
 alias getflush='/usr/bin/get_iplayer --flush'
