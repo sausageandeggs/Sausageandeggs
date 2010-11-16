@@ -80,6 +80,7 @@ numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easie
 set $(pacman -Qu | awk '{print $1}') 1>/dev/null 2>&1
 
 # Grab a list of updated pkgs for easy copy paste rollback {{{
+echo
 echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
 echo
 echo $(date +%d%m-%I) >> $updtfile
