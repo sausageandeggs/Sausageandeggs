@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Checkup Ver 152
+# Checkup Ver 153
 # 
 # Copyright Simon Stoakley 2009,2010
 #
@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with checkup.  If not, see <http://www.gnu.org/licenses/>.
 
+# Variables {{{
 bldred='\e[1;31m' # Red - bold
 bldgrn='\e[1;32m' # Green - bold
 bldylw='\e[1;33m' # Yellow - bold
@@ -29,11 +30,13 @@ txtrst='\e[0m' # Txt reset
 chkker=""
 chknvid=""
 chkother=""
+oldver=""
 set ""
 ppp="sudo powerpill -Su"
 updtfile="/media/three/local_bkup/updatedpgks.log"
+# }}}
 
-# {{{ bkpkg
+# Backup localDB {{{
 bkpkg () {
 	echo
 	echo -e "${bldwht}===>${bldgrn} Backing up local database"
@@ -45,7 +48,7 @@ bkpkg () {
 }
 # }}}
 
-# {{{ End
+# End {{{ 
 end () {
 	echo -en "${bldwht}===>${bldred} Goodbye"
 	sleep 1
@@ -54,12 +57,14 @@ end () {
 }
 # }}}
 
+# {{{ No root check
 if [[ $UID -eq 0 ]]; then           
 	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	echo -e "${bldwht}##${bldred} Don't run this as root${bldwht} ##"
 	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	return 1
 fi
+# }}}
 
 echo
 echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? Yes (y) or No (n) "
@@ -70,12 +75,24 @@ if [[ $ans == "y" ]]; then
 fi
 
 numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easier reading
+
 ##See if there are any updates at all and list them##
 set $(pacman -Qu | awk '{print $1}') 1>/dev/null 2>&1
 
-# Grab a list of updated pkgs
-echo `date +%d%m-%I` >> $updtfile
-echo $@ >> $updtfile
+# Grab a list of updated pkgs for easy copy paste rollback {{{
+echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
+echo
+echo $(date +%d%m-%I) >> $updtfile
+# add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
+oldver=$(pacman -Qu | sed 's|\ |-|g')
+co=0
+declare -a oldvers=""
+for i in $oldver;do 
+oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
+(( co++ ))
+done
+echo ${oldvers[*]} >> $updtfile
+# }}}
 
 if [[ -z $@ ]]; then
 echo -en "${bldwht}===>${bldred} You are up to date."
@@ -89,12 +106,14 @@ if [[ $numb == "one" ]]; then
 	echo -e "${bldwht}===>${bldgrn} There are $numb packages to update"
 fi
 echo
+
 #####setting pkg updates display so that old --> new is displayed###
 cd /var/lib/pacman/sync
 for i in $@ ;do
 	 echo -e "    ${bldwht} $(pacman -Qu | grep -m 1 ^$i ) ${bldgrn}-->${bldwht} $(ls -l * | awk '{print $9}' | grep  -m 1 ^$i-[0-9])" 
 done
 cd /home/sas/ 1>/dev/null
+
 ######## ask if want to ignore any pkgs ####
 echo
 echo -en "${bldwht}===>${bldgrn} Do you want to: or ? (i) Ignore pkgs, (f) Force an update, (b) Both, (r) Run custom cmd. (n) Run normally,${bldwht}"
@@ -117,6 +136,7 @@ fi
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
     ppp="sudo powerpill -Suf"
 fi
+
 ######check what needs to be updated#####
 case "$@" in
 	*kernel*)			#look for a kernel update
@@ -135,6 +155,7 @@ if [[ "$chkker" == "1" ]]; then
 		fi
 	esac
 fi
+
 ### Decide what to do ##### 
 if [[ "$chknvid" == "1" ]]; then
 	echo

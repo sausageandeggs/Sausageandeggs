@@ -43,4 +43,9 @@ Ver 1.5     Added lib32-nvidia-utils check
             Added force and custom cmd(twice?)
             Clean up
             Bug fixes
-            
+
+Ver 152 	Added updated pkg list            
+
+Ver 153 	Made updated pkg list show $pkgname-$pkgver-$arch-pkg.tar.*z for easier 
+			copy and paste for complete rollback of update
+

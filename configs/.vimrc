@@ -238,10 +238,13 @@ map <leader>u 10k
 " Goto last place edited
 map <leader>. `.
 
-" Make sesios get save & open to same dir
-nmap <leader>ss :wa<CR>:mksession! ~/.vim/sessions/
+" Nerdtree
+map <leader>;; :NERDTreeToggle<CR>
 
-nmap <leader>so :wa<CR>:so ~/.vim/sessions/
+" Make sesios get save & open to same dir
+nmap <leader>mm :wa<CR>:mksession! ~/.vim/sessions/
+
+nmap <leader>mo :wa<CR>:so ~/.vim/sessions/
 
 """""""""""""""""
 " More settings "
