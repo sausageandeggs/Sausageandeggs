@@ -1,6 +1,6 @@
 # Contributor: sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=shmakepkg
-pkgver=2
+pkgver=3
 pkgrel=1
 pkgdesc="Speed up makepkg with tmpfs"
 arch=('any')
@@ -12,4 +12,4 @@ build() {
   mkdir -p $pkgdir/usr/bin
   install $pkgname.sh $pkgdir/usr/bin/$pkgname
 }
-md5sums=('c162964d6576ea4915dc92259b864b3d')
+md5sums=('ab9e4c5245c6bb7baa493e1dca621797')
