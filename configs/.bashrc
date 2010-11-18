@@ -78,6 +78,7 @@ alias la='ls -ah --group-directories-first'
 alias lla='ls -lha --group-directories-first'
 alias ll='ls -lh --group-directories-first'
 alias lns='ln -s'
+alias loginsound='cp $(find /usr/share/sounds/login-sounds |shuf -n 1) /usr/share/sounds/desktop-login.wav'
 alias ls='ls --color=auto'
 alias lscron='fcrondyn -x ls'
 alias makepkgbld='makepkg -g >> PKGBUILD && pkgb'
@@ -137,7 +138,7 @@ alias vdifo='vimdiff -o'
 alias wdp='pwd'
 alias wpd='pwd'
 alias !='sudo'
-alias !!='funcdo'
+#alias f!='funcdo'
 # }}}
 
 #### Text Colours #### {{{
