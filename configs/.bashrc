@@ -298,3 +298,4 @@ unset bash_prompt
 
 archey
 
+alias ppw='pacman -Sw'

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Checkup Ver 153
+# Checkup Ver 154
 # 
 # Copyright Simon Stoakley 2009,2010
 #
@@ -79,22 +79,6 @@ numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easie
 ##See if there are any updates at all and list them##
 set $(pacman -Qu | awk '{print $1}') 1>/dev/null 2>&1
 
-# Grab a list of updated pkgs for easy copy paste rollback {{{
-echo
-echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
-echo
-echo $(date +%d%m-%I) >> $updtfile
-# add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
-oldver=$(pacman -Qu | sed 's|\ |-|g')
-co=0
-declare -a oldvers=""
-for i in $oldver;do 
-oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
-(( co++ ))
-done
-echo ${oldvers[*]} >> $updtfile
-# }}}
-
 if [[ -z $@ ]]; then
 echo -en "${bldwht}===>${bldred} You are up to date."
 end
@@ -123,6 +107,7 @@ echo
 if [[ "$ans4" == "r" ]];then
         echo "Enter  command: "
         read ppp
+		echo -e " $(date +%d%m-%I)\n $ppp" >> $updtfile 
         echo
         sudo $ppp
         return 1
@@ -133,7 +118,25 @@ if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
 	read ignpkg
 	echo -e "${txtrst}"
 fi
-                                            ### Set force or both, gets force element of both
+
+# Grab a list of updated pkgs for easy copy paste rollback                        
+rolbak() { 	# {{{
+	echo
+	echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
+	echo
+	echo $(date +%d%m-%I) >> $updtfile
+# add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
+	oldver=$(pacman -Qu | sed 's|\ |-|g')
+	co=0
+	declare -a oldvers=""
+	for i in $oldver;do 
+	oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
+	(( co++ ))
+done
+echo ${oldvers[*]} >> $updtfile
+} # }}}
+
+### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
     ppp="sudo powerpill -Suf"
 fi
@@ -182,10 +185,14 @@ if [[ "$chknvid" == "1" ]]; then
 		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				#check for manually ignored packages
 			echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg"
 			echo -e "${txtrst}"
+			echo "kernel pks not updated"
+			rolbak
 			$ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware,$ignpkg
 			bkpkg
 			return 1
 		fi
+		echo "kernel pks not updated"
+		rolbak
 		$ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware
 		bkpkg
 		return 1
@@ -194,10 +201,12 @@ if [[ "$chknvid" == "1" ]]; then
 		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then			
 			echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg"
 			echo -e "${txtrst}"
+			rolbak
 			$ppp --ignore $ignpkg
 			bkpkg
 			return 1
 		fi
+		rolbak
 		$ppp
 		bkpkg
 		echo
@@ -205,11 +214,13 @@ if [[ "$chknvid" == "1" ]]; then
 		;;
 		c)						## updates fully then calls bauerbill to
 		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]]; then		## build + install nvidia pkg
+			rolbak
 			$ppp $ignpkg
         else
+			rolbak
 			$ppp
 		fi 
-		sudo bauerbill --blindly-trust-everything-when-building-packages-despite-the-inherent-danger -Sf nvidia-beta nvidia-utils-beta
+		sudo bauerbill --blindly-trust-everything-when-building-packages-despite-the-inherent-danger -Sf nvidia-beta-all nvidia-utils-beta
 		bkpkg
 		return 1
 		;;
@@ -217,6 +228,7 @@ if [[ "$chknvid" == "1" ]]; then
         echo "Enter  command: "
         read ppp
         echo
+		rolbak
         sudo $ppp
         return 1
         ;;
@@ -240,10 +252,12 @@ case $ans in
 	if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				
 		echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg "
 		echo -e "${txtrst}"
+		rolbak
 		$ppp --ignore $ignpkg
 		bkpkg
 		return 1
 	fi
+	rolbak
 	$ppp
 	bkpkg
 	;;
