@@ -64,18 +64,19 @@ echo -e "${bldgrn}==>${bldwht} Tarring pacman local db to $BKUPDIR/-localdb-$1.t
 tar -cJf $BKUPDIR/localdb-$1.tar.xz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
 
 #backup pacman cache
-echo -e "${bldgrn}==>${bldwht} Tarring pacman cache to $BKUPDIR/$1-pac-cache-bkup.tar. This may take a while"
+echo -e "${bldgrn}==>${bldwht} Copying pacman cache to $BKUPDIR/$1-pkg-bkup. This may take a while"
 cd /var/cache/ || return 1
-cp -r pacman/ $BKUPDIR/$1-pac-cache-pkg-bkup.tar.xz pkg/ || return 1
+#cp -r pacman/ $BKUPDIR/$1-pac-cache-pkg-bkup.tar.xz pkg/ || return 1
+cp -r pacman/pkg $BKUPDIR/$1-pkg-bkup || return 1
 echo -en "${bldgrn}==>${bldwht} Do you want to copy your ABS pkgs"
 read -n 1 ans1 
 echo
 if [ "$ans1" == "y" ]; then
 	echo -en "${bldgrn}==>${bldwht} Again this may take a while....  Copying... "
-	tar -cJf $BKUPDIR/my_pkgs_$1.tar.xz /projects/packages 1>/dev/null 2>&1
-	tar -cJf $BKUPDIR/my_src_$1.tar.xz /projects/src 1>/dev/null 2>&1
-	tar -cJf $BKUPDIR/aur_$1.tar.xz /projects/builds/aur 1>/dev/null 2>&1
-	echo -en "${bldgrn}==>${bldwht} ~/projects/packages, ~/projects/src and ~/projects/builds/aur have been tarred to $BKUPDIR"
+	cp -r /projects/packages $BKUPDIR/aur/my_pkgs/ 1>/dev/null 2>&1
+	cp -r /projects/src $BKUPDIR/aur/my_src/ 1>/dev/null 2>&1
+	cp -r /projects/builds/aur $BKUPDIR/aur/aur/ 1>/dev/null 2>&1
+	echo -en "${bldgrn}==>${bldwht} /projects/{packages,src,aur} have been copied to $BKUPDIR"
 	echo
 fi
 #echo -e "${bldgrn}==>${bldwht} Unmounting /dev/sda3"
