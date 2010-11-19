@@ -17,6 +17,8 @@ PROMPT_COMMAND="history -a"
 export HISTSIZE PROMPT_COMMAND
 shopt -s cdspell
 shopt -s histappend
+shopt -s autocd
+shopt -s extglob
 export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:ll*:cv:checkup:ranger'
 
 export PATH="$PATH:/home/sas/scripts"
@@ -36,6 +38,11 @@ eval $(dircolors /etc/DIR_COLORS)
 
 #### Aliass' #### {{{
 
+alias add='git add'
+alias all='git add .'
+alias aurupd='bauerbill -Syu --aur'
+alias bbb='bauerbill -S'
+alias bbqu="echo ; bauerbill -Qu | grep -Ev '(core|extra|community)' | grep -v ^$ ; echo" 
 alias ..bash='. /root/.bash_profile'
 alias cd~='cd ~'
 alias cd-='cd -'

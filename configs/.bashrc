@@ -18,6 +18,8 @@ PROMPT_COMMAND="history -a"
 export HISTSIZE PROMPT_COMMAND
 shopt -s cdspell
 shopt -s histappend
+shopt -s autocd
+shopt -s extglob
 export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:ll*:cv:checkup:ranger'
 
 export PATH="$PATH:/home/sas/scripts"
@@ -62,6 +64,7 @@ alias crontab='fcrontab -u systab -e'
 alias dc='cd'
 alias diff='colordiff'
 alias egrep='egrep --color=auto'
+alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristic-scan-precedence=yes &'
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
