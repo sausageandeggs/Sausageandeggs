@@ -1,7 +1,7 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=aurupdis
 pkgver=4
-pkgrel=1
+pkgrel=2
 pkgdesc='my attempt at upate notification in conky'
 arch=('i686' 'x86_64')
 license=('GPL')
