@@ -1,7 +1,7 @@
 #!/bin/bash
 export DISPLAY=:0
 updtlist=/tmp/aurupdis.list
-bauerbill -Qu --aur > $updtlist
+bauerbill -Qu --aur | grep AUR/ > $updtlist
 
 conky -c /home/sas/.conkycolors/aurupdis/aurupdis.conf
 
