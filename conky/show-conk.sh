@@ -8,6 +8,6 @@
 #cat /home/sas/.todo/notes2
 
 while read line; do
-	echo "\${goto 50} $line"
+	echo "\${goto 59} $line"
 done < /home/sas/.todo/notes2
 
