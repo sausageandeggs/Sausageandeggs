@@ -56,6 +56,6 @@ else
 			echo -e "${grn}==>${bld} Removed ${ylw}$srcdir and ${pur}$devshm${rst}"
 		[[ $ans == 2 ]] && $makepkg
 	else
-		shmake && $makepkg
+		shmake 
 	fi
 fi

@@ -299,3 +299,5 @@ unset bash_prompt
 archey
 
 alias ppw='pacman -Sw'
+alias vs='vim -S'
+alias gvs='gvim -S'
