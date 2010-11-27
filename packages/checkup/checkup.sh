@@ -220,7 +220,7 @@ if [[ "$chknvid" == "1" ]]; then
 			rolbak
 			$ppp
 		fi 
-		sudo bauerbill --blindly-trust-everything-when-building-packages-despite-the-inherent-danger -Sf nvidia-beta-all nvidia-utils-beta
+		sudo bauerbill --blindly-trust-everything-when-building-packages-despite-the-inherent-danger -Sf nvidia-beta-all
 		bkpkg
 		return 1
 		;;

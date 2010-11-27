@@ -26,7 +26,7 @@ export PATH="$PATH:/home/sas/scripts"
 export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 
 export EDITOR=vim
-export PYTHONSTARTUP=$HOME/.pythonrc.py
+export PYTHON2STARTUP=$HOME/.pythonrc.py
 
 complete -cf sudo
 complete -cf !

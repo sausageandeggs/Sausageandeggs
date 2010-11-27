@@ -1,6 +1,6 @@
 # Contributor: sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=shmakepkg
-pkgver=3
+pkgver=4
 pkgrel=1
 pkgdesc="Speed up makepkg with tmpfs"
 arch=('any')
@@ -8,8 +8,9 @@ url=
 license=('GPL')
 depends=('bash')
 source=($pkgname.sh)
-build() {
+
+package() {
   mkdir -p $pkgdir/usr/bin
-  install $pkgname.sh $pkgdir/usr/bin/$pkgname
+  install -m 755 $pkgname.sh $pkgdir/usr/bin/$pkgname
 }
-md5sums=('ab9e4c5245c6bb7baa493e1dca621797')
+md5sums=('47e2ac5e78694b7a0d3992522774eef2')

@@ -83,7 +83,46 @@ case $num in
 26)
 	echo "Twenty Six"
 	;;
-[27-99])
+27)
+	echo "Twenty Seven"
+	;;
+28)
+	echo "Twenty Eight"
+	;;
+29)
+	echo "Twenty Nine"
+	;;
+30)
+	echo "Thirty"
+	;;
+31)
+	echo "Thirty one"
+	;;
+32)
+	echo "Thirty Two"
+	;;
+33)
+	echo "Thirty Three"
+	;;
+34)
+	echo "Thirty Four"
+	;;
+35)
+	echo "Thirty Five"
+	;;
+36)
+	echo "Thirty Six"
+	;;
+37)
+	echo "Thirty Seven"
+	;;
+38)
+	echo "Thirty Eight"
+	;;
+39)
+	echo "Thirty Nine"
+	;;
+[40-99])
 	echo "Loads of"
 	;;
 
