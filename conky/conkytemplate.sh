@@ -10,7 +10,7 @@ UseImage="1"
 #BGColor="Black"
 #Columns=12
 #Rows=17
-#Layers=5
+Layers=5
 
 ### FIX FOR KDE4 TRANSPARENCY
 #feh --bg-scale "`grep 'wallpaper=' ~/.kde/share/config/plasma-desktop-appletsrc | head -n1 | tail --bytes=+11`"

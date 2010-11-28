@@ -58,6 +58,7 @@ alias cd#='cd ~'
 alias chkit='pgrep -fl'
 alias ck4up='ck4up -v'
 alias clone='git clone'
+alias cma='git commit -a -m'
 alias commit='git commit'
 alias cr='clear ; archey'
 alias crontab='fcrontab -u systab -e'
@@ -68,8 +69,10 @@ alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristi
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
+alias gitupdt="for i in /projects/git/* ;do echo "$PWD"; cd "$i"; git pull; done"
 alias gti='git'
 alias gv='gvim'
+alias gvs='gvim -S'
 alias gdifo='gvimdiff -o'
 alias getflush='/usr/bin/get_iplayer --flush'
 alias grep='grep --color=auto'
@@ -119,6 +122,7 @@ alias pprr='pacman -Rns'
 alias pprrr='pacman -Rnsc'
 alias pps='pacman -Ss'
 alias ppu='pacman -U'
+alias ppw='pacman -Sw'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
@@ -138,6 +142,7 @@ alias ttt='/usr/bin/todo.sh'
 alias v='vim'
 alias vdif='vimdiff'
 alias vdifo='vimdiff -o'
+alias vs='vim -S'
 alias wdp='pwd'
 alias wpd='pwd'
 alias !='sudo'
@@ -298,6 +303,3 @@ unset bash_prompt
 
 archey
 
-alias ppw='pacman -Sw'
-alias vs='vim -S'
-alias gvs='gvim -S'

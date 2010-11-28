@@ -25,7 +25,7 @@ export PATH="$PATH:/home/sas/scripts"
 export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 
 export EDITOR=vim
-export PYTHONSTARTUP=$HOME/.pythonrc.py
+export PYTHON2STARTUP=$HOME/.pythonrc.py
 
 complete -cf sudo
 
@@ -38,12 +38,12 @@ eval $(dircolors /etc/DIR_COLORS)
 
 #### Aliass' #### {{{
 
+alias ..bash='. /root/.bash_profile'
 alias add='git add'
 alias all='git add .'
 alias aurupd='bauerbill -Syu --aur'
 alias bbb='bauerbill -S'
 alias bbqu="echo ; bauerbill -Qu | grep -Ev '(core|extra|community)' | grep -v ^$ ; echo" 
-alias ..bash='. /root/.bash_profile'
 alias cd~='cd ~'
 alias cd-='cd -'
 alias cd.='cd ..'
@@ -53,6 +53,7 @@ alias cd#='cd ~'
 alias chkit='pgrep -fl'
 alias ck4up='ck4up -v'
 alias clone='git clone'
+alias cma='git commit -a -m'
 alias commit='git commit'
 alias cr='clear ; archey'
 alias crontab='fcrontab -u systab -e'
@@ -63,8 +64,10 @@ alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristi
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
+alias gitupdt="for i in /projects/git/* ;do echo "$PWD"; cd "$i"; git pull; done"
 alias gti='git'
 alias gv='gvim'
+alias gvs='gvim -S'
 alias gdifo='gvimdiff -o'
 alias getflush='/usr/bin/get_iplayer --flush'
 alias grep='grep --color=auto'
@@ -105,6 +108,7 @@ alias pprr='pacman -Rns'
 alias pprrr='pacman -Rnsc'
 alias pps='pacman -Ss'
 alias ppu='pacman -U'
+alias ppw='pacman -Sw'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
@@ -125,6 +129,7 @@ alias v='vim'
 alias vdif='vimdiff'
 alias vdifo='vimdiff -o'
 #alias visudo='export EDITOR=vim ; visudo' 
+alias vs='vim -S'
 alias wdp='pwd'
 alias wpd='pwd'
 # }}}

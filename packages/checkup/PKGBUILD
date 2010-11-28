@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=checkup
-pkgver=153
+pkgver=154
 pkgrel=1
 pkgdesc="Check if theres an Nvidia pkg when theres a kernel pkg before updating"
 arch=(any)
@@ -20,8 +20,8 @@ build() {
 	install -D -m 0644 README    $pkgdir/usr/share/doc/checkup/sas/README
 }
 
-md5sums=('411ebc25a651a0a1b54f2cbc03f4ef8b'
-         '18447c2204bc013f3e7a8a03f622a183'
+md5sums=('b94d68c20c0dbbfb37f0487dc3098d5b'
+         '7cd5b79f079148c19e831fd69c8d1141'
          'a2d9392a2b0ae75ca37d7e19e923596a'
          '70e70a25372f1c459eb0fa7ec69bfbd6'
          'a89b29b4e55d071872d562e40fbe61e0')
