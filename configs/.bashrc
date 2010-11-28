@@ -69,7 +69,7 @@ alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristi
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
-alias gitupdt="for i in /projects/git/* ;do echo "$PWD"; cd "$i"; git pull; done"
+alias gitupdt='for i in /projects/git/* ; do cd "$i" ; echo "$PWD" ; git pull ; done'
 alias gti='git'
 alias gv='gvim'
 alias gvs='gvim -S'
@@ -268,15 +268,14 @@ bash_prompt() {
 # }}}
 
 #### Kingbash #### {{{
-
 function kingbash.fn() {
    echo -en "$TITLEBAR ${bldgrn}[sas ${bldblu}${NEW_PWD}${bldgrn}]$ ${txtrst}$READLINE_LINE" #Where "KingBash> " looks best if it resembles your PS1, at least in length.
-  OUTPUT=`/usr/bin/kingbash --plustoall --bashcompletion "$(compgen -ab -A function)" --extrafiles "$(compgen -v -P $)"`
+  OUTPUT=`kingbash --plustoall --bashcompletion --extracommands "$(compgen -ab -A function)" --extrafiles "$(compgen -v -P $)"`
   READLINE_POINT=`echo "$OUTPUT" | tail -n 1`
   READLINE_LINE=`echo "$OUTPUT" | head -n -1`
   echo -ne "\r\e[2K"; }
 bind -x '"\t":kingbash.fn'
-
+#--noretab-backspace 
 ##### History search ######
 
 function kingbash.hs() {
