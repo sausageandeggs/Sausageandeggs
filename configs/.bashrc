@@ -104,6 +104,7 @@ alias pacup='. /home/sas/scripts/pacupdis &'
 alias paper='gconftool-2 --type string --set /desktop/gnome/background/picture_filename $(find /home/sas/pictures |shuf -n 1)'
 alias pcman='sudo pacman-color'
 alias pcmn='sudo pacman-color'
+alias pgkb='pkgb'
 alias pgrepf='pgrep -fl'
 alias pgrwp='pgrep'
 alias pgrwpf='pgrep -fl'
@@ -146,7 +147,7 @@ alias vs='vim -S'
 alias wdp='pwd'
 alias wpd='pwd'
 alias !='sudo'
-#alias f!='funcdo'
+alias fudo='funcdo'
 # }}}
 
 #### Text Colours #### {{{

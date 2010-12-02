@@ -7,6 +7,8 @@
 "\e[19~": "\C-e | grep " ## <F8> = append ' | grep'
 
 # Enable up/dn keys to display past cmds based on current input
-"\e[A":history-search-backward
-"\e[B":history-search-forward
+"\e[A":history-search-backward ## Up Arrow
+"\e[B":history-search-forward ## Down Arrow
+"\e[5~": beginning-of-history ## PgUp
+"\e[6~": end-of-history ## PgDwn
 
