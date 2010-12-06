@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <s.stoakley@gmail.com>
 pkgname=my_func
-pkgver=156
+pkgver=157
 pkgrel=1
 pkgdesc="My functions"
 arch=(any)
@@ -19,5 +19,5 @@ package() {
 	install -Dm 755 funcdo		$pkgdir/usr/lib/sas/funcdo
 }
 
-md5sums=('f29d7c3855da551e89307e75b01d1109'
+md5sums=('996e972cc27c6f6d043c7b6797108354'
          'aa954393fdd7d198133fb04fe0f9c9c9')

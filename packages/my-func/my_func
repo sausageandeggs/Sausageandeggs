@@ -2,7 +2,7 @@
 ###################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################
-## Ver 156 ##
+## Ver 157 ##
 
 ### clr_mem ###
 
@@ -170,10 +170,10 @@ newbld() {
 	cd /projects/builds/$pkgname
 
 	cp /projects/pacman_protos/sas/PKGBUILD .
-	sed -i "s|wpkgname|$pkgname|g" PKGBUILD
-	sed -i "s|wpkgver|$pkgver|g" PKGBUILD
-	sed -i "s|wpkgrel|$pkgrel|g" PKGBUILD
-	sed -i "s|wpkgdesc|\'$pkgdesc'|g" PKGBUILD
+	sed -i -e "s|wpkgname|$pkgname|g" \
+		-e "s|wpkgver|$pkgver|g" \
+		-e "s|wpkgrel|$pkgrel|g" \
+		-e "s|wpkgdesc|\'$pkgdesc'|g" PKGBUILD
 
 	echo "Done"
 }

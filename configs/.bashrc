@@ -20,7 +20,7 @@ shopt -s cdspell
 shopt -s histappend
 shopt -s autocd
 shopt -s extglob
-export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:ll*:cv:checkup:ranger'
+export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:cv:checkup:ranger'
 
 export PATH="$PATH:/home/sas/scripts"
 export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
@@ -29,7 +29,6 @@ export EDITOR=vim
 export PYTHON2STARTUP=$HOME/.pythonrc.py
 
 complete -cf sudo
-complete -cf !
 
 eval $(dircolors /etc/DIR_COLORS)
 
@@ -269,6 +268,7 @@ bash_prompt() {
 # }}}
 
 #### Kingbash #### {{{
+
 function kingbash.fn() {
    echo -en "$TITLEBAR ${bldgrn}[sas ${bldblu}${NEW_PWD}${bldgrn}]$ ${txtrst}$READLINE_LINE" #Where "KingBash> " looks best if it resembles your PS1, at least in length.
   OUTPUT=`kingbash --plustoall --bashcompletion --extracommands "$(compgen -ab -A function)" --extrafiles "$(compgen -v -P $)"`

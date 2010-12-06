@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Checkup Ver 154
+# Checkup Ver 155
 # 
 # Copyright Simon Stoakley 2009,2010
 #
@@ -57,7 +57,7 @@ end () {
 }
 # }}}
 
-# {{{ No root check
+# {{{ Not root check
 if [[ $UID -eq 0 ]]; then           
 	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	echo -e "${bldwht}##${bldred} Don't run this as root${bldwht} ##"
@@ -163,10 +163,10 @@ fi
 ### Decide what to do ##### 
 if [[ "$chknvid" == "1" ]]; then
 	echo
-	echo -e "${bldwht}===>${bldblu} Both kernel and Nvidia updates found, proceed?"
+	echo -e "${bldwht}===>${bldblu} Both kernel and Nvidia updates found, proceeding"
  elif [[ -z "$chkker" ]]; then
 	echo
-	echo -e "${bldwht}===>${bldblu} No kernel update, proceed?"
+	echo -e "${bldwht}===>${bldblu} No kernel update, proceeding"
  elif [[ ! -z ${chkother[*]} ]]; then
 	echo
 	echo -e "${bldwht}===>${bldylw} There is a kernel pkg with no Nvidia pkg, but there are other packages that are safe to update." 
@@ -185,7 +185,7 @@ if [[ "$chknvid" == "1" ]]; then
 		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				#check for manually ignored packages
 			echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg"
 			echo -e "${txtrst}"
-			echo "kernel pks not updated"
+			echo "kernel pkgs not updated"
 			rolbak
 			$ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware,$ignpkg
 			bkpkg
@@ -243,12 +243,12 @@ if [[ "$chknvid" == "1" ]]; then
     return 1
 fi
 
-echo -en "${bldwht}===>${bldblu} Yes (y) No (n)  "
-read -n 1 ans
-echo
-echo
-case $ans in
-	y)						
+#echo -en "${bldwht}===>${bldblu} Yes (y) No (n)  "
+#read -n 1 ans
+#echo
+#echo
+#case $ans in
+	#y)						
 	if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				
 		echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg "
 		echo -e "${txtrst}"
@@ -260,8 +260,8 @@ case $ans in
 	rolbak
 	$ppp
 	bkpkg
-	;;
-	n)
+	#;;
+	#n)
 	end
-esac
+#esac
 

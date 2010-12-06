@@ -19,13 +19,13 @@ shopt -s cdspell
 shopt -s histappend
 shopt -s autocd
 shopt -s extglob
-export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:ll*:cv:checkup:ranger'
+export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:cv:checkup:ranger'
 
 export PATH="$PATH:/home/sas/scripts"
 export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 
 export EDITOR=vim
-export PYTHON2STARTUP=$HOME/.pythonrc.py
+export PYTHON2STARTUP=/home/sas/.pythonrc.py
 
 complete -cf sudo
 
@@ -64,7 +64,7 @@ alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristi
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
-alias gitupdt='for i in /projects/git/* ;do echo "$PWD"; cd "$i"; git pull; done'
+alias gitupdt='for i in /projects/git/* ; do cd "$i" ; echo "$PWD" ; git pull ; done'
 alias gti='git'
 alias gv='gvim'
 alias gvs='gvim -S'
@@ -262,7 +262,7 @@ function kingbash.fn() {
   READLINE_LINE=`echo "$OUTPUT" | head -n -1`
   echo -ne "\r\e[2K"; }
 bind -x '"\t":kingbash.fn'
-
+#--noretab-backspace 
 ##### History search ######
 
 function kingbash.hs() {
@@ -274,7 +274,7 @@ function kingbash.hs() {
   OUTPUT=`kingbash --historytabcompletion -r <(tac $HISTFILE | cat -n - | sort -u -k 2 | sort -n | cut -f2-)`
   READLINE_POINT=`echo "$OUTPUT" | tail -n 1`
   READLINE_LINE=`echo "$OUTPUT" | head -n -1`
-  echo -ne "\r\e[2K" 
+  echo -ne "\r\e[2K"
   #Press Enter Automatically:
   #[ "$old_line" != "$READLINE_LINE" ] && { sleep 0.1; xdotool key --clearmodifiers Return; }
 }
