@@ -6,7 +6,7 @@ endif
 
 "set spell
 
-colorscheme tango
+colorscheme koehler
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -241,28 +241,10 @@ map <leader>. `.
 " Nerdtree
 map <leader>;; :NERDTreeToggle<CR>
 
-" Make sesions get save & open to same dir
+" Make sesios get save & open to same dir
 nmap <leader>mm :wa<CR>:mksession! ~/.vim/sessions/
 
 nmap <leader>mo :wa<CR>:so ~/.vim/sessions/
-
-" sudo if open w/out perm
-nmap <leader>ww :w !sudo tee %<CR>
-
-" leader tt opens blank tab
-nmap <leader>tt :tabnew<CR>
-
-" leader nn opens new
-nmap <leader>nn :enew<CR>
-
-" leader bb inserts bash shebang
-nmap <leader>bb a#!/bin/bash<CR><esc>
-
-" leader bb inserts python2 shebang
-nmap <leader>pp a#!/usr/bin/env python2<CR><esc>
-
-" leader bb inserts python3 shebang
-nmap <leader>ppp a#!/usr/bin/env python3<CR><esc>
 
 """""""""""""""""
 " More settings "
@@ -283,26 +265,14 @@ set autowrite 			" autosave when switching buffers
 " Filetypes "
 """""""""""""
 
-" Auto changethe directory to the current file I'm working on
+" Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
 
-"A function to tell if a file is executable
-"function! FileExecutable (fname)
-  "execute "silent! ! test -x" a:fname
-  "return v:shell_error
-"endfunction
-"" Automatically make Pl Py & Shell scripts executable if they aren't already
-"au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
+" Automatically set exec perms when save file with shebang
+au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
 
-"au BufWritePost * if getline(1) =~ "^#! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
-"au BufWritePost * | endif
 
-" automatically give executable permissions if filename is *.sh
-au BufWritePost *.sh :!chmod a+x <afile>
-" automatically insert "#!/bin/sh" line for *.sh files
-"au BufEnter *.sh if getline(1) == "" | :call setline(1, "#!/bin/sh") | endif
-" automatically give executable permissions if file begins with #!/bin/sh
-au BufWritePost * if getline(1) =~ "^#!/bin/[a-z]*sh" | silent !chmod a+x <afile> | endif
+
 
 
 
