@@ -9,10 +9,10 @@ shm                   /dev/shm      tmpfs     defaults            0      0
 /dev/dvd               /media/dvd  auto    ro,user,noauto,unhide   0      0
 ###/dev/fd0               /media/fl   auto    user,noauto             0      0
 
-/dev/sdb8 /boot ext2 defaults 0 1
-/dev/sdb5 swap swap defaults 0 0
+/dev/sdb6 /boot ext2 defaults 0 1
+/dev/sdb2 swap swap defaults 0 0
 /dev/sdb7 / ext4 noatime 0 1
-/dev/sdb6	/media/data	auto	rw,user,auto,exec,noatime 	0	0
+/dev/sdb5	/media/data	auto	rw,user,auto,exec,noatime 	0	0
 #dev/sda1
 UUID=47FE-6FB2	/media/one	auto	rw,user,auto,noatime,umask=0000 	0	0
 #dev/sda2

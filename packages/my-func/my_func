@@ -2,7 +2,7 @@
 ###################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################
-## Ver 157 ##
+## Ver 158 ##
 
 ### clr_mem ###
 
@@ -10,6 +10,26 @@ clr_mem () {
 	#pagecache, dentries and inodes
 	#	1		2		3
     echo $1 > /proc/sys/vm/drop_caches
+}
+
+### cowerd ###
+
+cowerd() {
+	if [[ "$1" == "-m" ]]; then
+		targ="$2"
+		cower -f -d -t /projects/builds/ "$targ" 
+		cd /projects/builds/"$targ"
+		makepkg
+	elif [[ "$1" == "-i" ]]; then
+		targ="$2"
+		cower -f -d -t /projects/builds/ "$targ" 
+		cd /projects/builds/"$targ"
+		makepkg -i
+	else
+		targ="$1"
+		cower -f -d -t /projects/builds/ "$targ" 
+		cd /projects/builds/"$targ"
+	fi
 }
 
 ### Cdargs ###
