@@ -198,7 +198,7 @@ set sessionoptions=tabpages,winsize,blank,unix,localoptions,buffers,resize
 """"""""""""""""
 " Key Mappings "
 """"""""""""""""
-let mapleader=","
+let mapleader="'"
 
 map ; :
 
@@ -246,8 +246,8 @@ nmap <leader>mm :wa<CR>:mksession! ~/.vim/sessions/
 
 nmap <leader>mo :wa<CR>:so ~/.vim/sessions/
 
-" sudo if open w/out perm
-nmap <leader>ww :w !sudo tee %<CR>
+" Make sesios get save & open to same dir
+nmap <leader>ss :wa<CR>:mksession! ~/.vim/sessions/
 
 " leader tt opens blank tab
 nmap <leader>tt :tabnew<CR>
@@ -263,6 +263,36 @@ nmap <leader>pp a#!/usr/bin/env python2<CR><esc>
 
 " leader bb inserts python3 shebang
 nmap <leader>ppp a#!/usr/bin/env python3<CR><esc>
+
+" easier start replace
+map <leader>r R
+
+" leader tt opens blank tab
+nmap <leader>tt :tabnew<CR>
+
+" Go 10 lines up
+map <leader>u 10k
+
+" easier switch window
+map <leader>w <c-w><c-w> 
+
+" sudo if open w/out perm
+nmap <leader>ww :w !sudo tee %<CR>
+
+" shortcuts for copying to clipboard
+map <leader>y "+y
+
+" Goto last place edited
+map <leader>. `.
+
+" Save
+nmap <leader>] :w<CR>
+
+" Save and close
+nmap <leader>[ :wq<CR>
+
+" Nerdtree
+map <leader>;; :NERDTreeToggle<CR>
 
 """""""""""""""""
 " More settings "
@@ -283,7 +313,7 @@ set autowrite 			" autosave when switching buffers
 " Filetypes "
 """""""""""""
 
-" Auto changethe directory to the current file I'm working on
+" Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
 
 "A function to tell if a file is executable

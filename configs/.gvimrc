@@ -148,11 +148,11 @@ function! LoadSession()
 	endif
 endfunction
 
-autocmd VimEnter * call LoadSession()
-autocmd VimLeave * call SaveSession()
 function! SaveSession()
 	execute 'mksession! /home/sas/.vim/sessions/session.vim'
 endfunction
+autocmd VimEnter * call LoadSession()
+autocmd VimLeave * call SaveSession()
 
 """"""""""""""""""
 "SESSION OPTIONS "
@@ -209,7 +209,7 @@ set sessionoptions=tabpages,winsize,blank,unix,localoptions,buffers,resize
 """"""""""""""""
 " Key Mappings "
 """"""""""""""""
-let mapleader=","
+let mapleader="'"
 
 map ; :
 
@@ -274,6 +274,36 @@ nmap <leader>pp a#!/usr/bin/env python2<CR><esc>
 
 " leader bb inserts python3 shebang
 nmap <leader>ppp a#!/usr/bin/env python3<CR><esc>
+
+" easier start replace
+map <leader>r R
+
+" leader tt opens blank tab
+nmap <leader>tt :tabnew<CR>
+
+" Go 10 lines up
+map <leader>u 10k
+
+" easier switch window
+map <leader>w <c-w><c-w> 
+
+" sudo if open w/out perm
+nmap <leader>ww :w !sudo tee %<CR>
+
+" shortcuts for copying to clipboard
+map <leader>y "+y
+
+" Goto last place edited
+map <leader>. `.
+
+" Save
+nmap <leader>] :w<CR>
+
+" Save and close
+nmap <leader>[ :wq<CR>
+
+" Nerdtree
+map <leader>;; :NERDTreeToggle<CR>
 
 """""""""""""""""
 " More settings "
