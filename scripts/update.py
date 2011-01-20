@@ -39,7 +39,7 @@ iThresh = 5
 
 # OUTPUT SETINGS - configure the output format
 # change width of output
-width = 52
+width = 65
 
 # if you would use horizontal you possibly want to disable 'block'
 horizontally = False

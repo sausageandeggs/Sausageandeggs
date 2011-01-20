@@ -55,7 +55,6 @@ alias ck4up='ck4up -v'
 alias clone='git clone'
 alias cma='git commit -a -m'
 alias commit='git commit'
-alias cowerd='cower -d -t /projects/builds/'
 alias cr='clear ; archey'
 alias crontab='fcrontab -u systab -e'
 alias dc='cd'
@@ -100,6 +99,7 @@ alias pjts='cd /projects'
 alias pkgb='edit pkgb'
 alias pkillf='pkill -f'
 alias pkgv='edit -v pkgb'
+alias ppd='powerpill -S --asdeps'
 alias ppl='pacman -Ql'
 alias ppi='pacman -Qi'
 alias ppo='pacman -Qo'
@@ -110,12 +110,14 @@ alias pprr='pacman -Rns'
 alias pprrr='pacman -Rnsc'
 alias pps='pacman -Ss'
 alias ppu='pacman -U'
+alias ppud='powerpill -U --asdeps'
 alias ppw='pacman -Sw'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
 alias pull='git pull'
 alias push='git push'
+alias pvr='perl get_iplayer.cgi --port=1935 --getiplayer=/usr/bin/get_iplayer'
 alias rebase='sudo rebase'
 alias reboot='sudo reboot'
 alias shutdown='sudo shutdown'
@@ -290,3 +292,9 @@ unset bash_prompt
 
 archey -c red
 
+alias memrss='while read command percent rss; do if [[ "${command}" != "COMMAND" ]]; then 
+rss="$(bc <<< "scale=2;${rss}/1024")"; fi; 
+printf "%-26s%-8s%s\n" "${command}" "${percent}"	"${rss}";
+done < <(ps -A --sort -rss -o comm,pmem,rss | head -n 21)'
+
+alias ppm='pacman -Qm'

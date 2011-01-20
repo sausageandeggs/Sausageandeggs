@@ -1,8 +1,8 @@
 # Contributor: Sausageandeggs <s_stoakley@hotmail.co.uk>
 pkgname=bkup
-pkgver=1.2
+pkgver=122
 pkgrel=4
-pkgdesc="Backup pacman pkg cache,pacman database and creates an installed pkg list. Gives you the option to bkup your ABS pkgs and source files, manages and keeps the latest four backup's and gives the option to rename and keep the oldest and then 'forgets' about it"
+pkgdesc="Backups pacman pkg cache,pacman database, creates an installed pkg list. Optionally bkup your own pkgs and source files, manages and keeps multiple backups"
 arch=(i686 x86_64)
 url=""
 license=('GPL')
@@ -10,11 +10,11 @@ groups=(sas)
 depends=('bash')
 source=(bkup.sh bkup)
 noextract=()
-md5sums=('7dac9c19714bde5576543fe271348bb8'
-         '97a07623205b2b0f7310e8e08850dfe6')
 build() {
 	cd $srcdir
 	install -D -m 0755 bkup        $pkgdir/usr/bin/bkup && \
 	install -D -m 0755 bkup.sh         $pkgdir/usr/lib/sas/bkup.sh
 }
 
+md5sums=('367f508469b529a4c9d9c45d62ffbf12'
+         '97a07623205b2b0f7310e8e08850dfe6')
