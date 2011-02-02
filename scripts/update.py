@@ -68,7 +68,7 @@ isummaryrightcolTemplate = summaryrightcolTemplate
 # seperator before summary ('' = disabled)
 block = '${font Arial:bold:size=8}${color2}  TOTAL${color 9BC58B}${font liberation:size=8}'
 # up to date msg
-u2d = '${goto 59}${font Arial:bold:size=10}${color 9BC58B}${voffset 10}    You are up to date'
+u2d = '${goto 59}${font Arial:bold:size=10}${color 9BC58B}${voffset 10}    All binary packages are up to date'
 ################################################################################
 # A98036
 import subprocess
