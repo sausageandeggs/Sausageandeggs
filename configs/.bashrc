@@ -124,7 +124,7 @@ alias pprrr='pacman -Rnsc'
 alias pps='pacman -Ss'
 alias ppu='pacman -U'
 alias ppud='powerpill -U --asdeps'
-alias ppw='pacman -Sw'
+alias ppw='powerpill -Sw'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
