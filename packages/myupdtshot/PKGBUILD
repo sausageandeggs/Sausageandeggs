@@ -1,7 +1,7 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=aurupdis
-pkgver=4
-pkgrel=2
+pkgver=5
+pkgrel=1
 pkgdesc='my attempt at upate notification in conky'
 arch=('i686' 'x86_64')
 license=('GPL')
@@ -18,5 +18,5 @@ package() {
 
 md5sums=('f6b7e6f3b33d6e559f9655609dcc5ba2'
          'c3d3c4b3ca5218cd3c285f10c0eb4bc5'
-         '18f6b99a126207b68eebabe7701d891e'
-         '21ca9468bd3c779b25fad202c623d17a')
+         '0f23ee320de67d36c5a569d15200be96'
+         'e2705d07bce570d4601775ac5e3be96c')
