@@ -29,10 +29,11 @@ value_repo = {
 }
 #color for each reposatory
 color_repo = {
-  ('core','red'),
-  ('extra','extra'),
-  ('community','purple'),
-  ('arch-games','pink'),
+  ('core','DF938F'),
+  ('extra','color0'),
+  ('community','CF9ECC'),
+  ('multilib','8FDF99'),
+  ('xyne-any','D3D181'),
   ('sumary', 'white'),
 }
 #value for seperate packages
