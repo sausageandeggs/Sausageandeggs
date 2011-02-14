@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ver 122
+# Ver 123
 # Copyright Simon Stoakley 2009,2010
 # Script to backup pacmans cahe/entire package cache and creates an installed package list,
 # also gives option to backup ABS pkgs & source files.
@@ -67,17 +67,20 @@ tar -cJf $BKUPDIR/localdb-$1.tar.xz /var/lib/pacman/local/ 1>/dev/null 2>&1 || r
 echo -e "${bldgrn}==>${bldwht} Copying pacman cache to $BKUPDIR/$1-pkg-bkup. This may take a while"
 cd /var/cache/ || return 1
 #cp -r pacman/ $BKUPDIR/$1-pac-cache-pkg-bkup.tar.xz pkg/ || return 1
-cp -u -r pacman/pkg $BKUPDIR/$1-pkg-bkup || return 1
+#cp -u -r pacman/pkg $BKUPDIR/$1-pkg-bkup || return 1
+cp -u -r pacman/pkg/* /media/three/old-pkgs-etc/pacman_pkgs || return 1
 echo -en "${bldgrn}==>${bldwht} Do you want to copy your own pkgs: "
 read -n 1 ans1 
 echo
 if [ "$ans1" == "y" ]; then
 	echo -en "${bldgrn}==>${bldwht} Again this may take a while....  Copying... "
 	echo
-	mkdir -p $BKUPDIR/$1-my_pkgs/{packages,src,bbil} 1>/dev/null 2>&1
-	cp -u -r /projects/packages/* $BKUPDIR/$1-my_pkgs/packages/ 1>/dev/null 2>&1
-	cp -u -r /projects/src/* $BKUPDIR/$1-my_pkgs/src/ 1>/dev/null 2>&1
-	cp -u -r /projects/builds/aur/* $BKUPDIR/$1-my_pkgs/bbil/ 1>/dev/null 2>&1
+	#mkdir -p $BKUPDIR/$1-my_pkgs/{packages,src,bbil} 1>/dev/null 2>&1
+	#cp -u -r /projects/packages/* $BKUPDIR/$1-my_pkgs/packages/ 1>/dev/null 2>&1
+	#cp -u -r /projects/src/* $BKUPDIR/$1-my_pkgs/src/ 1>/dev/null 2>&1
+	cp -u -r /projects/packages/* /media/three/old-pkgs-etc/my_pkgs/ 1>/dev/null 2>&1
+	cp -u -r /projects/src/* /media/three/old-pkgs-etc/src/ 1>/dev/null 2>&1
+	#cp -u -r /projects/builds/aur/* $BKUPDIR/$1-my_pkgs/bbil/ 1>/dev/null 2>&1
 	echo -en "${bldgrn}==>${bldwht} /projects/{packages,src,aur} have been copied to $BKUPDIR"
 	echo
 fi

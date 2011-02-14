@@ -1,6 +1,6 @@
 #!/bin/bash
-#
-# Checkup Ver 155
+# {{{ Blurb
+# Checkup Ver 156
 # 
 # Copyright Simon Stoakley 2009,2010
 #
@@ -18,9 +18,9 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with checkup.  If not, see <http://www.gnu.org/licenses/>.
+# along with checkup.  If not, see <http://www.gnu.org/licenses/>. }}}
 
-# Variables {{{
+# Variables {{{ 
 bldred='\e[1;31m' # Red - bold
 bldgrn='\e[1;32m' # Green - bold
 bldylw='\e[1;33m' # Yellow - bold
@@ -31,9 +31,12 @@ chkker=""
 chknvid=""
 chkother=""
 oldver=""
-set ""
-ppp="sudo powerpill -Su"
 updtfile="/media/three/local_bkup/updatedpgks.log"
+pacfirm="$1"
+pacflag="--noconfirm" 
+[[ $pacfirm == "-c" ]] && unset pacflag
+ppp="sudo powerpill -Su ${pacflag}"
+set ""
 # }}}
 
 # Backup localDB {{{
@@ -48,8 +51,8 @@ bkpkg () {
 }
 # }}}
 
-# End {{{ 
-end () {
+# End  {{{ 
+end() {
 	echo -en "${bldwht}===>${bldred} Goodbye"
 	sleep 1
 	echo
@@ -71,7 +74,7 @@ echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? Yes (y) or
 read -n 1 ans
 echo
 if [[ $ans == "y" ]]; then
-	sudo pacman-color -Sy
+	sudo pacman-color -Syy
 fi
 
 numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easier reading
@@ -84,7 +87,7 @@ echo -en "${bldwht}===>${bldred} You are up to date."
 end
 fi
 
-echo
+#echo
 if [[ $numb == "one" ]]; then
 	echo -e "${bldwht}===>${bldgrn} There is $numb package to update"
   else
@@ -97,13 +100,27 @@ cd /var/lib/pacman/sync
 for i in $@ ;do
 	 echo -e "    ${bldwht} $(pacman -Qu | grep -m 1 ^$i ) ${bldgrn}-->${bldwht} $(ls -l * | awk '{print $9}' | grep  -m 1 ^$i-[0-9])" 
 done
-cd /home/sas/ 1>/dev/null
+cd - 1>/dev/null
+echo
 
+#### --noconfirm msg ####
+if [[ "$pacfirm" != "-c" ]] ;then
+	echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
+fi
 ######## ask if want to ignore any pkgs ####
 echo
-echo -en "${bldwht}===>${bldgrn} Do you want to: or ? (i) Ignore pkgs, (f) Force an update, (b) Both, (r) Run custom cmd. (n) Run normally,${bldwht}"
+echo -e "${bldwht}===>${bldgrn} Do you want to: (i) Ignore pkgs"
+echo -e "${bldwht}===>${bldgrn}		     (f) Force an update"
+echo -e "${bldwht}===>${bldgrn}		     (b) Both force & ignore"
+echo -e "${bldwht}===>${bldgrn}		     (r) Run a custom cmd" 
+echo -e "${bldwht}===>${bldgrn}		     (n) run Normally"
+echo -e "${bldwht}===>${bldgrn}		     (q) Quit ${bldwht}"
+echo -en "                     :"
 read -n 1 ans4
 echo
+[[ "$ans4" == "q" ]] && echo -e "${bldwht}===>${bldred} Goodbye" ; return 1
+	
+
 if [[ "$ans4" == "r" ]];then
         echo "Enter  command: "
         read ppp
@@ -138,7 +155,7 @@ echo ${oldvers[*]} >> $updtfile
 
 ### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
-    ppp="sudo powerpill -Suf"
+    ppp="sudo powerpill -Suf ${pacflag}"
 fi
 
 ######check what needs to be updated#####
