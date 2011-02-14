@@ -3,14 +3,6 @@
 #Lot of code/ideas taken from Michal Orlik <thror.fw@gmail.com>, sabooky <sabooky@yahoo.com>
 #conky update script https://bbs.archlinux.org/viewtopic.php?id=37284
 #
-#rewrote the script because i coudn't understand some parts to their script
-#and it was little bit broken on my machine
-#and to learn some basic python
-#
-###How to use:
-#1. make script in /etc/cron.hourly/ wich has this command 'pacman -Sy'
-#2. in your .conkyrc insert this line '${execpi update_time python2 /path/to/this/script}'
-################################
 #Config
 ################################
 #
