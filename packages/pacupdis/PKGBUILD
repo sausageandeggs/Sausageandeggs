@@ -1,0 +1,30 @@
+# Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
+pkgname=pacupdis
+pkgver=2.0
+pkgrel=1
+pkgdesc='Conky update notifications'
+arch=('any')
+url=""
+license=('GPL')
+groups=('sas')
+depends=('conky' 'python2')
+source=(get_updts "$pkgname".sh "$pkgname"_conky.conf "$pkgname" update_display.py)
+
+package() {
+  cd "$srcdir"
+  mkdir -p "$pkgdir"/etc/{conky,cron.hourly}
+  mkdir -p "$pkgdir"/usr/bin
+  
+  install -Dm 755 get_updts "$pkgdir"/etc/cron.hourly/get_updts
+  install -Dm 755 pacupdis.sh "$pkgdir"/etc/cron.hourly/pacupdis.sh
+  install -Dm 644 pacupdis_conky.conf "$pkgdir"/etc/conky/pacupdis_conky.conf
+  install -Dm 755 pacupdis "$pkgdir"/usr/bin/pacupdis
+  install -Dm 755 update_display.py "$pkgdir"/usr/bin/update_display.py
+
+}
+
+md5sums=('70c833fdaacfe65f22bd8e0c2d5b2226'
+         'bc9b4d032447dad9b9a77c28f666bfbd'
+         'd64cd1f89162b85713948ba68155a26f'
+         '79e965fffb8373c93f75f0a1370806fc'
+         'c8a88466a217f1839ac32246fe4764fa')

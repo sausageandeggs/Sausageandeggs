@@ -1,0 +1,37 @@
+#!/bin/bash
+export DISPLAY=:0 ###need to export display so cron has path for x
+updwn=/tmp/$RANDOM
+##HOUR=$[ $(date +"%k") % 2 ] 
+
+#if [ $HOUR -eq "0" ]; then
+/usr/bin/rebase --silent 1>/dev/null 2>&1
+python2 /home/sas/scripts/update2.py | grep -v '${' | awk '{print $2"-" $3"*"}'> $updwn 2>/dev/null
+if [[ -s $updwn ]]; then
+	for i in `cat $updwn` ; do
+		ls /var/cache/pacman/pkg/$i 1>/dev/null 2>&1
+	done
+	if [[ -s $updwn ]]; then
+		set `pacman -Qu | awk '{print $1}'`
+		powerpill -Swd --noconfirm $@ 1>/dev/null 2>&1
+		rm -rf $updwn
+	fi
+fi
+
+######## Display in Conky ########
+
+#conky -c /home/sas/docs/conkyrc
+	#sleep 300
+	#pkill -f 'conky -c /home/sas/docs/conkyrc'
+	#rm -rf $updwn
+    #exit
+#else
+	#conky -c /home/sas/docs/conkyrc
+	#sleep 240
+	#pkill -f 'conky -c /home/sas/docs/conkyrc'
+	#exit
+#fi
+###Had to use "k" to display hour instead of "H" so that bash didn't ###
+##parse it as octal number (01-07) and throw an error,another way to ##
+##do this would have been HOUR=$[ 10#$(date +"%H") % 2 ] ## 
+##where the "10# is telling bash it's a base 10 no. ##
+#### usage = ("base" "#" "number".) ####
