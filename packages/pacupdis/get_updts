@@ -30,8 +30,4 @@ fi
 	#pkill -f 'conky -c /home/sas/docs/conkyrc'
 	#exit
 #fi
-###Had to use "k" to display hour instead of "H" so that bash didn't ###
-##parse it as octal number (01-07) and throw an error,another way to ##
-##do this would have been HOUR=$[ 10#$(date +"%H") % 2 ] ## 
-##where the "10# is telling bash it's a base 10 no. ##
-#### usage = ("base" "#" "number".) ####
+

@@ -288,8 +288,8 @@ map <leader>u 10k
 map <leader>w <c-w><c-w> 
 
 " sudo if open w/out perm
-nmap <leader>ww :w !sudo tee %<CR>
-
+"nmap <leader>ww :w !sudo tee %<CR>
+"cmap hhh w !gksudo tee >/dev/null %
 " shortcuts for copying to clipboard
 map <leader>y "+y
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-#
+#Ver 2.2
 #Lot of code/ideas taken from Michal Orlik <thror.fw@gmail.com>, sabooky <sabooky@yahoo.com>
 #conky update script https://bbs.archlinux.org/viewtopic.php?id=37284
 #
@@ -17,7 +17,7 @@ value_repo = {
   ('core', 4),
   ('extra', 3),
   ('community', 2),
-  ('arch-games', 1),
+  ('multilib', 1),
 }
 #color for each reposatory
 color_repo = {
@@ -26,7 +26,7 @@ color_repo = {
   ('community','CF9ECC'),
   ('multilib','8FDF99'),
   ('xyne-any','D3D181'),
-  ('sumary', 'white'),
+  ('sumary','white'),
 }
 #value for seperate packages
 value_pkg = {
@@ -132,9 +132,11 @@ for package in packages[0:package_count]:
   elif package[1] == 'extra':
     line_left = '${goto 59}${color0}${font liberation:bold:size=8}' + line_left + '$font${color2}'
   elif package[1] == 'community':
-    line_left = '${goto 59}${color0}${font liberation:bold:size=8}' + line_left + '$font${color2}'
-  elif package[1] == 'arch-games':
-    line_left = '${goto 59}${color0}${font liberation:bold:size=8}' + line_left + '$font${color2}'
+    line_left = '${goto 59}${color CF9ECC}${font liberation:bold:size=8}' + line_left + '$font${color2}'
+  elif package[1] == 'multilib':
+    line_left = '${goto 59}${color 8FDF99}${font liberation:bold:size=8}' + line_left + '$font${color2}'
+  elif package[1] == 'xyne-any':
+    line_left = '${goto 59}${color D3D181}${font liberation:bold:size=8}' + line_left + '$font${color2}'
   print (line_left + space + '${color1}' + '${alignr}' + line_right )
 count = len(packages)
 install_size = 0
@@ -146,14 +148,14 @@ line_left = '${goto 59}' + 'Total: ' + str(count)
 line_right = str(download_size) + 'M/' + str(install_size) + 'M'
 line_center = length - len(line_right)
 line_center = line_center - len(line_left)
-line_left = '${color1}' + line_left + '${color}'
-line_right = '${color1}' + line_right + '${color}'
+line_left = '${color2}' + line_left
+line_right = '${color2}' + line_right + '${color}'
 space = ''
 for i in range(line_center):
   space = space + ' '
 #draw_line(length)
 separator = ' '
-print separator
+print ('${goto 59}${color darkslategray}${hr 2}')
 separator = ' '
 
 if download_size == 0:
