@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-#Ver 2.2
+#Ver 2.3
 #Lot of code/ideas taken from Michal Orlik <thror.fw@gmail.com>, sabooky <sabooky@yahoo.com>
 #conky update script https://bbs.archlinux.org/viewtopic.php?id=37284
 #
@@ -155,12 +155,12 @@ for i in range(line_center):
   space = space + ' '
 #draw_line(length)
 separator = ' '
-print ('${goto 59}${color darkslategray}${hr 2}')
-separator = ' '
+#separator = ' '
 
 if download_size == 0:
 	u2d = '${goto 59}${font Arial:bold:size=10}${color1}You are up to date'
 	print (u2d)
 	print separator
 else:
+	print ('${goto 59}${color darkslategray}${hr 2}')
 	print (line_left + space + '${alignr}' + line_right)

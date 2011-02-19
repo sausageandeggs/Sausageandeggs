@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=pacupdis
-pkgver=2.2
+pkgver=2.3
 pkgrel=1
 pkgdesc='Conky update notifications'
 arch=('any')
