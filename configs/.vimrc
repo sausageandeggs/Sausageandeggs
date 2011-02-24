@@ -317,22 +317,23 @@ set autowrite 			" autosave when switching buffers
 autocmd BufEnter * lcd %:p:h
 
 "A function to tell if a file is executable
-"function! FileExecutable (fname)
-  "execute "silent! ! test -x" a:fname
-  "return v:shell_error
-"endfunction
+function! FileExecutable (fname)
+  execute "silent! ! test -x" a:fname
+  return v:shell_error
+endfunction
 "" Automatically make Pl Py & Shell scripts executable if they aren't already
-"au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
+au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
 
 "au BufWritePost * if getline(1) =~ "^#! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
 "au BufWritePost * | endif
 
-" automatically give executable permissions if filename is *.sh
-au BufWritePost *.sh :!chmod a+x <afile>
-" automatically insert "#!/bin/sh" line for *.sh files
-"au BufEnter *.sh if getline(1) == "" | :call setline(1, "#!/bin/sh") | endif
-" automatically give executable permissions if file begins with #!/bin/sh
-au BufWritePost * if getline(1) =~ "^#!/bin/[a-z]*sh" | silent !chmod a+x <afile> | endif
+"" automatically give executable permissions if filename is *.sh
+"au BufWritePost *.sh :!chmod a+x <afile>
+""au BufWritePost *.py :!chmod a+x <afile>
+"au BufWritePost *.pl :!chmod a+x <afile>
+"" automatically give executable permissions if file begins with #!/bin/sh
+""au BufWritePost * if getline(1) =~ "^#!/bin/[a-z]*sh" | silent !chmod a+x <afile> | endif
+"au BufWritePost * if getline(1) =~ "^#!/usr/bin/env*" | silent !chmod a+x <afile> | endif
 
 
 
