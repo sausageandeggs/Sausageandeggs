@@ -36,8 +36,7 @@ ppp="sudo powerpill -Su --noconfirm"
 updtfile="/media/three/local_bkup/updatedpgks.log"
 # }}}
 
-# Backup localDB {{{
-bkpkg () {
+bkpkg () { # {{{
 	echo
 	echo -e "${bldwht}===>${bldgrn} Backing up local database"
 	mv /media/three/local_bkup/{old.tar.xz,done.tar.xz} || return 1
@@ -48,8 +47,7 @@ bkpkg () {
 }
 # }}}
 
-# End {{{ 
-end () {
+end() { # {{{
 	echo -en "${bldwht}===>${bldred} Goodbye"
 	sleep 1
 	echo
@@ -84,7 +82,7 @@ echo -en "${bldwht}===>${bldred} You are up to date."
 end
 fi
 
-echo
+#echo
 if [[ $numb == "one" ]]; then
 	echo -e "${bldwht}===>${bldgrn} There is $numb package to update"
   else
@@ -97,7 +95,8 @@ cd /var/lib/pacman/sync
 for i in $@ ;do
 	 echo -e "    ${bldwht} $(pacman -Qu | grep -m 1 ^$i ) ${bldgrn}-->${bldwht} $(ls -l * | awk '{print $9}' | grep  -m 1 ^$i-[0-9])" 
 done
-cd /home/sas/ 1>/dev/null
+cd - 1>/dev/null
+echo
 
 ######## ask if want to ignore any pkgs ####
 echo

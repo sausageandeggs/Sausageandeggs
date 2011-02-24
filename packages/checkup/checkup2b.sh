@@ -33,14 +33,13 @@ chkother=""
 oldver=""
 updtfile="/media/three/local_bkup/updatedpgks.log"
 pacfirm="$1"
-pacflag="--noconfirm" 
-[[ $pacfirm == "-c" ]] && unset pacflag
-ppp="sudo powerpill -Su ${pacflag}"
+pacflag="--noconfirm"
+[[ $pacfirm == "-c" ]] && pacflag=""
+ppp="sudo powerpill -Su $pacflag"
 set ""
 # }}}
 
-# Backup localDB {{{
-bkpkg () {
+bkpkg () { # {{{
 	echo
 	echo -e "${bldwht}===>${bldgrn} Backing up local database"
 	mv /media/three/local_bkup/{old.tar.xz,done.tar.xz} || return 1
@@ -51,8 +50,7 @@ bkpkg () {
 }
 # }}}
 
-# End  {{{ 
-end() {
+end() { # {{{
 	echo -en "${bldwht}===>${bldred} Goodbye"
 	sleep 1
 	echo
@@ -118,19 +116,17 @@ echo -e "${bldwht}===>${bldgrn}		     (q) Quit ${bldwht}"
 echo -en "                     :"
 read -n 1 ans4
 echo
-[[ "$ans4" == "q" ]] && echo -e "${bldwht}===>${bldred} Goodbye" ; return 1
-	
-
-if [[ "$ans4" == "r" ]];then
+if [[ "$ans4" == "q" ]]; then
+  echo -e "${bldwht}===>${bldred} Goodbye"
+  return 1
+elif [[ "$ans4" == "r" ]];then
         echo "Enter  command: "
         read ppp
 		echo -e " $(date +%d%m-%I)\n $ppp" >> $updtfile 
         echo
         sudo $ppp
-        return 1
-fi
-                                            ### Set ignore or both, gets ignore element of both
-if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
+        return 1    ### Set ignore or both, gets ignore element of both
+elif [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
 	echo -en "${bldwht}===>${bldgrn} Enter the pkgs you want to ignore (comma separated): ${bldwht}"
 	read ignpkg
 	echo -e "${txtrst}"
