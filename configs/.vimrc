@@ -317,16 +317,18 @@ set autowrite 			" autosave when switching buffers
 autocmd BufEnter * lcd %:p:h
 
 "A function to tell if a file is executable
-function! FileExecutable (fname)
-  execute "silent! ! test -x" a:fname
-  return v:shell_error
-endfunction
-"" Automatically make Pl Py & Shell scripts executable if they aren't already
-au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
-
+"function! FileExecutable (fname)
+  "execute "silent! ! test -x" a:fname
+  "return v:shell_error
+"endfunction
+""" Automatically make Pl Py & Shell scripts executable if they aren't already
+"au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
+"
 "au BufWritePost * if getline(1) =~ "^#! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
 "au BufWritePost * | endif
-
+" automatically give executable permissions if file begins with #! and contains
+" '/bin/' in the path
+au bufwritepost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod a+x <afile> | endif | endif   
 "" automatically give executable permissions if filename is *.sh
 "au BufWritePost *.sh :!chmod a+x <afile>
 ""au BufWritePost *.py :!chmod a+x <afile>

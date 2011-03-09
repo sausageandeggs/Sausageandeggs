@@ -140,7 +140,18 @@ for item in program:
     pkg['rate'] = sum(pkgRate + repoRate)
 
     pkgs.append(pkg)
-
+#Gets all packages to ignore
+pacman_conf = open('/etc/pacman.conf').readlines()
+for line in pacman_conf:
+  if line[0:9] == 'IgnorePkg':
+    ignore_pkg = line.split()
+print (pkgName[2])
+#removes packages to ignore from package list
+for pkg in ignore_pkg:
+  for i, package in enumerate(pkgName):
+    if pkgName[0:9] == pkg:
+      pkgName.pop(i)
+  
 # echo list of pkgs
 if pkgs:
     summary = {}

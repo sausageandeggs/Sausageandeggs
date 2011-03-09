@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <s.stoakley@gmail.com>
 pkgname=my_func
-pkgver=158
+pkgver=159
 pkgrel=1
 pkgdesc="My functions"
 arch=(any)
