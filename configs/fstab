@@ -21,4 +21,4 @@ UUID=B729-DFFF	/media/two	auto	rw,user,auto,exec,noatime,umask=0000	0	0
 UUID=B8BB-9C00	/media/three	auto	rw,user,auto,exec,noatime,umask=0000	0	0
 #usb
 #/dev/sdc1	/media/usb	auto	rw,user,auto,exec	0	0
-/var/lib/pacman.db /var/lib/pacman ext2 loop,defaults 0 0
+#/var/lib/pacman.db /var/lib/pacman ext2 loop,defaults 0 0

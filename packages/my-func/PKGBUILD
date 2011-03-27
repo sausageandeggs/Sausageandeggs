@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <s.stoakley@gmail.com>
 pkgname=my_func
-pkgver=159
+pkgver=160
 pkgrel=1
 pkgdesc="My functions"
 arch=(any)
@@ -20,4 +20,6 @@ package() {
 }
 
 md5sums=('9adb62682839a78e2f70c29a425c9856'
+         'aa954393fdd7d198133fb04fe0f9c9c9')
+md5sums=('7e4476283bce345e5e2405ff26693404'
          'aa954393fdd7d198133fb04fe0f9c9c9')

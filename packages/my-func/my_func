@@ -2,7 +2,7 @@
 ###################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################
-## Ver 159 ##
+## Ver 160 ##
 
 ### clr_mem ###
 
@@ -24,7 +24,7 @@ cowerd() {
 		targ="$2"
 		cower -f -d -t /projects/builds/ "$targ" 
 		cd /projects/builds/"$targ"
-		makepkg -i --nonconfirm
+		makepkg -i --noconfirm
 	else
 		targ="$1"
 		cower -f -d -t /projects/builds/ "$targ" 

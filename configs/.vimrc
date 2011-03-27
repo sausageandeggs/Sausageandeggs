@@ -241,12 +241,9 @@ map <leader>. `.
 " Nerdtree
 map <leader>;; :NERDTreeToggle<CR>
 
-" Make sesions get save & open to same dir
-nmap <leader>mm :wa<CR>:mksession! ~/.vim/sessions/
+nmap <leader>so :wa<CR>:so ~/.vim/sessions/
 
-nmap <leader>mo :wa<CR>:so ~/.vim/sessions/
-
-" Make sesios get save & open to same dir
+" save sesion
 nmap <leader>ss :wa<CR>:mksession! ~/.vim/sessions/
 
 " leader tt opens blank tab
@@ -264,9 +261,6 @@ nmap <leader>pp a#!/usr/bin/env python2<CR><esc>
 " leader bb inserts python3 shebang
 nmap <leader>ppp a#!/usr/bin/env python3<CR><esc>
 
-" easier start replace
-map <leader>r R
-
 " leader tt opens blank tab
 nmap <leader>tt :tabnew<CR>
 
@@ -282,9 +276,6 @@ nmap <leader>ww :w !sudo tee %<CR>
 " shortcuts for copying to clipboard
 map <leader>y "+y
 
-" Goto last place edited
-map <leader>. `.
-
 " Save
 nmap <leader>] :w<CR>
 
@@ -293,6 +284,18 @@ nmap <leader>[ :wq<CR>
 
 " Nerdtree
 map <leader>;; :NERDTreeToggle<CR>
+
+"Goto next diff
+map <leader># ]c
+
+"Goto previous diff
+map <leader>## [c
+
+" Get diff (do)
+map <leader>o do
+
+" Put diff (dp)
+map <leader>oo dp
 
 """""""""""""""""
 " More settings "

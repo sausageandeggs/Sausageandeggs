@@ -56,6 +56,7 @@ alias cd...='cd ../../..'
 alias cd#='cd ~'
 alias chkit='pgrep -fl'
 alias ck4up='ck4up -v'
+alias ckup=' cd /projects/builds/kernel26-ck && makepkg -i --noconfirm && cd /projects/builds/nvidia-beta-all && makepkg -f'
 alias clone='git clone'
 alias cma='git commit -a -m'
 alias commit='git commit'
@@ -95,7 +96,7 @@ alias makepkgi='makepkg -i --noconfirm'
 alias makepkgs='makepkg -s'
 alias makepkgss='makepkg --source'
 alias mdds='cd /media/data/downloads'
-alias orph='pacman -Qdt'
+alias orph='pacman-color -Qdt'
 alias pacaman='sudo pacman-color'
 alias pacman='sudo pacman-color'
 alias pacmn='sudo pacman-color'
@@ -111,20 +112,20 @@ alias pjts='cd /projects'
 alias pkgb='edit pkgb'
 alias pkillf='pkill -f'
 alias pkgv='edit -v pkgb'
-alias powerpill='sudo powerpill'
-alias ppd='powerpill -S --asdeps'
-alias ppl='pacman -Ql'
-alias ppi='pacman -Qi'
-alias ppo='pacman -Qo'
-alias ppp='powerpill -S'
-alias ppq='pacman -Qs'
-alias ppr='pacman -R'
-alias pprr='pacman -Rnsu'
-alias pprrr='pacman -Rnsc'
-alias pps='pacman -Ss'
-alias ppu='pacman -U'
-alias ppud='powerpill -U --asdeps'
-alias ppw='powerpill -Sw'
+alias pacman='sudo pacman'
+alias ppd='pacman-color -S --asdeps'
+alias ppl='pacman-color -Ql'
+alias ppi='pacman-color -Qi'
+alias ppo='pacman-color -Qo'
+alias ppp='pacman-color -S'
+alias ppq='pacman-color-color -Qs'
+alias ppr='pacman-color -R'
+alias pprr='pacman-color -Rnsu'
+alias pprrr='pacman-color -Rnsc'
+alias pps='pacman-color -Ss'
+alias ppu='pacman-color -U'
+alias ppud='pacman-color -U --asdeps'
+alias ppw='pacman-color -Sw'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'
@@ -270,7 +271,7 @@ bash_prompt() {
 }
 # }}}
 
-#### Kingbash #### {{{
+#### Kingbash #### {{{http://www.cyberciti.biz/faq/linux-unix-finds-duplicate-files-in-given-directories/
 
 function kingbash.fn() {
    echo -en "$TITLEBAR ${bldgrn}[sas ${bldblu}${NEW_PWD}${bldgrn}]$ ${txtrst}$READLINE_LINE" #Where "KingBash> " looks best if it resembles your PS1, at least in length.
@@ -311,5 +312,5 @@ rss="$(bc <<< "scale=2;${rss}/1024")"; fi;
 printf "%-26s%-8s%s\n" "${command}" "${percent}"	"${rss}";
 done < <(ps -A --sort -rss -o comm,pmem,rss | head -n 21)'
 
-alias ppm='pacman -Qm'
-alias uuu='pacman -Qu'
+alias ppm='pacman-color -Qm'
+alias uuu='pacman-color -Qu'

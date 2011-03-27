@@ -1,12 +1,12 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=aurupdis
-pkgver=5
-pkgrel=1
+pkgver=6
+pkgrel=3
 pkgdesc='my attempt at upate notification in conky'
 arch=('i686' 'x86_64')
 license=('GPL')
 groups=('sas')
-depends=('conky' 'bauerbill')
+depends=('conky' 'cower')
 source=($pkgname.sh $pkgname aurupdt.sh $pkgname.conf)
 install=$pkgname.install
 
@@ -16,7 +16,7 @@ package() {
 	chmod 755 $pkgdir/home/sas/.conkycolors/$pkgname/aurupdt.sh
 }
 
-md5sums=('f6b7e6f3b33d6e559f9655609dcc5ba2'
+md5sums=('42e9a9d988ee30267fd8c6096a3d64b4'
          'c3d3c4b3ca5218cd3c285f10c0eb4bc5'
-         '0f23ee320de67d36c5a569d15200be96'
-         'e2705d07bce570d4601775ac5e3be96c')
+         'b835b9e42defea3db82dd594706558a2'
+         '98f7cf04753c19b6f0d9c833c6ef6ccf')

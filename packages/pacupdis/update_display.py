@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-#Ver 2.3
+#Ver 2.4
 #Lot of code/ideas taken from Michal Orlik <thror.fw@gmail.com>, sabooky <sabooky@yahoo.com>
 #conky update script https://bbs.archlinux.org/viewtopic.php?id=37284
 #
@@ -9,7 +9,7 @@
 #outputs '-' symbols to conky so you can find max length easier 1 - on, 0 - off
 check_width = 0
 #How many simbols there are in 1 line
-length = 29
+length = 49
 #How many packages to display in conky
 package_count = 40
 #How much + value packages gain if they are in some reposatory

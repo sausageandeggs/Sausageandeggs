@@ -1,6 +1,6 @@
 #!/bin/bash
 # {{{ Blurb
-# Checkup Ver 156
+# Checkup Ver 157
 # 
 # Copyright Simon Stoakley 2009,2010
 #
@@ -32,7 +32,7 @@ chknvid=""
 chkother=""
 oldver=""
 set ""
-ppp="sudo powerpill -Su --noconfirm"
+ppp="sudo pacman -Su --noconfirm"
 updtfile="/media/three/local_bkup/updatedpgks.log"
 # }}}
 
@@ -137,7 +137,7 @@ echo ${oldvers[*]} >> $updtfile
 
 ### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
-    ppp="sudo powerpill -Suf --noconfirm"
+    ppp="sudo pacman -Suf --noconfirm"
 fi
 
 ######check what needs to be updated#####

@@ -63,6 +63,7 @@ alias egrep='egrep --color=auto'
 alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristic-scan-precedence=yes &'
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
+alias gen-ck="/sbin/mkinitcpio -k `uname -r` -c /etc/mkinitcpio.conf -g /boot/kernel26-ck.img"
 alias gitdif='git diff'
 alias gitupdt='for i in /projects/git/* ; do cd "$i" ; echo -e "${bldylw}$PWD${txtrst}" ; git pull ; done'
 alias gti='git'
@@ -102,6 +103,7 @@ alias pkgv='edit -v pkgb'
 alias ppd='powerpill -S --asdeps'
 alias ppl='pacman -Ql'
 alias ppi='pacman -Qi'
+alias ppm='pacman -Qm'
 alias ppo='pacman -Qo'
 alias ppp='powerpill -S'
 alias ppq='pacman -Qs'
@@ -297,4 +299,3 @@ rss="$(bc <<< "scale=2;${rss}/1024")"; fi;
 printf "%-26s%-8s%s\n" "${command}" "${percent}"	"${rss}";
 done < <(ps -A --sort -rss -o comm,pmem,rss | head -n 21)'
 
-alias ppm='pacman -Qm'
