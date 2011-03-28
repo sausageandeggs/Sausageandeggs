@@ -133,25 +133,25 @@ elif [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
 fi
 
 # Grab a list of updated pkgs for easy copy paste rollback                        
-rolbak() { 	# {{{
-	echo
-	echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
-	echo
-	echo $(date +%d%m-%I) >> $updtfile
-# add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
-	oldver=$(pacman -Qu | sed 's|\ |-|g')
-	co=0
-	declare -a oldvers=""
-	for i in $oldver;do 
-	oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
-	(( co++ ))
-done
-echo ${oldvers[*]} >> $updtfile
-} # }}}
+#rolbak() { 	# {{{
+	#echo
+	#echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
+	#echo
+	#echo $(date +%d%m-%I) >> $updtfile
+## add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
+	#oldver=$(pacman -Qu | sed 's|\ |-|g')
+	#co=0
+	#declare -a oldvers=""
+	#for i in $oldver;do 
+	#oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
+	#(( co++ ))
+#done
+#echo ${oldvers[*]} >> $updtfile
+#} # }}}
 
 ### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
-    ppp="sudo powerpill -Suf ${pacflag}"
+    ppp="sudo pacman -Suf ${pacflag}"
 fi
 
 ######check what needs to be updated#####
@@ -186,7 +186,7 @@ if [[ "$chknvid" == "1" ]]; then
 	echo -e "\t ${bldylw}Do you want to..."
 	echo -e "\t ${bldwht}(a)${bldylw} Update skiping the kernel pkg." 
 	echo -e "\t ${bldwht}(b)${bldylw} Update everything." 
-	echo -e "\t ${bldwht}(c)${bldylw} Update the kernel then build and install new Nvidia pkg(s) with Bauerbill."
+	echo -e "\t ${bldwht}(c)${bldylw} Update the kernel then build a new Nvidia pkg against it"
 	echo -e "\t ${bldwht}(d)${bldylw} Run a custom command."
 	echo -e "\t ${bldwht}(e)${bldylw} Do nothing and exit."
 	echo -e "\t ${txtylw}(Any pkgs you want to ignore will be ignored whatever choice is made)"
@@ -233,7 +233,9 @@ if [[ "$chknvid" == "1" ]]; then
 			rolbak
 			$ppp
 		fi 
-		sudo bauerbill --blindly-trust-everything-when-building-packages-despite-the-inherent-danger -Sf nvidia-beta-all
+		cd /projects/builds/nvidia-geta-all
+		makepkg
+		cd -
 		bkpkg
 		return 1
 		;;
