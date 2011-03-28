@@ -72,13 +72,9 @@ metalink() {
     ## strip -arch.pkg.tar.gz from the end of the bfname
     DFNAME=${BFNAME%-*\.pkg\.tar\.?z}
     ## get pkg details
-    #CSIZE=$(cat /var/lib/pacman/sync/${REPONAME}/${DFNAME}/desc | grep -A1 -F CSIZE|tail -n 1)
-    #MD5SUM=$(cat /var/lib/pacman/sync/${REPONAME}/${DFNAME}/desc | grep -A1 -F MD5SUM|tail -n 1)
 
     CSIZE=$(tar xzfO /var/lib/pacman/sync/${REPONAME}.db ${DFNAME}/desc | grep -A1 -F CSIZE|tail -n 1)
     MD5SUM=$(tar xzfO /var/lib/pacman/sync/${REPONAME}.db ${DFNAME}/desc | grep -A1 -F MD5SUM|tail -n 1)
-
-tar xzfO multilib.db lib32-cairo-1.10.2-2/desc | grep -A1 -F CSIZE|tail -n 1
 
     METALINK="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
     METALINK="${METALINK}\n<metalink version=\"3.0\" generator=\"pacaria\" xmlns=\"http://www.metalinker.org/\">"
@@ -107,7 +103,7 @@ if $(echo ${BFNAME} | grep -iq 'db.tar.?z'); then
 fi
 
 ## not a repo db update
-REPONAME=$(basename $(dirname $(dirname $(dirname "${URL}"))))
+REPONAME=$(basename $(dirname $(dirname "${URL}")))
 getmirrorlist "${REPONAME}" "${BFNAME}"
 metalink "${MIRROR}" "${BFNAME}"
 exec echo -e "${METALINK}\n" | aria2c ${ARIA_OPTS} -M -
