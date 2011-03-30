@@ -2,7 +2,7 @@
 ###################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################
-## Ver 160 ##
+## Ver 161 ##
 
 ### clr_mem ###
 
@@ -111,55 +111,6 @@ bkpkg () {
 	echo
 }
 
-### Get AUR tarball ###
-
-getaur() {
-    wget -nv http://aur.archlinux.org/packages/$1/$1.tar.gz -P /media/two/Downloads
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-}
-
-### Get AUR tarball+install ###
-
-getauri() {
-    wget -nv http://aur.archlinux.org/packages/$1/$1.tar.gz -P /media/two/Downloads
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-    makepkg -i
-}
-
-### Get AUR tarball+make ###
-
-getaurm() {
-    wget -nv http://aur.archlinux.org/packages/$1/$1.tar.gz -P /media/two/Downloads
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-    makepkg
-}
-
-### Unpack AUR tarball###
-
-unpaur() {
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-}
-
-### Unpack AUR tarball+install ###
-
-unpauri() {
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-    makepkg -i
-}
-
-### Unpack AUR tarball+make ###
-
-unpaurm() {
-    tar -xvf /media/two/Downloads/$1.tar.gz -C /projects/builds
-    cd /projects/builds/$1
-    makepkg
-}
-
 ### mkmv ###
 ### Usage: mkmv <file> <directory>
 
@@ -197,60 +148,6 @@ newbld() {
 
 	echo "Done"
 }
-
-### Pacside ###
-
-pacside() {
-
-    sidesch() {
-
-        bldblu='\e[1;34m' # Blue
-        bldgrn='\e[1;32m' # Blue
-        bldwht='\e[1;37m' # White
-        bldred='\e[1;31m' # White
-        txtrst='\e[0m'    # Text Reset
-        
-        pkg=()
-        desc=()
-        count=-1
-        WIDTH=${WIDTH:-70}
-
-        while read line; do
-            if [[ $line =~ ^(testing|core|extra|community|community-testing|local)/* ]]; then
-                (( count++ ))
-                line1="$(echo $line |cut -d " " -f2 )"
-                line2="$(echo $line |cut -d " " -f1 )"
-#                line3="$(echo $line |cut -d " " -f3,4 )"
-				line=$(echo -e $line2 $bldgrn $line1 $txtrst) 
-                pkg[count]="$line"
-              continue
-            fi
-
-            desc[count]+="$line"
-        done
-
-        i=0
-        while (( i <= count )); do
-            IFS=$'\n' read -r -d'\0' -a blockdesc < <(fmt -w$WIDTH <<< "${desc[i]}")
-
-            paste -d' ' <(printf "${bldblu}\t%-71s" "${pkg[i]}") <(echo -e "${bldwht}${blockdesc[0]}${txtrst}")
-    
-            for line in "${blockdesc[@]:1}"; do
-            printf "${bldwht}\t%-61s%s\n" "" "$line"
-            done
-    
-        (( ++i ))
-        [[ $1 != -s ]] && echo
-        done
-        }
-
-	echo
-    [[ -z $2 ]] && pacman -Ss $1 | sidesch
-    [[ $1 == -s ]] && pacman -Ss $2 | sidesch -s
-    [[ $1 == -q ]] && pacman -Qs $2 | sidesch
-    [ $1 == -sq -o $1 == -qs ] && pacman -Qs $2 | sidesch -s
-}
-
 ### ~/prjts/pkgs ###
 
 hspp  () {
@@ -264,14 +161,7 @@ blds  () {
 	cd /projects/builds/$1
 }
 
-### ~/prjts/blds###
-
-bds  () {
-	bds1='/projects/builds/$[1]'
-	echo bds1
-}
-
-### Quick edit ###
+## Quick edit ###
 
 edit() {
 	ED_CLI="vim"
@@ -314,6 +204,25 @@ ranger() {
 	command ranger --fail-unless-cd $@ &&
 	cd "$(grep \^\' ~/.ranger/bookmarks | cut -b3-)"
        }
+
+### Stump (Auto update AUR pkgd) ###
+
+stump() {
+buildDir="/projects/builds"
+upd=$(cower -u |awk '{print $2}')
+updt=( $upd )
+updts=( ${updt[@]/kernel26-ck*/} )
+
+cower -d -f -u --ignore=kernel26-ck
+
+co=0
+for i in ${updts[*]} ; do
+	echo -e "\n\t ${bldgrn}Updating ${updts[$co]} \n"
+	cd $buildDir/${updts[$co]} && makepkg -i --noconfirm
+	(( ++co ))
+	cd -
+done
+}
 
 ### vim quick open session ###
 

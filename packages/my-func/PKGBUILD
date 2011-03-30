@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <s.stoakley@gmail.com>
 pkgname=my_func
-pkgver=160
+pkgver=161
 pkgrel=1
 pkgdesc="My functions"
 arch=(any)
@@ -8,8 +8,6 @@ url=""
 license=('GPL')
 groups=(mine)
 depends=('tar' 'gvim' 'ranger')
-makedepends=()
-optdepends=()
 #install=($pkgname.install)
 source=($pkgname 'funcdo')
 noextract=()
@@ -19,7 +17,5 @@ package() {
 	install -Dm 755 funcdo		$pkgdir/usr/lib/sas/funcdo
 }
 
-md5sums=('9adb62682839a78e2f70c29a425c9856'
-         'aa954393fdd7d198133fb04fe0f9c9c9')
-md5sums=('7e4476283bce345e5e2405ff26693404'
+md5sums=('8171cb0aa013749a7e35e99f93365866'
          'aa954393fdd7d198133fb04fe0f9c9c9')
