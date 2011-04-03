@@ -1,4 +1,13 @@
 #!/bin/bash
+
+# {{{ Not root check
+if [[ $UID -eq 0 ]]; then           
+	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo -e "${bldwht}##${bldred} Don't run this as root${bldwht} ##"
+	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	return 1
+fi # }}}
+
 # {{{ Blurb
 # Checkup Ver 2.0b
 # 
@@ -50,23 +59,6 @@ bkpkg () { # {{{
 }
 # }}}
 
-end() { # {{{
-	echo -en "${bldwht}===>${bldred} Goodbye"
-	sleep 1
-	echo
-	return 1
-}
-# }}}
-
-# {{{ Not root check
-if [[ $UID -eq 0 ]]; then           
-	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	echo -e "${bldwht}##${bldred} Don't run this as root${bldwht} ##"
-	echo -e "${bldwht}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	return 1
-fi
-# }}}
-
 echo
 echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? Yes (y) or No (n) "
 read -n 1 ans
@@ -82,7 +74,7 @@ set $(pacman -Qu | awk '{print $1}') 1>/dev/null 2>&1
 
 if [[ -z $@ ]]; then
 echo -en "${bldwht}===>${bldred} You are up to date."
-end
+return 1
 fi
 
 #echo
@@ -93,13 +85,26 @@ if [[ $numb == "one" ]]; then
 fi
 echo
 
-#####setting pkg updates display so that old --> new is displayed###
-cd /var/lib/pacman/sync
-for i in $@ ;do
-	 echo -e "    ${bldwht} $(pacman -Qu | grep -m 1 ^$i ) ${bldgrn}-->${bldwht} $(ls -l * | awk '{print $9}' | grep  -m 1 ^$i-[0-9])" 
+# Print updates (old --> new) {{{
+declare -a vers=($(pacman -Qu | awk '{print $1}'))
+a=0
+b=0
+c=0
+WW="$(( $COLUMNS/2 - 2 ))"
+
+for i in ${vers[*]};do
+	declare -a oldver[$a]="$(expac '%n-%v' -s ${vers[$a]} | grep -m 1 ${vers[$a]})"
+	(( a++ ))
 done
-cd - 1>/dev/null
-echo
+for j in ${vers[*]};do
+	declare -a newver[$b]="$(expac '%n-%v' -Ss ${vers[$b]} | grep -m 1 ${vers[$b]})"
+	(( b++ ))
+done
+for k in ${vers[*]};do
+	printf "%${WW}b %b %b\n" "${bldwht}${oldver[$c]}" "${bldgrn}-->" "${bldwht}${newver[$c]}"
+	#echo -e "${bldwht} ${oldver[$c]} ${bldgrn}--> ${bldwht}${newver[$c]}${txtrst}"
+	(( c++ ))
+done #}}}
 
 #### --noconfirm msg ####
 if [[ "$pacfirm" != "-c" ]] ;then
@@ -111,7 +116,7 @@ echo -e "${bldwht}===>${bldgrn} Do you want to: (i) Ignore pkgs"
 echo -e "${bldwht}===>${bldgrn}		     (f) Force an update"
 echo -e "${bldwht}===>${bldgrn}		     (b) Both force & ignore"
 echo -e "${bldwht}===>${bldgrn}		     (r) Run a custom cmd" 
-echo -e "${bldwht}===>${bldgrn}		     (n) run Normally"
+echo -e "${bldwht}===>${bldgrn}		     (N) run Normally"
 echo -e "${bldwht}===>${bldgrn}		     (q) Quit ${bldwht}"
 echo -en "                     :"
 read -n 1 ans4
@@ -132,22 +137,22 @@ elif [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
 	echo -e "${txtrst}"
 fi
 
-# Grab a list of updated pkgs for easy copy paste rollback                        
-#rolbak() { 	# {{{
-	#echo
-	#echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
-	#echo
-	#echo $(date +%d%m-%I) >> $updtfile
-## add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
-	#oldver=$(pacman -Qu | sed 's|\ |-|g')
-	#co=0
-	#declare -a oldvers=""
-	#for i in $oldver;do 
-	#oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
-	#(( co++ ))
-#done
-#echo ${oldvers[*]} >> $updtfile
-#} # }}}
+#Grab a list of updated pkgs for easy copy paste rollback                        
+rolbak() { 	# {{{
+	echo
+	echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
+	echo
+# add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
+	oldver=$(pacman -Qu | sed 's|\ |-|g')
+	co=0
+	declare -a oldvers=""
+	for i in $oldver;do 
+	oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
+	(( co++ ))
+done
+	echo $(date +%d%m-%I) >> $updtfile
+	echo ${oldvers[*]} >> $updtfile
+} # }}}
 
 ### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
@@ -233,14 +238,14 @@ if [[ "$chknvid" == "1" ]]; then
 			rolbak
 			$ppp
 		fi 
-		cd /projects/builds/nvidia-geta-all
+		cd /projects/builds/nvidia-beta-all
 		makepkg
 		cd -
 		bkpkg
 		return 1
 		;;
 		d)
-        echo "Enter  command: "
+        echo -e "\tEnter command :"
         read ppp
         echo
 		rolbak
@@ -248,35 +253,23 @@ if [[ "$chknvid" == "1" ]]; then
         return 1
         ;;
 		e)
-		end
         return 1
 		;;
 	esac
   else
 	echo -e "${bldwht}===>${bldred} You need to wait for the Nvidia package to update before updating" 
-	end
     return 1
 fi
 
-#echo -en "${bldwht}===>${bldblu} Yes (y) No (n)  "
-#read -n 1 ans
-#echo
-#echo
-#case $ans in
-	#y)						
-	if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				
-		echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg "
-		echo -e "${txtrst}"
-		rolbak
-		$ppp --ignore $ignpkg
-		bkpkg
-		return 1
-	fi
+if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				
+	echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg "
+	echo -e "${txtrst}"
 	rolbak
-	$ppp
+	$ppp --ignore $ignpkg
 	bkpkg
-	#;;
-	#n)
-	end
-#esac
-
+	return 1
+fi
+rolbak
+$ppp
+bkpkg
+return 1

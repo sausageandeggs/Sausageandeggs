@@ -16,10 +16,10 @@ HISTFILESIZE=10000
 HISTSIZE=10000
 PROMPT_COMMAND="history -a"
 export HISTSIZE PROMPT_COMMAND
-shopt -s cdspell
+#shopt -s cdspell
 shopt -s histappend
-shopt -s autocd
-shopt -s extglob
+#shopt -s autocd
+#shopt -s extglob
 export HISTIGNORE='pwd:exit:clear:..bash:cr:su:ll:cv:checkup:ranger'
 
 export PATH="$PATH:/home/sas/scripts"
@@ -110,6 +110,7 @@ alias pacup='. /home/sas/scripts/pacupdis &'
 alias paper='gconftool-2 --type string --set /desktop/gnome/background/picture_filename $(find /home/sas/pictures |shuf -n 1)'
 alias pcman='sudo pacman-color'
 alias pcmn='sudo pacman-color'
+alias pfup=' cd /projects/builds/kernel26-pf && rm -rf src && makepkg -i --noconfirm && cd /projects/builds/nvidia-beta-all && makepkg -f'
 alias pgkb='pkgb'
 alias pgrepf='pgrep -fl'
 alias pgrwp='pgrep'
@@ -118,7 +119,7 @@ alias pjts='cd /projects'
 alias pkgb='edit pkgb'
 alias pkillf='pkill -f'
 alias pkgv='edit -v pkgb'
-alias pacman='sudo pacman'
+alias pacman='sudo pacman-color'
 alias ppd='sudo pacman-color -S --asdeps'
 alias ppl='sudo pacman-color -Ql'
 alias ppi='sudo pacman-color -Qi'

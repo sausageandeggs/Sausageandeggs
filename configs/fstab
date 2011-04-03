@@ -2,6 +2,9 @@
 # /etc/fstab: static file system information
 #
 # <file system>        <dir>         <type>    <options>          <dump> <pass>
+/dev/sdb9	/		ext4	noatime,data=writeback,barrier=0,errors=remount-ro	0 1
+/dev/sdb8 /boot ext2 defaults 0 1
+/sys	/sys	sysfs	rw,nosuid,nodev,noexec,relatime 0 0 
 devpts                 /dev/pts      devpts    defaults            0      0
 shm                   /dev/shm      tmpfs     defaults            0      0
 
@@ -9,9 +12,7 @@ shm                   /dev/shm      tmpfs     defaults            0      0
 /dev/dvd               /media/dvd  auto    ro,user,noauto,unhide   0      0
 ###/dev/fd0               /media/fl   auto    user,noauto             0      0
 
-/dev/sdb8 /boot ext2 defaults 0 1
 /dev/sdb5 swap swap defaults 0 0
-/dev/sdb9 / ext4 noatime 0 1
 /dev/sdb7	/media/data	auto	rw,user,auto,exec,noatime 	0	0
 #dev/sda1
 UUID=47FE-6FB2	/media/one	auto	rw,user,auto,noatime,umask=0000 	0	0
