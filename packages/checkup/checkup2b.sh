@@ -60,12 +60,10 @@ bkpkg () { # {{{
 # }}}
 
 echo
-echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? Yes (y) or No (n) "
+echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? y/N "
 read -n 1 ans
 echo
-if [[ $ans == "y" ]]; then
-	sudo pacman-color -Syy
-fi
+[[ $ans == "y" ]] && sudo pacman-color -Syy
 
 numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easier reading
 
@@ -77,7 +75,7 @@ echo -en "${bldwht}===>${bldred} You are up to date."
 return 1
 fi
 
-#echo
+echo
 if [[ $numb == "one" ]]; then
 	echo -e "${bldwht}===>${bldgrn} There is $numb package to update"
   else
@@ -107,17 +105,17 @@ for k in ${vers[*]};do
 done #}}}
 
 #### --noconfirm msg ####
-if [[ "$pacfirm" != "-c" ]] ;then
-	echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
-fi
+#if [[ "$pacfirm" != "-c" ]] ;then
+	#echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
+#fi
 ######## ask if want to ignore any pkgs ####
 echo
 echo -e "${bldwht}===>${bldgrn} Do you want to: (i) Ignore pkgs"
-echo -e "${bldwht}===>${bldgrn}		     (f) Force an update"
-echo -e "${bldwht}===>${bldgrn}		     (b) Both force & ignore"
-echo -e "${bldwht}===>${bldgrn}		     (r) Run a custom cmd" 
-echo -e "${bldwht}===>${bldgrn}		     (N) run Normally"
-echo -e "${bldwht}===>${bldgrn}		     (q) Quit ${bldwht}"
+echo -e "${bldgrn}\t\t     (f) Force an update"
+echo -e "${bldgrn}\t\t     (b) Both force & ignore"
+echo -e "${bldgrn}\t\t     (r) Run a custom cmd" 
+echo -e "${bldgrn}\t\t     (N) run Normally"
+echo -e "${bldgrn}\t\t     (q) Quit ${bldwht}"
 echo -en "                     :"
 read -n 1 ans4
 echo
@@ -140,8 +138,7 @@ fi
 #Grab a list of updated pkgs for easy copy paste rollback                        
 rolbak() { 	# {{{
 	echo
-	echo -en "${bldwht}===>${bldgrn} Creating updated package list for easy rollback"
-	echo
+	echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n"
 # add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
 	oldver=$(pacman -Qu | sed 's|\ |-|g')
 	co=0
@@ -188,16 +185,16 @@ if [[ "$chknvid" == "1" ]]; then
  elif [[ ! -z ${chkother[*]} ]]; then
 	echo
 	echo -e "${bldwht}===>${bldylw} There is a kernel pkg with no Nvidia pkg, but there are other packages that are safe to update." 
-	echo -e "\t ${bldylw}Do you want to..."
-	echo -e "\t ${bldwht}(a)${bldylw} Update skiping the kernel pkg." 
-	echo -e "\t ${bldwht}(b)${bldylw} Update everything." 
-	echo -e "\t ${bldwht}(c)${bldylw} Update the kernel then build a new Nvidia pkg against it"
-	echo -e "\t ${bldwht}(d)${bldylw} Run a custom command."
-	echo -e "\t ${bldwht}(e)${bldylw} Do nothing and exit."
-	echo -e "\t ${txtylw}(Any pkgs you want to ignore will be ignored whatever choice is made)"
-    echo -en "${bldwht}===>${bldylw} What'll it be......"
+	echo
+	#echo -e "${bldwht}===>${bldylw} Do you want to..."
+	echo -e "${bldwht}===>${bldylw} Do you want to:${bldwht} (a)${bldylw} Update skiping the kernel pkg." 
+	echo -e "\t\t    ${bldwht} (b)${bldylw} Update everything." 
+	echo -e "\t\t    ${bldwht} (c)${bldylw} Update the kernel then build a new Nvidia pkg against it"
+	echo -e "\t\t    ${bldwht} (d)${bldylw} Run a custom command."
+	echo -e "\t\t    ${bldwht} (e)${bldylw} Do nothing and exit."
+    echo -en "${bldwht}===>${bldylw} What'll it be...:${bldwht}"
 	read -n 1 ans2
-	echo			## Do what needs to be done ##
+	echo					## Do what needs to be done ##
 	case $ans2 in
 		a)
 		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then				#check for manually ignored packages
