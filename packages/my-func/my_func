@@ -1,8 +1,8 @@
 #!/bin/bash
-###################################
+###################################################
 ###### My bash functions, sourced by .bashrc ######
-###################################
-## Ver 161 ##
+###################################################
+## Ver 165 ##
 
 ### clr_mem ###
 
@@ -15,21 +15,29 @@ clr_mem () {
 ### cowerd ###
 
 cowerd() {
-	if [[ "$1" == "-m" ]]; then
-		targ="$2"
-		cower -f -d -t /projects/builds/ "$targ" 
-		cd /projects/builds/"$targ"
-		makepkg
-	elif [[ "$1" == "-i" ]]; then
-		targ="$2"
-		cower -f -d -t /projects/builds/ "$targ" 
-		cd /projects/builds/"$targ"
-		makepkg -i --noconfirm
+	local cowercmd="cower -f -d -t "
+	local blddir="/projects/builds/"
+
+	if [[ -z ${2} ]]; then
+		local targ="${1}"
 	else
-		targ="$1"
-		cower -f -d -t /projects/builds/ "$targ" 
-		cd /projects/builds/"$targ"
+		local targ="${2}"
+		case ${1} in
+			-m)
+				local makecmd="makepkg"
+			;;
+			-i)
+				local makecmd="makepkg -i --noconfirm"
+			;;
+			-o)
+				local makecmd="makepkg -o --noconfirm"
+			;;
+		esac
 	fi
+
+	${cowercmd} ${blddir} ${targ}
+	cd ${blddir}/${targ}
+	${makecmd}
 }
 
 ### Cdargs ###
@@ -69,6 +77,7 @@ extract () {
       *.tbz2)      tar xvjf $1    ;;
       *.tgz)       tar xvzf $1    ;;
       *.zip)       unzip $1       ;;
+      *.lrz)       lrzuntar $1    ;;
       *.Z)         uncompress $1  ;;
       *.7z)        7z x $1        ;;
       *.xz)        unxz $1        ;;
@@ -208,14 +217,13 @@ ranger() {
 ### Stump (Auto update AUR pkgd) ###
 
 stump() {
-buildDir="/projects/builds"
-upd=$(cower -u |awk '{print $2}')
-updt=( $upd )
-updts=( ${updt[@]/kernel26-ck*/} )
+local buildDir="/projects/builds"
+local updt=($(cower -u | awk '{print $2}'))
+local updts=(${updt[@]/kernel26-*/})
 
-cower -d -f -u --ignore=kernel26-ck
+cower -d -f -u --ignore=kernel26-ck,kernel26-pf
 
-co=0
+local co=0
 for i in ${updts[*]} ; do
 	echo -e "\n\t ${bldgrn}Updating ${updts[$co]} \n"
 	cd $buildDir/${updts[$co]} && makepkg -i --noconfirm

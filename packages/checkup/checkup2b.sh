@@ -29,7 +29,7 @@ fi # }}}
 # You should have received a copy of the GNU General Public License
 # along with checkup.  If not, see <http://www.gnu.org/licenses/>. }}}
 
-# Variables {{{ 
+# Variables {{{
 bldred='\e[1;31m' # Red - bold
 bldgrn='\e[1;32m' # Green - bold
 bldylw='\e[1;33m' # Yellow - bold
@@ -104,10 +104,10 @@ for k in ${vers[*]};do
 	(( c++ ))
 done #}}}
 
-#### --noconfirm msg ####
-#if [[ "$pacfirm" != "-c" ]] ;then
-	#echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
-#fi
+### --noconfirm msg ####
+if [[ "$pacfirm" != "-c" ]] ;then
+	echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
+fi
 ######## ask if want to ignore any pkgs ####
 echo
 echo -e "${bldwht}===>${bldgrn} Do you want to: (i) Ignore pkgs"
@@ -227,16 +227,16 @@ if [[ "$chknvid" == "1" ]]; then
 		echo
 		return 1
 		;;
-		c)						## updates fully then calls bauerbill to
-		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]]; then		## build + install nvidia pkg
+		c)						
+		if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]]; then
 			rolbak
 			$ppp $ignpkg
         else
 			rolbak
 			$ppp
 		fi 
-		cd /projects/builds/nvidia-beta-all
-		makepkg
+		cd /projects/builds/nvidia-beta-all 	## updates fully then calls makepkg
+		makepkg 								## to build + install nvidia pkg
 		cd -
 		bkpkg
 		return 1
