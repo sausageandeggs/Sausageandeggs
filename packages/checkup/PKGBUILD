@@ -20,7 +20,7 @@ build() {
 	install -D -m 0644 README    $pkgdir/usr/share/doc/checkup/sas/README
 }
 
-md5sums=('d8a1cd3af3329f9b3cd7f8b0dc1809f8'
+md5sums=('8725127ad3bd793680253b557bae7d98'
          '7cd5b79f079148c19e831fd69c8d1141'
          'a2d9392a2b0ae75ca37d7e19e923596a'
          'c198bdd630023ef56dfc1f9611ed9b98'

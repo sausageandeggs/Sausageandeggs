@@ -88,7 +88,7 @@ declare -a vers=($(pacman -Qu | awk '{print $1}'))
 a=0
 b=0
 c=0
-WW="$(( $COLUMNS/2 - 2 ))"
+WW="$(( $(tput cols)/2 - 2 ))"
 
 for i in ${vers[*]};do
 	declare -a oldver[$a]="$(expac '%n-%v' -s ${vers[$a]} | grep -m 1 ${vers[$a]})"
