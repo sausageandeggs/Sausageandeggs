@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.0b
+# Checkup Ver 2.1
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -91,11 +91,11 @@ c=0
 WW="$(( $(tput cols)/2 - 2 ))"
 
 for i in ${vers[*]};do
-	declare -a oldver[$a]="$(expac '%n-%v' -s ${vers[$a]} | grep -m 1 ${vers[$a]})"
+	declare -a oldver[$a]="$(expac '%n-%v' -s ${vers[$a]} | grep -m 1 "^${vers[$a]}")"
 	(( a++ ))
 done
 for j in ${vers[*]};do
-	declare -a newver[$b]="$(expac '%n-%v' -Ss ${vers[$b]} | grep -m 1 ${vers[$b]})"
+	declare -a newver[$b]="$(expac '%n-%v' -Ss ${vers[$b]} | grep -m 1 "^${vers[$b]}")"
 	(( b++ ))
 done
 for k in ${vers[*]};do
