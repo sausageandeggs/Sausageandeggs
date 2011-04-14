@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 165 ##
+## Ver 166 ##
 
 ### clr_mem ###
 
@@ -191,18 +191,19 @@ edit() {
 	fi
 
 	case ${FILE} in
-		'fstab')	${SUCMD} ${EDITOR2} /etc/fstab  ;;
-		'pacman')	${SUCMD} ${EDITOR2} /etc/pacman.conf  ;;
-		'xorg')		${SUCMD} ${EDITOR2} /etc/X11/xorg.conf ;;
-		'grub')		${SUCMD} ${EDITOR2} /boot/grub/grub.cfg ;;
-		'inittab')	${SUCMD} ${EDITOR2} /etc/inittab ;;
-		'rc.conf')	${SUCMD} ${EDITOR2} /etc/rc.conf ;;
 		'bashrc')	${EDITOR2} /home/sas/.bashrc ;;
 		'conky')	${SUCMD} ${EDITOR2} /etc/conky/conky.conf ;;
-		'uploads')	${EDITOR2} /home/sas/.weathconkrc ;;
+		'fstab')	${SUCMD} ${EDITOR2} /etc/fstab  ;;
+		'grub')		${SUCMD} ${EDITOR2} /boot/grub/grub.cfg ;;
+		'inittab')	${SUCMD} ${EDITOR2} /etc/inittab ;;
 		'myfunc')	${SUCMD} ${EDITOR2} /usr/lib/sas/my_func ;;
-		'rootbash')	${SUCMD} ${EDITOR2} /root/.bash_profile ;;
+		'pacman')	${SUCMD} ${EDITOR2} /etc/pacman.conf  ;;
 		'pkgb')		${EDITOR2} PKGBUILD ;;
+		'rc.conf')	${SUCMD} ${EDITOR2} /etc/rc.conf ;;
+		'rootbash')	${SUCMD} ${EDITOR2} /root/.bash_profile ;;
+		'uploads')	${EDITOR2} /home/sas/.weathconkrc ;;
+		'vimrc')	${EDITOR2} /home/sas/.vimrc ;;
+		'xorg')		${SUCMD} ${EDITOR2} /etc/X11/xorg.conf ;;
 		*)		${SUCMD} ${EDITOR2} $FILE ;;
 	esac
 }

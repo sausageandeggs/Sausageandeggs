@@ -297,6 +297,12 @@ map <leader>o do
 " Put diff (dp)
 map <leader>oo dp
 
+" put empty line below cursor
+map <leader>o :put =''<CR>
+
+" put empty line above cursor
+map <leader>O :put =''<CR>
+
 """""""""""""""""
 " More settings "
 """""""""""""""""
@@ -319,27 +325,12 @@ set autowrite 			" autosave when switching buffers
 " Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
 
-"A function to tell if a file is executable
-"function! FileExecutable (fname)
-  "execute "silent! ! test -x" a:fname
-  "return v:shell_error
-"endfunction
-""" Automatically make Pl Py & Shell scripts executable if they aren't already
-"au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
-"
-"au BufWritePost * if getline(1) =~ "^#! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
-"au BufWritePost * | endif
 " automatically give executable permissions if file begins with #! and contains
 " '/bin/' in the path
 au bufwritepost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod a+x <afile> | endif | endif   
-"" automatically give executable permissions if filename is *.sh
-"au BufWritePost *.sh :!chmod a+x <afile>
-""au BufWritePost *.py :!chmod a+x <afile>
-"au BufWritePost *.pl :!chmod a+x <afile>
-"" automatically give executable permissions if file begins with #!/bin/sh
-""au BufWritePost * if getline(1) =~ "^#!/bin/[a-z]*sh" | silent !chmod a+x <afile> | endif
-"au BufWritePost * if getline(1) =~ "^#!/usr/bin/env*" | silent !chmod a+x <afile> | endif
 
+"" automatically give executable permissions if filename is *.sh
+autocmd BufEnter * lcd %:p:h
 
 
 set ts=4 sw=4 fdm=marker ft=vim

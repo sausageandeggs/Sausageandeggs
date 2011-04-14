@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.1
+# Checkup Ver 2.3
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -44,7 +44,7 @@ updtfile="/media/three/local_bkup/updatedpgks.log"
 pacfirm="$1"
 pacflag="--noconfirm"
 [[ $pacfirm == "-c" ]] && pacflag=""
-ppp="sudo powerpill -Su $pacflag"
+ppp="sudo pacman-color -Su $pacflag"
 set ""
 # }}}
 
@@ -106,7 +106,8 @@ done #}}}
 
 ### --noconfirm msg ####
 if [[ "$pacfirm" != "-c" ]] ;then
-	echo -e "${bldwht}===>${bldylw} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
+	echo
+	echo -e "${bldwht}===>${bldred} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
 fi
 ######## ask if want to ignore any pkgs ####
 echo
@@ -206,7 +207,8 @@ if [[ "$chknvid" == "1" ]]; then
 			bkpkg
 			return 1
 		fi
-		echo "kernel pks not updated"
+		echo
+		echo -e "${bldwht}===>${bldred} kernel pkgs not updated"
 		rolbak
 		$ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware
 		bkpkg

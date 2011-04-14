@@ -75,7 +75,6 @@ alias fullscan='clamscan /* --max-recursion=25 --detect-pua=yes -r -i --heuristi
 alias fgrep='fgrep --color=auto'
 alias gdif='gvimdiff'
 alias gitdif='git diff'
-alias gitupdt='for i in /projects/git/{ghost,graysky}/* ; do cd "$i" ; echo -e "${bldylw}$PWD${txtrst}" ; git pull ; done'
 alias gti='git'
 alias gv='gvim'
 alias gvs='gvim -S'

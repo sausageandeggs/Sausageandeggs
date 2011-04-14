@@ -281,9 +281,6 @@ map <leader>u 10k
 " easier switch window
 map <leader>w <c-w><c-w> 
 
-" sudo if open w/out perm
-"nmap <leader>ww :w !sudo tee %<CR>
-"cmap hhh w !gksudo tee >/dev/null %
 " shortcuts for copying to clipboard
 map <leader>y "+y
 
@@ -308,6 +305,12 @@ map <leader>o do
 " Put diff (dp)
 map <leader>oo dp
 
+" put empty line below cursor
+map <leader>o :put =''<CR>
+
+" put empty line above cursor
+map <leader>O :put =''<CR>
+
 """""""""""""""""
 " More settings "
 """""""""""""""""
@@ -330,65 +333,11 @@ set autowrite 			" autosave when switching buffers
 " Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
 
-"A function to tell if a file is executable
-"function! FileExecutable (fname)
-"execute "silent! ! test -x" a:fname
-"return v:shell_error
-"endfunction
-"" Automatically make Pl Py & Shell scripts executable if they aren't already
-"au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
-
-"au BufWritePost * if getline(1) =~ "^! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
-"au BufWritePost * | endif
-"
 " automatically give executable permissions if file begins with #! and contains
 " '/bin/' in the path
 au bufwritepost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod a+x <afile> | endif | endif   
-"" automatically give executable permissions if filename is *.sh
-"au BufWritePost *.sh :!chmod a+x <afile>
-""au BufWritePost *.py :!chmod a+x <afile>
-"au BufWritePost *.pl :!chmod a+x <afile>
-"" automatically
-" More settings "
-"""""""""""""""""
-
-set title               " show title in console title bar
-set visualbell t_vb=    " turn off error beep/flash
-set ttyfast             " smoother changes
-set modeline            " last lines in document sets vim mode
-set modelines=3         " number lines checked for modelines
-set hlsearch            " highlight searches
-set incsearch           " do incremental searching
-set ignorecase          " ignore case when searching
-set smartcase           " if searching and search contains upper case, make case sensitive search
-set autowrite 			" autosave when switching buffers
-
-"""""""""""""
-" Filetypes "
-"""""""""""""
 
 " Auto change the directory to the current file I'm working on
 autocmd BufEnter * lcd %:p:h
-
-"A function to tell if a file is executable
-function! FileExecutable (fname)
-  execute "silent! ! test -x" a:fname
-  return v:shell_error
-endfunction
-"" Automatically make Pl Py & Shell scripts executable if they aren't already
-au BufWritePost *.py,*.sh,*.pl,*.cgi if FileExecutable("%:p") | :!chmod a+x % ^@ endif
-
-"au BufWritePost * if getline(1) =~ "^#! ?/bin/[a-z]*sh" | silent !chmod a+x <afile>
-"au BufWritePost * | endif
-
-"" automatically give executable permissions if filename is *.sh
-"au BufWritePost *.sh :!chmod a+x <afile>
-""au BufWritePost *.py :!chmod a+x <afile>
-"au BufWritePost *.pl :!chmod a+x <afile>
-"" automatically give executable permissions if file begins with #!/bin/sh
-""au BufWritePost * if getline(1) =~ "^#!/bin/[a-z]*sh" | silent !chmod a+x <afile> | endif
-"au BufWritePost * if getline(1) =~ "^#!/usr/bin/env*" | silent !chmod a+x <afile> | endif
-
-
 
 set ts=4 sw=4 fdm=marker ft=vim

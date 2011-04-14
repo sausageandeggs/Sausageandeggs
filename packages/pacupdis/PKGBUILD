@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=pacupdis
-pkgver=2.4
+pkgver=2.5
 pkgrel=1
 pkgdesc='Conky update notifications'
 arch=('any')
@@ -23,7 +23,7 @@ package() {
 
 }
 
-md5sums=('f2c2044b772a9e912293ce6e9ae05313'
+md5sums=('b42e5afb9d7151ca1592b9c4e7df86ff'
          'bc9b4d032447dad9b9a77c28f666bfbd'
          'd64cd1f89162b85713948ba68155a26f'
          '1493e8d225d6245f9b88b544e0a2daca'
