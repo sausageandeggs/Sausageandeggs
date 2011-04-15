@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 166 ##
+## Ver 167 ##
 
 ### clr_mem ###
 
@@ -229,8 +229,8 @@ for i in ${updts[*]} ; do
 	echo -e "\n\t ${bldgrn}Updating ${updts[$co]} \n"
 	cd $buildDir/${updts[$co]} && makepkg -i --noconfirm
 	(( ++co ))
-	cd -
 done
+cd -
 }
 
 ### vim quick open session ###

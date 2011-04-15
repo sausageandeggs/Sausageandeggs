@@ -291,11 +291,11 @@ map <leader># ]c
 "Goto previous diff
 map <leader>## [c
 
-" Get diff (do)
-map <leader>o do
-
-" Put diff (dp)
-map <leader>oo dp
+"" Get diff (do)
+"map <leader>o do
+"
+"" Put diff (dp)
+"map <leader>oo dp
 
 " put empty line below cursor
 map <leader>o :put =''<CR>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.3
+# Checkup Ver 2.5
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -68,7 +68,7 @@ echo
 numb=$(/usr/lib/sas/numpkg.sh output) 	## not really needed but just makes easier reading
 
 ##See if there are any updates at all and list them##
-set $(pacman -Qu | awk '{print $1}') 1>/dev/null 2>&1
+set $(pacman -Quq)  1>/dev/null 2>&1
 
 if [[ -z $@ ]]; then
 echo -en "${bldwht}===>${bldred} You are up to date."
@@ -139,7 +139,7 @@ fi
 #Grab a list of updated pkgs for easy copy paste rollback                        
 rolbak() { 	# {{{
 	echo
-	echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n"
+	echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n${txtrst}"
 # add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
 	oldver=$(pacman -Qu | sed 's|\ |-|g')
 	co=0
@@ -154,7 +154,7 @@ done
 
 ### Set force or both, gets force element of both
 if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
-    ppp="sudo pacman -Suf ${pacflag}"
+    ppp="sudo pacman-color -Suf ${pacflag}"
 fi
 
 ######check what needs to be updated#####
@@ -171,7 +171,7 @@ if [[ "$chkker" == "1" ]]; then
 		;;
 		*)		#if theres no nvidia pkg, check for other updates
 		if [[ -z "$chknvid" ]]; then
-            declare -a chkother=$(pacman -Qu | grep -v nvidia | grep -v kernel | awk '{print $1}')
+            declare -a chkother=$(pacman -Quq | grep -v nvidia | grep -v kernel)
 		fi
 	esac
 fi
