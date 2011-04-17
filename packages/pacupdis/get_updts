@@ -1,18 +1,18 @@
 #!/bin/bash
-export DISPLAY=:0 ###need to export display so cron has path for x
+#export DISPLAY=:0 ###need to export display so cron has path for x
 updwn=/tmp/$RANDOM
 ##HOUR=$[ $(date +"%k") % 2 ] 
 #
 #if [ $HOUR -eq "0" ]; then
-/usr/bin/rebase --silent 1>/dev/null 2>&1
+/usr/bin/pacman -Sy 1>/dev/null 2>&1
 python2 /home/sas/scripts/update2.py | grep -v '${' | awk '{print $2"-" $3"*"}'> $updwn 2>/dev/null
 if [[ -s $updwn ]]; then
-	for i in `cat $updwn` ; do
+	for i in $(cat $updwn) ; do
 		ls /var/cache/pacman/pkg/$i 1>/dev/null 2>&1
 	done
 	if [[ -s $updwn ]]; then
-		set `pacman -Qu | awk '{print $1}'`
-		pacman-color -Swd --noconfirm $@ 1>/dev/null 2>&1
+		set $(pacman -Quq) # | awk '{print $1}'`
+		powerpill $@ 1>/dev/null 2>&1
 		rm -rf $updwn
 	fi
 fi
