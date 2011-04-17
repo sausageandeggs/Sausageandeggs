@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 167 ##
+## Ver 168 ##
 
 ### clr_mem ###
 
@@ -231,6 +231,20 @@ for i in ${updts[*]} ; do
 	(( ++co ))
 done
 cd -
+}
+
+### Stumpy (update list of AUR pkgs) ###
+
+stumpy() {
+local updates=($@)
+local co=0
+
+for i in ${updates[*]} ; do
+	echo -e "\n\t ${bldgrn}Updating ${updates[$co]}${txtrst} \n"
+	cowerd -i ${updates[$co]}
+	(( ++co ))
+	cd -
+done
 }
 
 ### vim quick open session ###
