@@ -131,7 +131,7 @@ alias pprrr='sudo pacman-color -Rnsc'
 alias pps='sudo pacman-color -Ss'
 alias ppu='sudo pacman-color -U'
 alias ppud='sudo pacman-color -U --asdeps'
-alias ppw='sudo pacman-color -Sw'
+alias ppw='sudo powerpill-light'
 alias pytut='epdfview /media/three/PDFs/python/Beginning_Python_From_Novice_to_Professional_2008.pdf &
                 gnome-terminal --geometry=110x33 -x ipython &
                 gvim ~/scripts/python_tuts/tutpy.py &'

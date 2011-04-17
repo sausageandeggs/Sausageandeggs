@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 168 ##
+## Ver 169 ##
 
 ### clr_mem ###
 
@@ -168,6 +168,13 @@ hspp  () {
 
 blds  () {
 	cd /projects/builds/$1
+}
+
+### pppp (download with powerpill(-light) & install with [acman-color) ###
+
+pppp() {
+	sudo /usr/bin/powerpill $@
+	sudo /usr/bin/pacman-color -S $@
 }
 
 ## Quick edit ###
