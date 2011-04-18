@@ -15,7 +15,7 @@ colorscheme darkfix
 set guifont=droid\ sans\ mono\ 10
 
 set lines=40
-set columns=80
+set columns=100
 
 """"""""""""""""""""""""
 

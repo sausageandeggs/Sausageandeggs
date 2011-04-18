@@ -320,3 +320,5 @@ done < <(ps -A --sort -rss -o comm,pmem,rss | head -n 21)'
 
 alias ppm='sudo pacman-color -Qm'
 alias uuu='sudo pacman-color -Qu'
+alias py3='/usr/bin/python3'
+alias py='/usr/bin/python2'

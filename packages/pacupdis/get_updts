@@ -1,19 +1,27 @@
 #!/bin/bash
-#export DISPLAY=:0 ###need to export display so cron has path for x
-updwn=/tmp/$RANDOM
-##HOUR=$[ $(date +"%k") % 2 ] 
-#
-#if [ $HOUR -eq "0" ]; then
-/usr/bin/pacman -Sy 1>/dev/null 2>&1
-python2 /home/sas/scripts/update2.py | grep -v '${' | awk '{print $2"-" $3"*"}'> $updwn 2>/dev/null
-if [[ -s $updwn ]]; then
-	for i in $(cat $updwn) ; do
-		ls /var/cache/pacman/pkg/$i 1>/dev/null 2>&1
+dlds=/tmp/$RANDOM
+sudo /usr/bin/pacman -Sy 1>/dev/null 2>&1
+declare -a updts=($(pacman -Quq)) # | sed 's|\ |\-|g'))
+
+if [[ ${#updts[*]} != "0" ]]; then
+	a=0
+	b=0
+	for i in ${updts[*]};do
+		declare -a getnew[a]="$(expac '%n-%v' -S $i)"
+		(( a++ ))
 	done
-	if [[ -s $updwn ]]; then
-		set $(pacman -Quq) # | awk '{print $1}'`
-		powerpill $@ 1>/dev/null 2>&1
-		rm -rf $updwn
+	for i in ${getnew[*]} ; do
+		ls "/var/cache/pacman/pkg/$i"* 1>/dev/null # 2>>$dlds
+		[[ $? != 0 ]] && echo $i >> $dlds
+	done
+	for j in ${updts[*]};do
+		cat $dlds | grep "$j"
+		[[ $? == 0 ]] && declare -a newdown[b]="$j"
+		(( b++ ))
+	done
+	if [[ ${#newdown[*]} != "0" ]]; then
+		sudo powerpill -wu ${newdown[*]} 1>/dev/null 2>&1
+		rm -rf $dlds
 	fi
 fi
 
