@@ -21,7 +21,7 @@ else
   set backup		" keep a backup file
 endif
 set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
+"set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 
@@ -318,6 +318,22 @@ set ignorecase          " ignore case when searching
 set smartcase           " if searching and search contains upper case, make case sensitive search
 set autowrite 			" autosave when switching buffers
 
+""""""""""""""
+" Statusline "
+""""""""""""""
+
+set laststatus=2
+set statusline=
+set statusline +=%y%*                "file type
+set statusline +=\ %<%F%*            "full path
+set statusline +=%m%*                "modified flag
+set statusline +=%=%5l%*             "current line
+set statusline +=/%L%*               "total lines
+set statusline +=%4c\ %*             "column number
+
+"hi x042_SpringGreen2 ctermfg=42 guifg=#00d787
+highlight OverLength ctermbg=green ctermfg=white
+match OverLength /\%100v.\+/
 """""""""""""
 " Filetypes "
 """""""""""""

@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 169 ##
+## Ver 170 ##
 
 ### clr_mem ###
 
@@ -15,7 +15,7 @@ clr_mem () {
 ### cowerd ###
 
 cowerd() {
-	local cowercmd="cower -f -d -t "
+	local cowercmd="cower --nossl -f -d -t "
 	local blddir="/projects/builds/"
 
 	if [[ -z ${2} ]]; then
