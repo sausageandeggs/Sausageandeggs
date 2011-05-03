@@ -1,10 +1,11 @@
 
 "\eOS": "cv \C-m"   ##  <F4> = cv (cdArgs)
-"\e[15~": "ranger \C-m" ## <F5> = Ranger
+"\e[15~": "ranger-cd \C-m" ## <F5> = Ranger
 "\e[17~": "checkup \C-m" ## <F6> = Checkup
 "\e[18~": "su - root \C-m"  ## <F7> = su to root
+"\e[19~": "su - simon \C-m"  ## <F8> = su to simon
+"\e[20~": "\C-e | grep " ## <F9> = append ' | grep'
 "\e\C-l": "\C-e | less\C-m"  ## ctrl+shift+alt+l = append | less to cli
-"\e[19~": "\C-e | grep " ## <F8> = append ' | grep'
 
 # Enable up/dn keys to display past cmds based on current input
 "\e[A":history-search-backward ## Up Arrow

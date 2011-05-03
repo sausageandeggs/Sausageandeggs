@@ -1,8 +1,6 @@
 #!/bin/bash
 export DISPLAY=:0
-#HOUR=$[ $(date +"%k") % 2 ]
-#if [ $HOUR -ne "0" ]; then
 conky -c /etc/conky/pacupdis_conky.conf
 sleep 300
-pkill -f 'conky -c /etc/conky/pacupdis_conky.conf'
+pkill -f "conky -c /etc/conky/pacupdis_conky.conf"
 #fi

@@ -3,3 +3,4 @@ export DISPLAY=:0
 
 su -s /bin/bash -c '/home/sas/.conkycolors/aurupdis/aurupdis.sh' sas
 
+su -s /bin/bash -c '/home/simon/.conkycolors/aurupdis/aurupdis.sh' simon

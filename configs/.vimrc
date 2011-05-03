@@ -6,7 +6,7 @@ endif
 
 "set spell
 
-colorscheme tango
+colorscheme simongold
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -20,7 +20,7 @@ if has("vms")
 else
   set backup		" keep a backup file
 endif
-set history=50		" keep 50 lines of command line history
+set history=200		" keep 50 lines of command line history
 "set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
@@ -98,6 +98,12 @@ set dictionary-=/home/sas/docs/compgen.dic  dictionary+=/home/sas/docs/compgen.d
 set complete-=k complete+=k
 
 """"""""""""""""""""""""""""""""""
+""""""""" C Highlighting """""""""
+""""""""""""""""""""""""""""""""""
+
+let c_hi_identifiers = 'all'
+let c_hi_libs = ['*'] 
+""""""""""""""""""""""""""""""""""
 """""""""""" SESSIONS """"""""""""
 """"""""""""""""""""""""""""""""""
 
@@ -142,6 +148,8 @@ function! SaveSession()
 endfunction
 autocmd VimEnter * call LoadSession()
 autocmd VimLeave * call SaveSession()
+
+set tags=~/.vimtags
 
 """"""""""""""""""
 "SESSION OPTIONS "
@@ -267,11 +275,8 @@ nmap <leader>tt :tabnew<CR>
 " Go 10 lines up
 map <leader>u 10k
 
-" easier switch window
-map <leader>w <c-w><c-w> 
-
 " sudo if open w/out perm
-nmap <leader>ww :w !sudo tee %<CR>
+nmap <leader>sa :w !sudo tee %<CR>
 
 " shortcuts for copying to clipboard
 map <leader>y "+y
@@ -289,10 +294,10 @@ map <leader>;; :NERDTreeToggle<CR>
 map <leader># ]c
 
 "Goto previous diff
-map <leader>## [c
+"map <leader>## [c
 
-"" Get diff (do)
-"map <leader>o do
+" Get diff (do)
+map <leader>/ do
 "
 "" Put diff (dp)
 "map <leader>oo dp
@@ -317,6 +322,10 @@ set incsearch           " do incremental searching
 set ignorecase          " ignore case when searching
 set smartcase           " if searching and search contains upper case, make case sensitive search
 set autowrite 			" autosave when switching buffers
+set tabstop=4
+set shiftwidth=4
+set expandtab
+"retab
 
 """"""""""""""
 " Statusline "
@@ -331,7 +340,6 @@ set statusline +=%=%5l%*             "current line
 set statusline +=/%L%*               "total lines
 set statusline +=%4c\ %*             "column number
 
-"hi x042_SpringGreen2 ctermfg=42 guifg=#00d787
 highlight OverLength ctermbg=green ctermfg=white
 match OverLength /\%100v.\+/
 """""""""""""
@@ -349,4 +357,4 @@ au bufwritepost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !ch
 autocmd BufEnter * lcd %:p:h
 
 
-set ts=4 sw=4 fdm=marker ft=vim
+set fdm=marker ft=vim

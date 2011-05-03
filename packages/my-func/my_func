@@ -2,54 +2,62 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 170 ##
+## Ver 182 ##
 
 ### clr_mem ###
 
 clr_mem () {
-	#pagecache, dentries and inodes
-	#	1		2		3
+  #pagecache, dentries and inodes
+  # 1   2   3
     echo $1 > /proc/sys/vm/drop_caches
 }
 
 ### cowerd ###
 
 cowerd() {
-	local cowercmd="cower --nossl -f -d -t "
-	local blddir="/projects/builds/"
+  local cowercmd="cower --nossl -f -d -t "
+  local blddir="/projects/builds/"
 
-	if [[ -z ${2} ]]; then
-		local targ="${1}"
-	else
-		local targ="${2}"
-		case ${1} in
-			-m)
-				local makecmd="makepkg"
-			;;
-			-i)
-				local makecmd="makepkg -i --noconfirm"
-			;;
-			-o)
-				local makecmd="makepkg -o --noconfirm"
-			;;
-		esac
-	fi
+  if [[ -z ${2} ]]; then
+    local targ="${1}"
+  else
+    local targ="${2}"
+    case ${1} in
+      -m)
+        local makecmd="makepkg"
+      ;;
+      -i)
+        local makecmd="makepkg -i --noconfirm"
+      ;;
+      -o)
+        local makecmd="makepkg -o --noconfirm"
+      ;;
+    esac
+  fi
 
-	${cowercmd} ${blddir} ${targ}
-	cd ${blddir}/${targ}
-	${makecmd}
+  ${cowercmd} ${blddir} ${targ}
+  cd ${blddir}/${targ}
+  ${makecmd}
 }
 
 ### Cdargs ###
 
 cv () {
-	cdargs "$1" && cd "`cat "$HOME/.cdargsresult"`" 
+  cdargs "$1" && cd "`cat "$HOME/.cdargsresult"`" 
 }
 
 ### Cdargs add bookmark ###
 
 cap () {
        cdargs --add=":$1:`pwd`" ;
+}
+
+### Ctuts quick open all ###
+
+ctuts(){
+    cd /projects/my-pjts/c-tuts
+    gvim -S /projects/my-pjts/c-tuts/vim-sessions/ctuts.vim-session &
+    evince /media/three/PDFs/Misc-Bash-C,-C++-Perl/C/ForDummies-C.pdf &
 }
 
 ### Copy and Follow ###
@@ -111,13 +119,13 @@ lukv() {
 ### Easy local db bkup ###
 
 bkpkg () {
-	echo
-	echo -e "${bldwht}===>${bldgrn} Backing up local database"
-	mv /media/three/local_bkup/{old.tar.xz,done.tar.xz} || return 1
-	mv /media/three/local_bkup/{local-*,old.tar.xz} || return 1
-	tar -cJf /media/three/local_bkup/local-`date +%d%m`.tar.xz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
-	rm /media/three/local_bkup/done.tar.xz
-	echo
+  echo
+  echo -e "${bldwht}===>${bldgrn} Backing up local database"
+  mv /media/three/local_bkup/{old.tar.xz,done.tar.xz} || return 1
+  mv /media/three/local_bkup/{local-*,old.tar.xz} || return 1
+  tar -cJf /media/three/local_bkup/local-`date +%d%m`.tar.xz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
+  rm /media/three/local_bkup/done.tar.xz
+  echo
 }
 
 ### mkmv ###
@@ -132,110 +140,114 @@ mkmv() {
 
 newbld() {
 
-	pkgname=""
-	pkgver=""
-	pkgrel=""
-	pkgdesc=""
+  pkgname=""
+  pkgver=""
+  pkgrel=""
+  pkgdesc=""
 
-	echo "Enter pkgname: "
-	read pkgname
-	echo "Enter pkgver: "
-	read pkgver
-	echo "Enter pkgrel: "
-	read pkgrel
-	echo "Enter pkgdesc: "
-	read pkgdesc
-	
-	mkdir /projects/builds/$pkgname
-	cd /projects/builds/$pkgname
+  echo "Enter pkgname: "
+  read pkgname
+  echo "Enter pkgver: "
+  read pkgver
+  echo "Enter pkgrel: "
+  read pkgrel
+  echo "Enter pkgdesc: "
+  read pkgdesc
+  
+  mkdir /projects/builds/$pkgname
+  cd /projects/builds/$pkgname
 
-	cp /projects/pacman_protos/sas/PKGBUILD .
-	sed -i -e "s|wpkgname|$pkgname|g" \
-		-e "s|wpkgver|$pkgver|g" \
-		-e "s|wpkgrel|$pkgrel|g" \
-		-e "s|wpkgdesc|\'$pkgdesc'|g" PKGBUILD
+  cp /projects/pacman_protos/sas/PKGBUILD .
+  sed -i -e "s|wpkgname|$pkgname|g" \
+    -e "s|wpkgver|$pkgver|g" \
+    -e "s|wpkgrel|$pkgrel|g" \
+    -e "s|wpkgdesc|\'$pkgdesc'|g" PKGBUILD
 
-	echo "Done"
+  echo "Done"
 }
 ### ~/prjts/pkgs ###
 
 hspp  () {
-	hsp='/projects/packages/'
-	echo $hsp
+  hsp='/projects/packages/'
+  echo $hsp
 }
 
 ### ~/prjts/blds###
 
 blds  () {
-	cd /projects/builds/$1
+  cd /projects/builds/$1
 }
 
 ### pppp (download with powerpill(-light) & install with [acman-color) ###
 
 pppp() {
-	sudo /usr/bin/powerpill $@
-	sudo /usr/bin/pacman-color -S $@
+  sudo /usr/bin/powerpill $@
+  sudo /usr/bin/pacman-color -S $@
 }
 
 ## Quick edit ###
 
 edit() {
-	ED_CLI="vim"
-	ED_GUI="gvim"
-	ED_VIM="gvim"
+  ED_CLI="vim"
+  ED_GUI="gvim"
+  ED_ALT="gedit"
 
-	if [ -z ${2} ]; then
-		EDITOR2=${ED_CLI} && FILE=${1} && SUCMD="sudo"
-	else
-		case ${1} in
-			'-g') EDITOR2=${ED_GUI} && FILE=${2} && SUCMD="sudo" 
-			;;
-			'-v') EDITOR2=${ED_VIM} && FILE=${2} && SUCMD="sudo" 
-			;;
-			*) echo "Unknown option '${1}'" 
-			;;
-		esac
-	fi
+  if [ -z ${2} ]; then
+    EDITOR2=${ED_CLI} && FILE=${1} && SUCMD="sudo"
+  else
+    case ${1} in
+      '-g') EDITOR2=${ED_GUI} && FILE=${2} && SUCMD="sudo" 
+      ;;
+      '-a') EDITOR2=${ED_ALT} && FILE=${2} && SUCMD="sudo" 
+      ;;
+      *) echo "Unknown option '${1}'" 
+      ;;
+    esac
+  fi
 
-	case ${FILE} in
-		'bashrc')	${EDITOR2} /home/sas/.bashrc ;;
-		'conky')	${SUCMD} ${EDITOR2} /etc/conky/conky.conf ;;
-		'fstab')	${SUCMD} ${EDITOR2} /etc/fstab  ;;
-		'grub')		${SUCMD} ${EDITOR2} /boot/grub/grub.cfg ;;
-		'inittab')	${SUCMD} ${EDITOR2} /etc/inittab ;;
-		'myfunc')	${SUCMD} ${EDITOR2} /usr/lib/sas/my_func ;;
-		'pacman')	${SUCMD} ${EDITOR2} /etc/pacman.conf  ;;
-		'pkgb')		${EDITOR2} PKGBUILD ;;
-		'rc.conf')	${SUCMD} ${EDITOR2} /etc/rc.conf ;;
-		'rootbash')	${SUCMD} ${EDITOR2} /root/.bash_profile ;;
-		'uploads')	${EDITOR2} /home/sas/.weathconkrc ;;
-		'vimrc')	${EDITOR2} /home/sas/.vimrc ;;
-		'xorg')		${SUCMD} ${EDITOR2} /etc/X11/xorg.conf ;;
-		*)		${SUCMD} ${EDITOR2} $FILE ;;
-	esac
+  case ${FILE} in
+    'bash')   ${EDITOR2} $HOME/.bashrc ;;
+    'burg')   ${SUCMD} ${EDITOR2} /boot/burg/burg.cfg ;;
+    'conky')  ${SUCMD} ${EDITOR2} /etc/conky/conky.conf ;;
+    'fstab')  ${SUCMD} ${EDITOR2} /etc/fstab  ;;
+    'func')   ${SUCMD} ${EDITOR2} /usr/lib/sas/my_func ;;
+    'grub')   ${SUCMD} ${EDITOR2} /boot/grub/grub.cfg ;;
+    'gvim')   ${EDITOR2} $HOME/.gvimrc ;;
+    'inittab')  ${SUCMD} ${EDITOR2} /etc/inittab ;;
+    'makepkg')  ${SUCMD} ${EDITOR2} /etc/makepkg.conf  ;;
+    'pacman')   ${SUCMD} ${EDITOR2} /etc/pacman.conf  ;;
+    'rcc')  ${SUCMD} ${EDITOR2} /etc/rc.conf ;;
+    'rootbash') ${SUCMD} ${EDITOR2} /root/.bash_profile ;;
+    'vim')  ${EDITOR2} $HOME/.vimrc ;;
+    'xorg')  ${SUCMD} ${EDITOR2} /etc/X11/xorg.conf ;;
+    *)  ${SUCMD} ${EDITOR2} $FILE ;;
+  esac
 }
 
 ### Ranger exit to dir ###
 
-ranger() {
-	command ranger --fail-unless-cd $@ &&
-	cd "$(grep \^\' ~/.ranger/bookmarks | cut -b3-)"
-       }
+ranger-cd(){
+  ranger --choosedir=/tmp/chosen
+  if [ -f /tmp/chosen -a "$(cat /tmp/chosen)" != "$(pwd | tr -d "\n")" ]; then
+    cd "$(cat /tmp/chosen)"
+  fi
+  rm -f /tmp/chosen
+}
 
 ### Stump (Auto update AUR pkgd) ###
 
 stump() {
 local buildDir="/projects/builds"
-local updt=($(cower -u | awk '{print $2}'))
+local updt=($(cower -u --nossl | awk '{print $2}'))
 local updts=(${updt[@]/kernel26-*/})
 
-cower -d -f -u --ignore=kernel26-ck,kernel26-pf
+cower -d -f -u --ignore=kernel26-ck,kernel26-pf --nossl 
 
 local co=0
 for i in ${updts[*]} ; do
-	echo -e "\n\t ${bldgrn}Updating ${updts[$co]} \n"
-	cd $buildDir/${updts[$co]} && makepkg -i --noconfirm
-	(( ++co ))
+  echo -e "\n\t ${bldgrn}Updating ${updts[co]} \n"
+  cd $buildDir/${updts[co]} && makepkg -i --noconfirm
+  (( ++co ))
 done
 cd -
 }
@@ -247,23 +259,23 @@ local updates=($@)
 local co=0
 
 for i in ${updates[*]} ; do
-	echo -e "\n\t ${bldgrn}Updating ${updates[$co]}${txtrst} \n"
-	cowerd -i ${updates[$co]}
-	(( ++co ))
-	cd -
+  echo -e "\n\t ${bldgrn}Updating ${updates[co]}${txtrst} \n"
+  cowerd -i ${updates[co]}
+  (( ++co ))
+  cd -
 done
 }
 
 ### vim quick open session ###
 
 vims() {
-	vim -S ~/.vim/sessions/$@
+  vim -S ~/.vim/sessions/$@
 }
 
 ### gvim quick open session ###
 
 gvims() {
-	gvim -S ~/.vim/sessions/$@
+  gvim -S ~/.vim/sessions/$@
 }
 
 

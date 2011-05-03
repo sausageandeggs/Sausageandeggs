@@ -1,22 +1,29 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=aurupdis
-pkgver=6
-pkgrel=3
+pkgver=8
+pkgrel=1
 pkgdesc='my attempt at upate notification in conky'
 arch=('i686' 'x86_64')
 license=('GPL')
 groups=('sas')
 depends=('conky' 'cower')
-source=($pkgname.sh $pkgname aurupdt.sh $pkgname.conf)
+source=($pkgname.sh $pkgname aurupdt.sh $pkgname.conf simon-$pkgname.sh simon-$pkgname aurupdt.sh simon-$pkgname.conf)
 install=$pkgname.install
 
 package() {
 	mkdir -p $pkgdir/home/sas/.conkycolors/$pkgname/
 	cp $srcdir/* $pkgdir/home/sas/.conkycolors/$pkgname
 	chmod 755 $pkgdir/home/sas/.conkycolors/$pkgname/aurupdt.sh
+	mkdir -p $pkgdir/home/simon/.conkycolors/$pkgname/
+	cp $srcdir/* $pkgdir/home/simon/.conkycolors/$pkgname
+	chmod 755 $pkgdir/home/simon/.conkycolors/$pkgname/aurupdt.sh
 }
 
-md5sums=('42e9a9d988ee30267fd8c6096a3d64b4'
-         'c3d3c4b3ca5218cd3c285f10c0eb4bc5'
+md5sums=('4d2f53d89820b623b0edd3d29f310f8c'
+         '455ac1467a2ab92bc73f44237306a605'
          'b835b9e42defea3db82dd594706558a2'
-         '98f7cf04753c19b6f0d9c833c6ef6ccf')
+         '98f7cf04753c19b6f0d9c833c6ef6ccf'
+         '7523545c930a50e655a6ce40553eba26'
+         '7b03c5d66ca90b5dc588364ff8590c2b'
+         'b835b9e42defea3db82dd594706558a2'
+         'ab6de373122bd0471f12e14864df74c2')

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### pacupdis Ver 0.85 ###
+### pacupdis Ver 0.86 ###
 ###### Config bit #####################################################################
 Lfont="\${goto 59}\${font liberation:bold:size=8}"  ## Font for Pkg name and version ##
 Rfont="\${font}"                                    ## Font for Pkg size 		 	 ##
@@ -21,12 +21,22 @@ declare -a colour
 let a=0 b=0 totalmb=0
 for j in ${updts[*]};do
   declare -a newver[a]="$(expac '%n-%v' -S $j)"
+
+
   declare -a repo[a]="$(expac $'%r' -S $j)"
   declare -a size[a]="$(expac '%k' -S $j | awk '{print $1 / 1024}')"
   declare -a totsize[a]="$(expac '%k' -S $j | awk '{print $1}')"
   totalmb=$(echo ${size[a]} | awk '{print $1 + '$totalmb'}')
   (( a++ ))
 done
+
+
+
+core gawk-3.1.8-2
+community hawknl-1.68-2
+
+expac '%r %n-%v' -Ss
+
 
 
 for k in ${updts[*]};do
@@ -50,9 +60,25 @@ printf "%b %.2f %b\n" "${sumline}Total: ${#updts[*]} updates available\${alignr}
 }
 
 if [[ ${#updts[*]} == "0" ]]; then
-  echo "\${goto 59}\${font Arial:bold:size=10}\${color1}You are up to date"
-  echo ${seperator}
+  echo "\${voffset 10}\${alignc}\${font Arial:bold:size=10}\${color1}You are up to date"
+  #echo ${seperator}
 else
  show_updates
 fi
+
+bsort() {
+	SORTEDARRAY=("$@")
+	local i j t
+	for (( i=${#SORTEDARRAY[@]}-1; i>0; i-- )); do
+		for (( j=1; j<=i; j++ )); do
+			# Swap if needed
+			compare "${SORTEDARRAY[j-1]}" "${SORTEDARRAY[j]}" 
+			(( $? == 3 )) || continue
+			t="${SORTEDARRAY[j]}" # Placeholder for swapping elements
+			SORTEDARRAY[j]="${SORTEDARRAY[j-1]}"
+			SORTEDARRAY[j-1]="$t"
+		done
+	done
+}
+
 

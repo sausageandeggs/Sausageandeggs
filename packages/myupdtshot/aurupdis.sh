@@ -1,7 +1,7 @@
 #!/bin/bash
 export DISPLAY=:0
 updtlist=/tmp/aurupdis.list
-cower -u --color=never > $updtlist
+cower --nossl -u --color=never > $updtlist
 
 conky -c /home/sas/.conkycolors/aurupdis/aurupdis.conf
 
