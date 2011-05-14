@@ -1,5 +1,10 @@
 post_install() {
-	echo "Make sure to add \"~/.conkycolors/aurupdis/aurupdis\" to your crontab"
+    echo -e "\nTo call this from cron, either add:\n"
+    echo -e "\tsu -s /bin/bash -c '/usr/bin/aurupdis' <USERNAME>\n"
+    echo -e "to the root/sys crontab, or:"
+    echo -e "\n\t/usr/bin/aurupdis\n"
+    echo -e "to your users crontab\n"
+
 }
 
 post_upgrade() {

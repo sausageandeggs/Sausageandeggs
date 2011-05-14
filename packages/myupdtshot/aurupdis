@@ -1,6 +1,10 @@
 #!/bin/bash
 export DISPLAY=:0
+updtlist=/tmp/aurupdis.list
+cower --nossl -u --color=never > $updtlist
 
-su -s /bin/bash -c '/home/sas/.conkycolors/aurupdis/aurupdis.sh' sas
+conky -c /etc/conky/aurupdis.conf
 
-su -s /bin/bash -c '/home/simon/.conkycolors/aurupdis/aurupdis.sh' simon
+sleep 300
+pkill -f 'conky -c /etc/conky/aurupdis.conf'
+rm $updtlist

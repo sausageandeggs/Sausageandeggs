@@ -36,10 +36,6 @@ bldylw='\e[1;33m' # Yellow - bold
 bldblu='\e[1;34m' # Blue - bold
 bldwht='\e[1;37m' # White - bold
 txtrst='\e[0m' # Txt reset
-chkker=""
-chknvid=""
-chkother=""
-oldver=""
 updtfile="/media/three/local_bkup/updatedpgks.log"
 pacfirm="$1"
 pacflag="--noconfirm"
@@ -65,40 +61,42 @@ read -n 1 ans
 echo
 [[ $ans == "y" ]] && sudo pacman-color -Syy
 
-numb=$(/usr/lib/sas/numpkg.sh output)   ## not really needed but just makes easier reading
-
 ##See if there are any updates at all and list them##
-set $(pacman -Quq)  1>/dev/null 2>&1
+declare -a updates=($(pacman -Qqu))
+# Get rid of ignored packages
+declare -a ignpkgs=($(sed -n "/IgnorePkg/s/^\s*IgnorePkg\s*=\([^#]*\).*$/\1/p" /etc/pacman.conf))
 
-if [[ -z $@ ]]; then
+for h in ${ignpkgs[*]};do
+    updates=(${updates[*]/$h/})
+done
+
+if [[ ${#updates[*]} == "0" ]]; then
 echo -en "${bldwht}===>${bldred} You are up to date."
 return 1
 fi
 
+# Print updates (old --> new) {{{
+
+numb=${#updates[*]}
 echo
 if [[ $numb == "one" ]]; then
-    echo -e "${bldwht}===>${bldgrn} There is $numb package to update"
+    echo -e "${bldwht}===>${bldgrn} There is one package to update"
   else
     echo -e "${bldwht}===>${bldgrn} There are $numb packages to update"
 fi
 echo
 
-# Print updates (old --> new) {{{
-declare -a vers=($(pacman -Qu | awk '{print $1}'))
-a=0
-b=0
-c=0
-WW="$(( $(tput cols)/2 - 2 ))"
+let a=0 b=0 c=0 WW="$(( $(tput cols)/2 - 2 ))"
 
-for i in ${vers[*]};do
-    declare -a oldver[$a]="$(expac '%n-%v' -s ${vers[$a]} | grep -m 1 "^${vers[$a]}")"
+for i in ${updates[*]};do
+    declare -a oldver[$a]="$(expac '%n-%v' -s "$i" | grep -m 1 "^$i")"
     (( a++ ))
 done
-for j in ${vers[*]};do
-    declare -a newver[$b]="$(expac '%n-%v' -Ss ${vers[$b]} | grep -m 1 "^${vers[$b]}")"
+for j in ${updates[*]};do
+    declare -a newver[$b]="$(expac '%n-%v' -S "$j" | grep -m 1 "^$j")"
     (( b++ ))
 done
-for k in ${vers[*]};do
+for k in ${updates[*]};do
     printf "%${WW}b %b %b\n" "${bldwht}${oldver[$c]}" "${bldgrn}-->" "${bldwht}${newver[$c]}"
     #echo -e "${bldwht} ${oldver[$c]} ${bldgrn}--> ${bldwht}${newver[$c]}${txtrst}"
     (( c++ ))
@@ -141,15 +139,13 @@ rolbak() {  # {{{
     echo
     echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n${txtrst}"
     # add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
-    oldver=$(pacman -Qu | sed 's|\ |-|g')
-    co=0
-    declare -a oldvers=""
-    for i in $oldver;do 
-        oldvers[$co]=$(ls -l /var/cache/pacman/pkg/$i* | cut -d/ -f6) #1>> $updtfile
-        (( co++ ))
+    d=0
+    for l in ${oldver[*]};do 
+        listvers[d]=$(ls -l /media/three/package-cache/"$l"* | cut -d/ -f2-)
+        (( d++ ))
     done
     echo $(date +%d%m-%I) >> $updtfile
-    echo ${oldvers[*]} >> $updtfile
+    echo ${listvers[*]} >> $updtfile
 } # }}}
 
 ### Set force or both, gets force element of both
@@ -158,20 +154,21 @@ if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
 fi
 
 ######check what needs to be updated#####
-case "$@" in
+case "${updates[*]}" in
     *kernel*)           #look for a kernel update
         chkker=1
 esac
 
 if [[ "$chkker" == "1" ]]; then
-    set $(echo $@ | sed s/lib32-nvidia-utils//)
-    case "$@" in            #if theres a kernel look for an nvidia pkg excl 32b nvids
+    declare -a nvidchk=(${updates[*]/lib32-nvidia-utils/})
+    case "$nvidchk" in            #if theres a kernel look for an nvidia pkg excl 32b nvids
         *nvidia*)   
             chknvid=1
         ;;
         *)      #if theres no nvidia pkg, check for other updates
         if [[ -z "$chknvid" ]]; then
-            declare -a chkother=$(pacman -Quq | grep -v nvidia | grep -v kernel)
+            declare -a chkother=(${updates[*]/nvidia})
+            declare -a chkother=(${chkother[*]/kernel*/})
         fi
     esac
 fi
@@ -183,13 +180,13 @@ if [[ "$chknvid" == "1" ]]; then
  elif [[ -z "$chkker" ]]; then
     echo
     echo -e "${bldwht}===>${bldblu} No kernel update, proceeding"
- elif [[ ! -z ${chkother[*]} ]]; then
+ elif [[ ${#chkother[*]} != 0 ]]; then
     echo
     echo -e "${bldwht}===>${bldylw} There is a kernel pkg with no Nvidia pkg, but there are other packages that are safe to update." 
     echo
     #echo -e "${bldwht}===>${bldylw} Do you want to..."
     echo -e "${bldwht}===>${bldylw} Do you want to:${bldwht} (a)${bldylw} Update skiping the kernel pkg." 
-    echo -e "\t\t    ${bldwht} (b)${bldylw} Update everything." 
+    echo -e "\t\t    ${bldwht} (B)${bldylw} Update everything." 
     echo -e "\t\t    ${bldwht} (c)${bldylw} Update the kernel then build a new Nvidia pkg against it"
     echo -e "\t\t    ${bldwht} (d)${bldylw} Run a custom command."
     echo -e "\t\t    ${bldwht} (e)${bldylw} Do nothing and exit."
@@ -237,8 +234,8 @@ if [[ "$chknvid" == "1" ]]; then
             rolbak
             $ppp
         fi 
-        cd /projects/builds/nvidia-beta-all     ## updates fully then calls makepkg
-        makepkg                                 ## to build + install nvidia pkg
+        cd /projects/builds/nvidia-beta-all || return 1    ## updates fully then calls makepkg
+        makepkg -ic                             ## to build (+ install) nvidia pkg
         cd -
         bkpkg
         return 1

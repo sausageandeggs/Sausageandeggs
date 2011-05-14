@@ -340,8 +340,8 @@ set statusline +=%=%5l%*             "current line
 set statusline +=/%L%*               "total lines
 set statusline +=%4c\ %*             "column number
 
-highlight OverLength ctermbg=green ctermfg=white
-match OverLength /\%100v.\+/
+"highlight OverLength ctermbg=green ctermfg=white
+"match OverLength /\%100v.\+/
 """""""""""""
 " Filetypes "
 """""""""""""

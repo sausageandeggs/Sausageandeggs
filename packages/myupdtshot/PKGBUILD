@@ -1,29 +1,29 @@
 # Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
 pkgname=aurupdis
-pkgver=8
+pkgver=10
 pkgrel=1
 pkgdesc='my attempt at upate notification in conky'
-arch=('i686' 'x86_64')
+arch=('any')
 license=('GPL')
 groups=('sas')
 depends=('conky' 'cower')
-source=($pkgname.sh $pkgname aurupdt.sh $pkgname.conf simon-$pkgname.sh simon-$pkgname aurupdt.sh simon-$pkgname.conf)
+source=($pkgname $pkgname.conf aurupdt.sh)
 install=$pkgname.install
 
 package() {
-	mkdir -p $pkgdir/home/sas/.conkycolors/$pkgname/
-	cp $srcdir/* $pkgdir/home/sas/.conkycolors/$pkgname
-	chmod 755 $pkgdir/home/sas/.conkycolors/$pkgname/aurupdt.sh
-	mkdir -p $pkgdir/home/simon/.conkycolors/$pkgname/
-	cp $srcdir/* $pkgdir/home/simon/.conkycolors/$pkgname
-	chmod 755 $pkgdir/home/simon/.conkycolors/$pkgname/aurupdt.sh
+	install -Dm 755 $pkgname $pkgdir/usr/bin/$pkgname
+	install -Dm 755 aurupdt.sh $pkgdir/usr/bin/aurupdt.sh
+	install -Dm 755 $pkgname.conf $pkgdir/etc/conky/$pkgname.conf
+    
+    #uncomment the rest of the function to install
+#cat << EOF > call-"$pkgname.sh"
+##!/bin/bash
+#export DISPLAY=:0
+
+#su -s /bin/bash -c '/home/sas/.conkycolors/aurupdis/aurupdis.sh' <USERNAME>
+#EOF
 }
 
-md5sums=('4d2f53d89820b623b0edd3d29f310f8c'
-         '455ac1467a2ab92bc73f44237306a605'
-         'b835b9e42defea3db82dd594706558a2'
-         '98f7cf04753c19b6f0d9c833c6ef6ccf'
-         '7523545c930a50e655a6ce40553eba26'
-         '7b03c5d66ca90b5dc588364ff8590c2b'
-         'b835b9e42defea3db82dd594706558a2'
-         'ab6de373122bd0471f12e14864df74c2')
+md5sums=('549533d820fdc1334211ee2492b1d281'
+         '9694915e0bb87fd8ca5c8e940ec41ac2'
+         'b835b9e42defea3db82dd594706558a2')

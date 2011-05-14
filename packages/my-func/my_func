@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 182 ##
+## Ver 183 ##
 
 ### clr_mem ###
 
@@ -24,10 +24,10 @@ cowerd() {
     local targ="${2}"
     case ${1} in
       -m)
-        local makecmd="makepkg"
+        local makecmd="makepkg -c"
       ;;
       -i)
-        local makecmd="makepkg -i --noconfirm"
+        local makecmd="makepkg -ic --noconfirm"
       ;;
       -o)
         local makecmd="makepkg -o --noconfirm"
@@ -238,16 +238,16 @@ ranger-cd(){
 
 stump() {
 local buildDir="/projects/builds"
-local updt=($(cower -u --nossl | awk '{print $2}'))
-local updts=(${updt[@]/kernel26-*/})
+local updt=($(cower -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo --nossl | awk '{print $2}'))
+#local updts=(${updt[@]/kernel26-*/})
 
-cower -d -f -u --ignore=kernel26-ck,kernel26-pf --nossl 
+cower -d -f -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo --nossl 
 
-local co=0
+local o=0
 for i in ${updts[*]} ; do
-  echo -e "\n\t ${bldgrn}Updating ${updts[co]} \n"
-  cd $buildDir/${updts[co]} && makepkg -i --noconfirm
-  (( ++co ))
+  echo -e "\n\t ${bldgrn}Updating ${updts[o]} \n"
+  cd $buildDir/${updts[o]} && makepkg -ci --noconfirm
+  (( ++o ))
 done
 cd -
 }
@@ -256,12 +256,12 @@ cd -
 
 stumpy() {
 local updates=($@)
-local co=0
+local c=0
 
 for i in ${updates[*]} ; do
-  echo -e "\n\t ${bldgrn}Updating ${updates[co]}${txtrst} \n"
-  cowerd -i ${updates[co]}
-  (( ++co ))
+  echo -e "\n\t ${bldgrn}Updating ${updates[c]}${txtrst} \n"
+  cowerd -i ${updates[c]}
+  (( ++c ))
   cd -
 done
 }

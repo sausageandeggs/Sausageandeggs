@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### pacupdis Ver 0.9 ###
+### pacupdis Ver 0.93 ###
 ###### Config bit ######################################################################### {{{
 left_font="\${goto 59}\${font liberation:bold:size=8}"  ## Font for Pkg name and version ##
 right_font=""                                           ## Font for Pkg size 		 	 ##
@@ -18,10 +18,10 @@ list_updates() { #{{{
     declare -a colour
     local let a=0 b=0 totalmb=0
     for j in ${updts[*]};do
-        declare -a newver[a]="$(expac '%n-%v' -S $j | grep -m 1 $j)"
-        declare -a repo[a]="$(expac $'%r' -S $j | grep -m 1 [a-z])"
-        declare -a size[a]="$(expac '%k' -S $j | grep -m 1 [0-9] | awk '{print $1 / 1024}')"
-        declare -a totsize[a]="$(expac '%k' -S $j | awk '{print $1}')"
+        declare -a newver[a]="$(expac '%n-%v' -S "$j" | grep -m 1 "$j")"
+        declare -a repo[a]="$(expac $'%r' -S "$j" | grep -m 1 [a-z])"
+        declare -a size[a]="$(expac '%k' -S "$j" | grep -m 1 [0-9] | awk '{print $1 / 1024}')"
+        declare -a totsize[a]="$(expac '%k' -S "$j" | awk '{print $1}')"
         totalmb=$(echo ${size[a]} | awk '{print $1 + '$totalmb'}')
         (( a++ ))
     done
@@ -29,13 +29,13 @@ list_updates() { #{{{
     for k in ${updts[*]};do
         case ${repo[b]} in
         core)
-        colour[b]=$core_color ;;
+        colour[b]="$core_color" ;;
         extra)
-        colour[b]=$extra_color ;;
+        colour[b]="$extra_color" ;;
         community)
-        colour[b]=$community_color ;;
+        colour[b]="$community_color" ;;
         multilib)
-        colour[b]=$multilib_color ;;
+        colour[b]="$multilib_color" ;;
         xyne-any)
         colour[b]=$xyne_color ;;
         esac
@@ -51,12 +51,10 @@ list_updates() { #{{{
 } #}}}
 
 declare -a updts=($(sudo pacman -Qqu))
+declare -a ignpkgs=($(sed -n "/IgnorePkg/s/^\s*IgnorePkg\s*=\([^#]*\).*$/\1/p" /etc/pacman.conf))
 
-ignpkgs=($(sed -n "/IgnorePkg/s/^\s*IgnorePkg\s*=\([^#]*\).*$/\1/p" /etc/pacman.conf))
-c=0
-for i in ${updts[*]};do
-    updts=(${updts[*]/${ignpkgs[c]}/})
-    (( c++ ))
+for i in ${ignpkgs[*]};do
+    updts=(${updts[*]/$i/})
 done
 
 if [[ ${#updts[*]} == "0" ]]; then
