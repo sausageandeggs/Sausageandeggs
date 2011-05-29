@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 183 ##
+## Ver 184 ##
 
 ### clr_mem ###
 
@@ -56,8 +56,8 @@ cap () {
 
 ctuts(){
     cd /projects/my-pjts/c-tuts
-    gvim -S /projects/my-pjts/c-tuts/vim-sessions/ctuts.vim-session &
     evince /media/three/PDFs/Misc-Bash-C,-C++-Perl/C/ForDummies-C.pdf &
+    gvim -S /projects/my-pjts/c-tuts/.vim-sessions/ctuts.vim-session
 }
 
 ### Copy and Follow ###

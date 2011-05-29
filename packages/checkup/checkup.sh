@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.5
+# Checkup Ver 2.7
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -47,10 +47,10 @@ set ""
 bkpkg () { # {{{
     echo
     echo -e "${bldwht}===>${bldgrn} Backing up local database"
-    mv /media/three/local_bkup/{old.tar.xz,done.tar.xz} || return 1
-    mv /media/three/local_bkup/{local-*,old.tar.xz} || return 1
-    tar -cJf /media/three/local_bkup/local-$(date +%d%m).tar.xz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
-    rm /media/three/local_bkup/done.tar.xz
+    mv /media/three/local_bkup/{old.tar.lrz,done.tar.lrz} || return 1
+    mv /media/three/local_bkup/{local-*,old.tar.lrz} || return 1
+    lrztar -q -L5 -o /media/three/local_bkup/local-$(date +%d%m).tar.lrz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
+    rm /media/three/local_bkup/done.tar.lrz
     echo
 }
 # }}}
