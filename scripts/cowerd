@@ -1,0 +1,49 @@
+#!/bin/bash
+
+## Cowerd
+## Ver 1.2
+## A wrapper for Cower to build/update mutilple packages
+## Usage: cowerd <-i|-ii|-m|-mm|-o|-u|-d> <targets>
+
+set -e
+. /usr/lib/sas/text_colors
+unset build_opts
+unset makecmd
+unset targs
+cowercmd="cower -f -d -t "
+blddir="/projects/builds/"
+build_opts="$1"
+shift
+
+if [[ "$build_opts" == "-u" ]]; then
+    targs=($(cower -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo --nossl --color=never| awk '{print $2}'))
+else
+    targs=( $@ )
+fi
+
+case "$build_opts" in
+    -d)
+        /bin/true ;;
+    -i)
+        makecmd="makepkg -isc --noconfirm" ;;
+    -ii)
+        makecmd="makepkg -is --noconfirm" ;;
+    -m)
+        makecmd="makepkg -cs" ;;
+    -mm)
+        makecmd="makepkg -s" ;;
+    -o)
+        makecmd="makepkg -o --noconfirm" ;;
+    -u)
+        makecmd="makepkg -ci --noconfirm" ;;
+esac
+
+for i in ${targs[*]} ; do
+    echo -e "\n\t ${bldgrn}Building ${i}${txtrst} \n"
+    ${cowercmd} ${blddir} ${i}
+    cd ${blddir}/${i}
+    ${makecmd}
+    cd -
+done
+
+

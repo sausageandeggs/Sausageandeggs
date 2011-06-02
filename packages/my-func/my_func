@@ -2,7 +2,7 @@
 ###################################################
 ###### My bash functions, sourced by .bashrc ######
 ###################################################
-## Ver 184 ##
+## Ver 185 ##
 
 ### clr_mem ###
 
@@ -10,34 +10,6 @@ clr_mem () {
   #pagecache, dentries and inodes
   # 1   2   3
     echo $1 > /proc/sys/vm/drop_caches
-}
-
-### cowerd ###
-
-cowerd() {
-  local cowercmd="cower --nossl -f -d -t "
-  local blddir="/projects/builds/"
-
-  if [[ -z ${2} ]]; then
-    local targ="${1}"
-  else
-    local targ="${2}"
-    case ${1} in
-      -m)
-        local makecmd="makepkg -c"
-      ;;
-      -i)
-        local makecmd="makepkg -ic --noconfirm"
-      ;;
-      -o)
-        local makecmd="makepkg -o --noconfirm"
-      ;;
-    esac
-  fi
-
-  ${cowercmd} ${blddir} ${targ}
-  cd ${blddir}/${targ}
-  ${makecmd}
 }
 
 ### Cdargs ###
@@ -232,38 +204,6 @@ ranger-cd(){
     cd "$(cat /tmp/chosen)"
   fi
   rm -f /tmp/chosen
-}
-
-### Stump (Auto update AUR pkgd) ###
-
-stump() {
-local buildDir="/projects/builds"
-local updt=($(cower -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo --nossl | awk '{print $2}'))
-#local updts=(${updt[@]/kernel26-*/})
-
-cower -d -f -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo --nossl 
-
-local o=0
-for i in ${updts[*]} ; do
-  echo -e "\n\t ${bldgrn}Updating ${updts[o]} \n"
-  cd $buildDir/${updts[o]} && makepkg -ci --noconfirm
-  (( ++o ))
-done
-cd -
-}
-
-### Stumpy (update list of AUR pkgs) ###
-
-stumpy() {
-local updates=($@)
-local c=0
-
-for i in ${updates[*]} ; do
-  echo -e "\n\t ${bldgrn}Updating ${updates[c]}${txtrst} \n"
-  cowerd -i ${updates[c]}
-  (( ++c ))
-  cd -
-done
 }
 
 ### vim quick open session ###
