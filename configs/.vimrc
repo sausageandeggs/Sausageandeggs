@@ -94,7 +94,7 @@ function! Tab_Or_Complete()
   endif
 endfunction
 inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
-set dictionary-=/home/sas/docs/compgen.dic  dictionary+=/home/sas/docs/compgen.dic
+set dictionary-=/home/simon/docs/compgen.dic  dictionary+=/home/simon/compgen.dic
 set complete-=k complete+=k
 
 """"""""""""""""""""""""""""""""""
@@ -116,7 +116,7 @@ let c_hi_libs = ['*']
 " saved whenever you show another buffer in the same window, 
 " and restored when you show the buffer in the window again.
 
-set viewdir=/home/sas/.vim/views/
+set viewdir=/home/simon/.vim/views/
 "autocmd BufWinLeave * mkview
 "autocmd BufWinEnter * silent loadview
 
@@ -139,17 +139,31 @@ set viewdir=/home/sas/.vim/views/
 
 function! LoadSession()
 	if argc() == 0
-		execute 'source /home/sas/.vim/sessions/session.vim'
+		execute 'source /home/simon/.vim/sessions/session.vim'
 	endif
 endfunction
 
 function! SaveSession()
-	execute 'mksession! /home/sas/.vim/sessions/session.vim'
+	execute 'mksession! /home/simon/.vim/sessions/session.vim'
 endfunction
 autocmd VimEnter * call LoadSession()
 autocmd VimLeave * call SaveSession()
 
-set tags=~/.vimtags
+set tags=./.vimtags
+let g:easytags_include_members = 1
+"let g:easytags_autorecurse = 1
+let g:easytags_resolve_links = 1
+
+""""""""""""""""""""
+" Most recent files "
+""""""""""""""""""""
+let MRU_File = "/home/simon/.vim/MRU.list"
+let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
+let MRU_Max_Entries = 250
+let MRU_Use_Current_Window = 0
+let MRU_Window_Height = 15
+let MRU_Max_Menu_Entries = 15
+
 
 """"""""""""""""""
 "SESSION OPTIONS "
@@ -202,6 +216,11 @@ set sessionoptions=tabpages,winsize,blank,unix,localoptions,buffers,resize
 " ,y - yank to clipboard
 " ,ss - Save session
 " ,so - Open session
+
+""""""""""""""""""""""""
+" make repeat cmd include certain plugins "
+""""""""""""""""""""""""
+silent! call repeat#set("\<Plug>MappingToRepeatCommand",3)
 
 """"""""""""""""
 " Key Mappings "
@@ -307,6 +326,42 @@ map <leader>o :put =''<CR>
 
 " put empty line above cursor
 map <leader>O :put =''<CR>
+
+" Copy all 
+map <leader>a ggVGy
+
+" Wrap word in double qoutes (goes till next space)
+map <leader>" ysW"
+
+" Wrap word in double qoutes (goes till next space)
+map <leader>2 ysW'
+
+" Wrap word in braces (no space)
+map <leader>{ ysW{
+
+" Wrap word in [something] (add to end of shortcut)(no space)
+map <leader>W ysiW
+
+" Quick comment single line
+map <C-c> <leader>cc
+
+" Quick uncomment single line
+map <C-x> <leader>cu
+
+" Quick toggle commented
+map <leader><space>  <leader>c<space>
+
+"Quick open MRU list
+map <leader>f :mru <CR>
+
+" Toggle relative line numbering
+map <C-l> :set nu!<CR>
+
+" Toggle line numbering
+map <C-l><C-l> :set rnu!<CR>
+
+" Remove whitspace at EOL
+map <leader>ds :%s/\s\+$//<CR>
 
 """""""""""""""""
 " More settings "

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### pacupdis Ver 0.93 ###
+### pacupdis Ver 0.94 ###
 ###### Config bit ######################################################################### {{{
 left_font="\${goto 59}\${font liberation:bold:size=8}"  ## Font for Pkg name and version ##
 right_font=""                                           ## Font for Pkg size 		 	 ##
@@ -9,6 +9,7 @@ core_color="\${color DF938F}"                           ## Colour for core pkgs 
 extra_color="\${color0}"                                ## Colour for extra pkgs 	 	 ##
 community_color="\${color CF9ECC}"                      ## Colour for community pkgs  	 ##
 multilib_color="\${color 8FDF99}"                       ## Colour for multilib pkgs      ##
+kerne26_ck_color="\${color C55154}"                       ## Colour for multilib pkgs      ##
 xyne_color="\${color D3D181}"                           ## Colour for xyne-any pkgs   	 ##
 seperator="\${color darkslategray}\${hr 2}"             ## Between updates and summary   ##
 sumline="\${goto 59}\${color2}\${font liberation:bold:size=8}" ## Totals etc 			 ##
@@ -38,6 +39,8 @@ list_updates() { #{{{
         colour[b]="$multilib_color" ;;
         xyne-any)
         colour[b]=$xyne_color ;;
+        kernel26-ck)
+        colour[b]=$kerne26_ck_color ;;
         esac
         printf "%b %.3f %b\n" "\${goto 59}${left_font}${colour[b]}${newver[b]}${right_color}${right_font}\${alignr}" "${size[b]}" "Mb"
         (( b++ ))

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.7
+# Checkup Ver 2.75
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -30,12 +30,7 @@ if [[ $UID -eq 0 ]]; then
 fi # }}}
 
 # Variables {{{
-bldred='\e[1;31m' # Red - bold
-bldgrn='\e[1;32m' # Green - bold
-bldylw='\e[1;33m' # Yellow - bold
-bldblu='\e[1;34m' # Blue - bold
-bldwht='\e[1;37m' # White - bold
-txtrst='\e[0m' # Txt reset
+. /usr/lib/sas/text-colors
 updtfile="/media/three/local_bkup/updatedpgks.log"
 pacfirm="$1"
 pacflag="--noconfirm"
@@ -71,7 +66,7 @@ for h in ${ignpkgs[*]};do
 done
 
 if [[ ${#updates[*]} == "0" ]]; then
-echo -en "${bldwht}===>${bldred} You are up to date."
+echo -e "${bldwht}===>${bldred} You are up to date."
 return 1
 fi
 
@@ -79,7 +74,7 @@ fi
 
 numb=${#updates[*]}
 echo
-if [[ $numb == "one" ]]; then
+if [[ $numb == "1" ]]; then
     echo -e "${bldwht}===>${bldgrn} There is one package to update"
   else
     echo -e "${bldwht}===>${bldgrn} There are $numb packages to update"
@@ -235,7 +230,8 @@ if [[ "$chknvid" == "1" ]]; then
             $ppp
         fi 
         cd /projects/builds/nvidia-beta-all || return 1    ## updates fully then calls makepkg
-        makepkg -ic                             ## to build (+ install) nvidia pkg
+        vim PKGBUILD                                       ## to build (+ install) nvidia pkg
+        makepkg -ic
         cd -
         bkpkg
         return 1

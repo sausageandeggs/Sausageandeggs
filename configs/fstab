@@ -19,7 +19,7 @@ UUID=47FE-6FB2	/media/one	auto	rw,user,auto,noatime,umask=0000 	0	0
 #dev/sda2
 UUID=B729-DFFF	/media/two	auto	rw,user,auto,exec,noatime,umask=0000	0	0
 #dev/sda3
-UUID=B8BB-9C00	/media/three	auto	rw,user,auto,exec,noatime,umask=0000	0	0
+UUID=7761904f-8612-4251-9888-1e6a5cb97213	/media/three 	ext4    defaults 	0 0
 #usb
 #/dev/sdc1	/media/usb	auto	rw,user,auto,exec	0	0
 #/var/lib/pacman.db /var/lib/pacman ext2 loop,defaults 0 0
