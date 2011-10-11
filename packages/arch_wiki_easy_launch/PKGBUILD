@@ -6,16 +6,10 @@ pkgdesc="Easy Arch Wiki launcher"
 arch=(any)
 url=""
 license=('GPL')
-groups=()
+groups=(sas)
 depends=(arch-wiki-docs)
 source=(arch_wiki_docs.desktop
 		arch_wiki.sh)
-md5sums=('ea2ab931bde2340ed7fea02f18007f30'
-         '26dc22c69ec2b88087825e4500d5252c')
-
-build() {
-	true
- }
 
 package() {
   cd "$srcdir/"
@@ -23,3 +17,5 @@ package() {
 	install -Dm 644 arch_wiki_docs.desktop $pkgdir/usr/share/applications/arch_wiki_docs.desktop
 }
 
+md5sums=('ea2ab931bde2340ed7fea02f18007f30'
+         'da43cff69157912525f46e1de0e4a0ca')

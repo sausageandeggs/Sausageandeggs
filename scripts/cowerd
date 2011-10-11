@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Cowerd
-## Ver 1.6
+## Ver 1.71
 ## A wrapper for Cower to build/update mutilple packages
 
 . /usr/lib/sas/text-colors
@@ -22,7 +22,7 @@ shift
 
 if [[ "$build_opts" == "-u" ]]; then
     echo -e "\n\t${bldylw}Updating all AUR packages${txtrst}"
-    targs=($(cower -u --ignore=kernel26-ck,kernel26-pf,firefox-pgo,marlin-bin --nossl --color=never| awk '{print $2}'))
+    targs=($(cower -u --ignore=kernel26-ck,marlin-bin --nossl --color=never| awk '{print $2}'))
 else
     targs=( $@ )
 fi
@@ -60,5 +60,5 @@ for i in ${targs[*]} ; do
     ${cowercmd} ${blddir} ${i} || return 1
     cd ${blddir}/${i} || return 1
     ${makecmd}
-    ${instcmd} $i*
+    [[ -n ${instcmd} ]] && ${instcmd} $i*
 done

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 2.75
+# Checkup Ver 2.76
 # {{{ Blurb
 # 
 # Copyright Simon Stoakley 2009,2010
@@ -150,7 +150,7 @@ fi
 
 ######check what needs to be updated#####
 case "${updates[*]}" in
-    *kernel*)           #look for a kernel update
+    *linux*)           #look for a kernel update
         chkker=1
 esac
 
@@ -163,7 +163,7 @@ if [[ "$chkker" == "1" ]]; then
         *)      #if theres no nvidia pkg, check for other updates
         if [[ -z "$chknvid" ]]; then
             declare -a chkother=(${updates[*]/nvidia})
-            declare -a chkother=(${chkother[*]/kernel*/})
+            declare -a chkother=(${chkother[*]/linux*/})
         fi
     esac
 fi
@@ -195,14 +195,14 @@ if [[ "$chknvid" == "1" ]]; then
             echo -e "${txtrst}"
             echo "kernel pkgs not updated"
             rolbak
-            $ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware,$ignpkg
+            $ppp --ignore linux-headers,linux,linux-lts,linux-lts-headers,linux-firmware,$ignpkg
             bkpkg
             return 1
         fi
         echo
         echo -e "${bldwht}===>${bldred} kernel pkgs not updated"
         rolbak
-        $ppp --ignore kernel26-headers,kernel26,kernel26-lts,kernel26-lts-headers,kernel26-firmware
+        $ppp --ignore linux-headers,linux,linux-lts,linux-lts-headers,linux-firmware
         bkpkg
         return 1
         ;;
