@@ -10,7 +10,7 @@ unset makecmd
 unset instcmd
 unset targs
 unset msg
-unset cowercmd
+cowercmd="cower -dft "
 blddir="/projects/builds/"
 build_opts="$1"
 if [[ ! $build_opts =~ -d|-i|-ii|-m|-mm|-o|-u ]];then
@@ -27,10 +27,10 @@ else
     targs=( $@ )
 fi
 
+#cower gets deps recursively so reverse results to make sure they're built in right order
 get_targs() {
     sped=($(cower -ddf --color=never $@ | awk '{print $2}' ))
     deps=($(echo ${sped[*]} | tac -s ' '))
-    #export ${deps[*]}
 }
 
 case "$build_opts" in
@@ -39,32 +39,25 @@ case "$build_opts" in
         msg="Getting PKGBUILD for" ;;
     -i)
         msg="Building and installing"
-        cowercmd="cower -f -d -t "
         makecmd="makepkg -isc --noconfirm" ;;
     -id | -di)
         msg="Building and installing as dependency"
         makecmd="makepkg -fsc --noconfirm" 
-        cowercmd="cower -f -d -t "
         instcmd="sudo pacman-color -U --noconfirm --asdep " ;;
     -ii)
         msg="Building and installing (no cleanup)"
-        cowercmd="cower -f -d -t "
         makecmd="makepkg -is --noconfirm" ;;
     -m)
         msg="Building"
-        cowercmd="cower -f -d -t "
         makecmd="makepkg -cs" ;;
     -mm)
         msg="Building (no cleanup)"
-        cowercmd="cower -f -d -t "
         makecmd="makepkg -s" ;;
     -o)
         msg="Downloading sources for"
-        cowercmd="cower -f -d -t "
         makecmd="makepkg -o --noconfirm" ;;
     -u)
         msg="Updating"
-        cowercmd="cower -dft "
         makecmd="makepkg -ci --noconfirm" ;;
 esac
 

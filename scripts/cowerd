@@ -1,16 +1,17 @@
 #!/bin/bash
 
 ## Cowerd
-## Ver 1.71
+## Ver 1.991
 ## A wrapper for Cower to build/update mutilple packages
 
 . /usr/lib/sas/text-colors
 unset build_opts
 unset makecmd
-unset instcmd
 unset targs
 unset msg
-cowercmd="cower -f -d -t "
+instcmd=". PKGBUILD && sudo pacman-color -U --noconfirm --asdeps ${pkg_cache}\${pkgname}-\${pkgver}-\${pkgrel}-*.pkg.tar.xz "
+pkg_cache="/media/arch/package-cache/"
+cowercmd="cower -dft "
 blddir="/projects/builds/"
 build_opts="$1"
 if [[ ! $build_opts =~ -d|-i|-ii|-m|-mm|-o|-u ]];then
@@ -27,6 +28,13 @@ else
     targs=( $@ )
 fi
 
+#cower gets deps recursively so reverse results to make sure they're built in right order
+get_targs() {
+    sped=($(cower -ddft ${blddir} --color=never $@ | awk '{print $2}' ))
+    deps=($(echo ${sped[*]} | tac -s ' '))
+    deps=(${deps[*]/$i/})
+}
+
 case "$build_opts" in
     -d)
         msg="Getting PKGBUILD for" ;;
@@ -36,7 +44,7 @@ case "$build_opts" in
     -id | -di)
         msg="Building and installing as dependency"
         makecmd="makepkg -fsc --noconfirm" 
-        instcmd="sudo pacman-color -U --noconfirm --asdep " ;;
+        asdeps="1" ;;
     -ii)
         msg="Building and installing (no cleanup)"
         makecmd="makepkg -is --noconfirm" ;;
@@ -55,10 +63,19 @@ case "$build_opts" in
 esac
 
 for i in ${targs[*]} ; do
-    #echo -e "\n\t ${bldgrn}Building ${i}${txtrst} \n"
+    get_targs $i
+    if [[ -n ${deps[*]} ]];then
+        for j in ${deps[*]};do
+            echo -e "\n\t ${bldgrn}Building and installing ${j} - a depdendency of ${i}${txtrst} \n"
+            cd ${blddir}/${j} || return 1
+            makepkg -cs
+            eval ${instcmd}
+        done
+    fi
     echo -e "\n\t ${bldgrn}${msg} ${i}${txtrst} \n"
-    ${cowercmd} ${blddir} ${i} || return 1
     cd ${blddir}/${i} || return 1
     ${makecmd}
-    [[ -n ${instcmd} ]] && ${instcmd} $i*
+    [[ -n ${asdeps} ]] && eval ${instcmd}
+
 done
+
