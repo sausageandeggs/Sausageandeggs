@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Cowerd
-## Ver 1.991
+## Ver 1.992
 ## A wrapper for Cower to build/update mutilple packages
 
 . /usr/lib/sas/text-colors
@@ -59,7 +59,7 @@ case "$build_opts" in
         makecmd="makepkg -o --noconfirm" ;;
     -u)
         msg="Updating"
-        makecmd="makepkg -ci --noconfirm" ;;
+        makecmd="makepkg -cis --noconfirm" ;;
 esac
 
 for i in ${targs[*]} ; do
