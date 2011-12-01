@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Checkup Ver 2.76
+# Checkup Ver 3.0
+
 # {{{ Blurb
 # 
-# Copyright Simon Stoakley 2009,2010
+# Copyright Simon Stoakley 2009-2011
 #
-# Script to check if theres a nvidia update when there is an kernel update before updating.
+# Script that optionally rebuilds nvidia module when there is an kernel update.
 # If not various options will be offered. Packages can also be ignored easily.
 #
 # Checkup is free software: you can redistribute it and/or modify
@@ -29,19 +30,35 @@ if [[ $UID -eq 0 ]]; then
     return 1
 fi # }}}
 
-# Variables {{{
+# Variables {{{ 
 . /usr/lib/sas/text-colors
-updtfile="/media/three/local_bkup/updatedpgks.log"
+cachedir="/media/arch/package-cache/"
+updtfile="/media/three/local_bkup/updatedpkgs.log"
+nvidia_dir="/projects/builds/nvidia-beta-all"
 pacfirm="$1"
 pacflag="--noconfirm"
 [[ $pacfirm == "-c" ]] && pacflag=""
-ppp="sudo pacman-color -Su $pacflag"
+updt_cmd="sudo pacman-color -S "
+unset updt_msg ignpkg rebuild choice for_ign chkker chkother updates others ignpkgs
 set ""
 # }}}
 
-bkpkg () { # {{{
+rolbak() {  # {{{
     echo
-    echo -e "${bldwht}===>${bldgrn} Backing up local database"
+    echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n${txtrst}"
+    # add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
+    d=0
+    for l in ${oldver[*]};do 
+        listvers[d]=$(ls -l $cachedir"$l"* | cut -d/ -f2-)
+        (( d++ ))
+    done
+    echo $(date +%d%m-%I) >> $updtfile
+    echo ${listvers[*]} >> $updtfile
+} # }}}
+
+bkpkg() { # {{{
+    echo
+    echo -e "\n${bldwht}===>${bldgrn} Backing up local database"
     mv /media/three/local_bkup/{old.tar.lrz,done.tar.lrz} || return 1
     mv /media/three/local_bkup/{local-*,old.tar.lrz} || return 1
     lrztar -q -L5 -o /media/three/local_bkup/local-$(date +%d%m).tar.lrz /var/lib/pacman/local/ 1>/dev/null 2>&1 || return 1
@@ -50,13 +67,103 @@ bkpkg () { # {{{
 }
 # }}}
 
+build_nvid() {  # {{{
+        echo -e "\n${bldwht}===>${bldblu} Rebuilding Nvidia kernel module${txtrst}\n"
+        cd $nvidia_dir || return 1
+        bumpkgrel PKGBUILD PKGBUILD
+        makepkg -ic
+        cd -
+} # }}}
+
+ask_both() {  # {{{
+    echo
+    local choice
+    echo -e "${bldwht}===>${bldcyn} There is a kernel update Do you want to..." 
+    echo
+    echo -e "${bldwht}===>${bldcyn} Do you want to:${bldwht} (1)${bldcyn} Update everyting and rebuild Nvidia${txtwht} (default)" 
+    echo -e "\t\t    ${bldwht} (2)${bldcyn} Update everyting without rebuilding Nvidia"
+    echo -e "\t\t    ${bldwht} (3)${bldcyn} Update everything but the kernel"
+    echo -e "\t\t    ${bldwht} (4)${bldcyn} Update just the kernel and rebuild Nvidia"
+    echo -e "\t\t    ${bldwht} (5)${bldcyn} Update just the kernel without rebuilding Nvidia"
+    echo -e "\t\t    ${bldwht} (6)${bldcyn} Run a custom cmd" 
+    echo -e "\t\t    ${bldwht} (7)${bldcyn} Do nothing and exit."
+    echo -en "${bldwht}===>${bldcyn} What'll it be...:${txtrst}"
+    read -n 1 choice
+    echo
+    choice=${choice:-1}   ## default to option 1
+
+    case $choice in
+        1)
+        updt_cmd+="-u ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating everyting and rebuilding Nvidia${txtrst}"
+        rebuild=1  ;;
+        2)
+        updt_cmd+="-u ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating everyting but not rebuilding Nvidia${txtrst}" ;;
+        3)
+        updt_cmd+="-u --ignore linux,linux-headers ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating everyting but the kernel${txtrst}" ;;
+        4)
+        updt_cmd+="linux linux-headers ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating just the kernel and rebuilding Nvidia${txtrst}"
+        rebuild=1  ;;
+        5)
+        updt_cmd+="linux linux-headers ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating just the kernel without rebuilding Nvidia${txtrst}" ;;
+        6)
+        echo
+        echo -en "${bldwht}===> ${bldgrn}Enter command (will be run verbatim):${txtrst} "
+        read updt_cmd
+        updt_msg="${bldwht}===> ${bldgrn}Running ${updt_cmd}${txtrst}"
+        echo -e " $(date +%d%m-%I)\n $updt_cmd" >> $updtfile 
+        echo ;;
+        7)
+        unset updt_cmd
+        return 1 ;;
+    esac
+}  # }}}
+
+ask_kern() {  # {{{
+    echo
+    local choice
+    echo -e "${bldwht}===>${bldpur} There is only a kernel update." 
+    echo
+    echo -e "${bldwht}===>${bldpur} Do you want to:${bldwht} (1)${bldpur} Update the kernel and rebuild Nvidia${txtwht} (default)" 
+    echo -e "\t\t    ${bldwht} (2)${bldpur} Update kernel but dont rebuild Nvidia"
+    echo -e "\t\t    ${bldwht} (3)${bldpur} Run a custom cmd" 
+    echo -e "\t\t    ${bldwht} (4)${bldpur} Do nothing and exit."
+    echo -en "${bldwht}===>${bldpur} What'll it be...:${txtrst}"
+    read -n 1 choice
+    echo
+    choice=${choice:-1}   ## default to option 1
+
+    case $choice in
+        1)
+        updt_cmd+="-u ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating the kernel and rebuilding Nvidia${txtrst}"
+        rebuild=1  ;;
+        2)
+        updt_cmd+="-u ${pacflag} "
+        updt_msg="${bldwht}===> ${bldgrn}Updating the kernel but not rebuilding Nvidia${txtrst}" ;;
+        3)
+        echo
+        echo -en "${bldwht}===> ${bldgrn}Enter command (will be run verbatim): ${txtrst}"
+        read updt_cmd
+        updt_msg="${bldwht}===> ${bldgrn}Running ${updt_cmd}${txtrst}"
+        echo -e " $(date +%d%m-%I)\n $updt_cmd" >> $updtfile 
+        echo ;;
+        4)
+        unset updt_cmd
+        return 1 ;;
+    esac
+}  # }}}
+
 echo
 echo -en "${bldwht}===>${bldgrn} Do you want to refresh the database? y/N "
 read -n 1 ans
 echo
 [[ $ans == "y" ]] && sudo pacman-color -Syy
 
-##See if there are any updates at all and list them##
 declare -a updates=($(pacman -Qqu))
 # Get rid of ignored packages
 declare -a ignpkgs=($(sed -n "/IgnorePkg/s/^\s*IgnorePkg\s*=\([^#]*\).*$/\1/p" /etc/pacman.conf))
@@ -65,6 +172,7 @@ for h in ${ignpkgs[*]};do
     updates=(${updates[*]/$h/})
 done
 
+### TODO notify that updates have been ignored ###
 if [[ ${#updates[*]} == "0" ]]; then
 echo -e "${bldwht}===>${bldred} You are up to date."
 return 1
@@ -93,175 +201,70 @@ for j in ${updates[*]};do
 done
 for k in ${updates[*]};do
     printf "%${WW}b %b %b\n" "${bldwht}${oldver[$c]}" "${bldgrn}-->" "${bldwht}${newver[$c]}"
-    #echo -e "${bldwht} ${oldver[$c]} ${bldgrn}--> ${bldwht}${newver[$c]}${txtrst}"
     (( c++ ))
 done #}}}
 
 ### --noconfirm msg ####
 if [[ "$pacfirm" != "-c" ]] ;then
     echo
-    echo -e "${bldwht}===>${bldred} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${bldwht}"
+    echo -e "${bldwht}===>${bldred} Pacman will be called with the '--noconfirm' flag, call checkup with the '-c' flag to prevent this${txtrst}"
 fi
-######## ask if want to ignore any pkgs ####
+
+### ask if want to ignore any pkgs ###
 echo
-echo -e "${bldwht}===>${bldgrn} Do you want to: (i) Ignore pkgs"
-echo -e "${bldgrn}\t\t     (f) Force an update"
-echo -e "${bldgrn}\t\t     (b) Both force & ignore"
-echo -e "${bldgrn}\t\t     (r) Run a custom cmd" 
-echo -e "${bldgrn}\t\t     (N) run Normally"
-echo -e "${bldgrn}\t\t     (q) Quit ${bldwht}"
+echo -e "${bldwht}===>${bldgrn} Do you want to: (1) run Normally${txtwht} (default) "
+echo -e "${bldgrn}\t\t     (2) Force the update"
+echo -e "${bldgrn}\t\t     (3) Ignore pkgs"
+echo -e "${bldgrn}\t\t     (4) Both force & ignore"
+echo -e "${bldgrn}\t\t     (5) Quit ${bldwht}"
 echo -en "                     :"
-read -n 1 ans4
+read -n 1 for_ign
 echo
-if [[ "$ans4" == "q" ]]; then
-    echo -e "${bldwht}===>${bldred} Goodbye"
-    return 1
-  elif [[ "$ans4" == "r" ]];then
-    echo "Enter  command: "
-    read ppp
-    echo -e " $(date +%d%m-%I)\n $ppp" >> $updtfile 
-    echo
-    sudo $ppp
-    return 1    ### Set ignore or both, gets ignore element of both
-  elif [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then
-    echo -en "${bldwht}===>${bldgrn} Enter the pkgs you want to ignore (comma separated): ${bldwht}"
+case $for_ign in
+1)
+    echo ;;
+2)
+    updt_cmd+="-f "
+    echo ;;
+3)
+    echo -en "${bldwht}===>${bldgrn} Enter the pkgs you want to ignore (comma separated):\n ${txtrst}"
     read ignpkg
-    echo -e "${txtrst}"
-fi
-
-#Grab a list of updated pkgs for easy copy paste rollback                        
-rolbak() {  # {{{
-    echo
-    echo -e "${bldwht}===>${bldgrn} Creating updated package list for easy rollback\n${txtrst}"
-    # add $pkgver-$arch-pkg,tar.*z and put everything on 1 line
-    d=0
-    for l in ${oldver[*]};do 
-        listvers[d]=$(ls -l /media/three/package-cache/"$l"* | cut -d/ -f2-)
-        (( d++ ))
-    done
-    echo $(date +%d%m-%I) >> $updtfile
-    echo ${listvers[*]} >> $updtfile
-} # }}}
-
-### Set force or both, gets force element of both
-if [[ "$ans4" == "f" ]] || [[ "$ans4" == "b" ]];then
-    ppp="sudo pacman-color -Suf ${pacflag}"
-fi
-
-######check what needs to be updated#####
-case "${updates[*]}" in
-    *linux*)           #look for a kernel update
-        chkker=1
+    updt_cmd+="--ignore ${ignpkg} "
+    echo ;;
+4)
+    echo -en "${bldwht}===>${bldgrn} Enter the pkgs you want to ignore (comma separated):\n ${txtrst}"
+    read ignpkg
+    updt_cmd+="-f --ignore ${ignpkg} "
+    echo ;;
+5)
+    echo -e "${bldwht}===>${bldred} Goodbye\n"
+    return 1 ;;
 esac
 
-if [[ "$chkker" == "1" ]]; then
-    declare -a nvidchk=(${updates[*]/lib32-nvidia-utils/})
-    case "$nvidchk" in            #if theres a kernel look for an nvidia pkg excl 32b nvids
-        *nvidia*)   
-            chknvid=1
-        ;;
-        *)      #if theres no nvidia pkg, check for other updates
-        if [[ -z "$chknvid" ]]; then
-            declare -a chkother=(${updates[*]/nvidia})
-            declare -a chkother=(${chkother[*]/linux*/})
-        fi
-    esac
+### Check what needs to be updated ###
+for u in ${updates[*]};do
+    if [[  ${u} == 'linux' ]];then
+        chkker=1
+    fi
+done
+
+if [[ ${chkker} == "1" ]]; then
+    declare -a others=(${updates[*]/linux/})
+    [[ ${#others[*]} != 0 ]] && chkother=1
 fi
 
-### Decide what to do ##### 
-if [[ "$chknvid" == "1" ]]; then
-    echo
-    echo -e "${bldwht}===>${bldblu} Both kernel and Nvidia updates found, proceeding"
- elif [[ -z "$chkker" ]]; then
-    echo
-    echo -e "${bldwht}===>${bldblu} No kernel update, proceeding"
- elif [[ ${#chkother[*]} != 0 ]]; then
-    echo
-    echo -e "${bldwht}===>${bldylw} There is a kernel pkg with no Nvidia pkg, but there are other packages that are safe to update." 
-    echo
-    #echo -e "${bldwht}===>${bldylw} Do you want to..."
-    echo -e "${bldwht}===>${bldylw} Do you want to:${bldwht} (a)${bldylw} Update skiping the kernel pkg." 
-    echo -e "\t\t    ${bldwht} (B)${bldylw} Update everything." 
-    echo -e "\t\t    ${bldwht} (c)${bldylw} Update the kernel then build a new Nvidia pkg against it"
-    echo -e "\t\t    ${bldwht} (d)${bldylw} Run a custom command."
-    echo -e "\t\t    ${bldwht} (e)${bldylw} Do nothing and exit."
-    echo -en "${bldwht}===>${bldylw} What'll it be...:${bldwht}"
-    read -n 1 ans2
-    echo                    ## Do what needs to be done ##
-    case $ans2 in
-        a)
-        if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then                #check for manually ignored packages
-            echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg"
-            echo -e "${txtrst}"
-            echo "kernel pkgs not updated"
-            rolbak
-            $ppp --ignore linux-headers,linux,linux-lts,linux-lts-headers,linux-firmware,$ignpkg
-            bkpkg
-            return 1
-        fi
-        echo
-        echo -e "${bldwht}===>${bldred} kernel pkgs not updated"
-        rolbak
-        $ppp --ignore linux-headers,linux,linux-lts,linux-lts-headers,linux-firmware
-        bkpkg
-        return 1
-        ;;
-        b)
-        if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then            
-            echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg"
-            echo -e "${txtrst}"
-            rolbak
-            $ppp --ignore $ignpkg
-            bkpkg
-            return 1
-        fi
-        rolbak
-        $ppp
-        bkpkg
-        echo
-        return 1
-        ;;
-        c)                      
-        if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]]; then
-            rolbak
-            $ppp $ignpkg
-        else
-            rolbak
-            $ppp
-        fi 
-        cd /projects/builds/nvidia-beta-all || return 1    ## updates fully then calls makepkg
-        vim PKGBUILD                                       ## to build (+ install) nvidia pkg
-        makepkg -ic
-        cd -
-        bkpkg
-        return 1
-        ;;
-        d)
-        echo -e "\tEnter command :"
-        read ppp
-        echo
-        rolbak
-        sudo $ppp
-        return 1
-        ;;
-        e)
-        return 1
-        ;;
-    esac
-  else
-    echo -e "${bldwht}===>${bldred} You need to wait for the Nvidia package to update before updating" 
-    return 1
+### Do it ###
+if [[ ${chkker} == "1" ]] && [[ ${chkother} != 1 ]] ; then
+    ask_kern
+elif  [[ ${chkother} == 1 ]];then
+    ask_both
+else updt_cmd+="-u "
+     updt_msg="\n${bldwht}===>${bldblu}No kernel update found, performing full update${txtrst}"
 fi
 
-if [[ "$ans4" == "i" ]] || [[ "$ans4" == "b" ]];then                
-    echo -e "${bldwht}===>${bldgrn} These pkgs will also be ignored${bldwht} $ignpkg "
-    echo -e "${txtrst}"
-    rolbak
-    $ppp --ignore $ignpkg
-    bkpkg
-    return 1
-fi
 rolbak
-$ppp
+echo -e "${updt_msg}\n"
+${updt_cmd}
+[[ ${rebuild} == "1" ]] && build_nvid
 bkpkg
-return 1
+
