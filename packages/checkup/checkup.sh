@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 3.0
+# Checkup Ver 3.0.1
 
 # {{{ Blurb
 # 
@@ -258,7 +258,7 @@ if [[ ${chkker} == "1" ]] && [[ ${chkother} != 1 ]] ; then
     ask_kern
 elif  [[ ${chkother} == 1 ]];then
     ask_both
-else updt_cmd+="-u "
+else updt_cmd+="-u ${pacflag} "
      updt_msg="\n${bldwht}===>${bldblu}No kernel update found, performing full update${txtrst}"
 fi
 
