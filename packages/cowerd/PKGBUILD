@@ -1,0 +1,19 @@
+# Contributor: Sausageandeggs <sausageandeggs at archlinux dot us>
+pkgname=cowerd
+pkgver=1.992
+pkgrel=1
+pkgdesc='A wrapper for Cower to build/update mutilple packages'
+arch=('any')
+license=('GPL')
+groups=('sas')
+depends=('cower')
+source=($pkgname $pkgname.sh)
+
+package() {
+  cd "$srcdir"
+  install -Dm 755 "$pkgname" "$pkgdir/usr/bin/$pkgname"
+  install -Dm 755 "$pkgname.sh" "$pkgdir/usr/lib/sas/$pkgname.sh"
+}
+
+md5sums=('7853663c5abb5e545d769c1b78207da1'
+         '96b7caa61ca0881b7622715dd44b7971')
