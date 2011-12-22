@@ -1,21 +1,19 @@
 #!/bin/bash
 
 ## Cowerd
-## Ver 1.993
+## Ver 1.994
+## Licensed under GPL2
 ## A wrapper for Cower to build/update mutilple packages
 
 . /usr/lib/sas/text-colors
-unset build_opts
-makecmd="makepkg "
-unset targs
-unset msg
-
+unset targs MSG flag deps sped UPDATE MAKECMD OPTIND LEAVE
 pkg_cache="/media/arch/package-cache/"
 cowercmd="cower -dft "
 blddir="/projects/builds/"
 
 usage(){ # {{{
     cat << EOF
+
     cowerd [FLAGS] [OPTIONS] TARGETS
     cowerd -u
 
@@ -49,64 +47,79 @@ get_targs() { # {{{
 } # }}}
 
 
-while getopts "dfimnosu" OPTION
-do
-    case "$build_opts" in
-
-        -c)
-            msg=""
-            makecmd+="-c " ;;
-        -d)
-            msg="Getting PKGBUILD for" ;;
-        -i)
-            msg="Building and installing"
-            makecmd+="-is --noconfirm " ;;
-        -id | -di)
-            msg="Building and installing as dependency"
-            makecmd+="-f --noconfirm " 
-            asdeps="1" ;;
-        -f)
-            msg="Building and installing (no cleanup)"
-            makecmd+="-f " ;;
-        -m)
-            msg="Building"
-            makecmd+="" ;;
-        -s)
-            msg="Building (cleanup)"
-            makecmd+="-c " ;;
-        -o)
-            msg="Downloading sources for"
-            makecmd+="-o " ;;
-        -u)
-            msg="Updating"
-            makecmd+="-is --noconfirm "
-            UPDATE=1 ;;
+while getopts ":dimoucfsh" flag ; do 
+    case $flag in
+        d)
+            MSG="Getting PKGBUILD for"
+            unset MAKECMD
+            ;;
+        i)
+            MSG="Building and installing"
+            MAKECMD="makepkg -i --noconfirm "
+            LEAVE=1
+            ;;
+        m)
+            MSG="Building"
+            MAKECMD="makepkg "
+            ;;
+        o)
+            MSG="Downloading sources for"
+            MAKECMD="makepkg -o "
+            ;;
+        u)
+            MSG="Updating"
+            MAKECMD="makepkg -is --noconfirm "
+            UPDATE=1
+            LEAVE=1
+            ;;
+        c)
+            MSG+=" (with cleanup)"
+            MAKECMD+="-c "
+            ;;
+        f)
+            MSG+=" (forcing)"
+            MAKECMD+="-f "
+            ;;
+        s)
+            MSG+=" (pulling in missing deps) "
+            MAKECMD+="-s "
+            ;;
+        h)
+            usage 
+            ;;
+        *)
+            echo "Unrecognised option '$OPTARG'"
+            usage
+            return 1
+            ;;
     esac
 done
 shift $((OPTIND-1))
 
-if [[ "$UPDATE" == "1" ]]; then
+if [[ $UPDATE == "1" ]]; then
     echo -e "\n\t${bldylw}Updating all AUR packages${txtrst}"
     targs=($(cower -u --ignore=kernel26-ck,marlin-bin --nossl --color=never| awk '{print $2}'))
 else
-    targs=( $@ )
+    declare -a targs=("$@")
 fi
 
 for i in ${targs[*]} ; do
-    get_targs $i
+    get_targs ${i}
     if [[ -n ${deps[*]} ]];then
         for j in ${deps[*]};do
             echo -e "\n\t ${bldgrn}Building and installing ${j} - a depdendency of ${i}${txtrst} \n"
-            cd ${blddir}/${j} || return 1
+            cd ${blddir}${j} || return 1
             makepkg -cs
             install_built_package
             #eval ${instcmd}
+            [[ $LEAVE == "1" ]] && cd -
         done
     fi
-    echo -e "\n\t ${bldgrn}${msg} ${i}${txtrst} \n"
-    cd ${blddir}/${i} || return 1
-    ${makecmd}
+    echo -e "\n\t ${bldgrn}${MSG} ${i}${txtrst} \n"
+    cd ${blddir}${i} || return 1
+    ${MAKECMD}
     [[ -n ${asdeps} ]] && install_built_package #eval ${instcmd}
+    [[ $LEAVE == "1" ]] && cd -
 
 done
 
