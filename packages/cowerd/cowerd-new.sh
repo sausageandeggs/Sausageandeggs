@@ -1,21 +1,21 @@
 #!/bin/bash
 
 ## Cowerd
-## Ver 1.995
+## Ver 1.996
 ## Licensed under GPL2
 ## A wrapper for Cower to build/update mutilple packages
 
 . /usr/lib/sas/text-colors
 pkg_cache="/media/arch/package-cache/"
-COWERCMD="cower -b --nossl --color=never -f -t \${blddir} -d"
-flag=0
-deps=0
-sped=0
-targs=0
-BUILD_DEPS=0
+COWERCMD="cower --nossl --color=never -f -t \${blddir} -d"
+flag=""
+deps=""
+sped=""
+targs=""
+BUILD_DEPS=""
 LEAVE=0
-MAKECMD=0
-MSG=0
+MAKECMD=""
+MSG=""
 OPTIND=0
 UPDATE=0
 
@@ -61,7 +61,7 @@ while getopts ":dimoucfsht:" flag ; do # {{{
     case $flag in
         d)
             MSG="Getting PKGBUILD for"
-            MAKECMD="echo -e ${bldgrn}Done${txtrst}"
+            MAKECMD="echo -e ${bldgrn}\t Done\n${txtrst}"
             ;;
         i)
             MSG="Building and installing"
@@ -112,16 +112,14 @@ while getopts ":dimoucfsht:" flag ; do # {{{
 done
 shift $((OPTIND-1))  #}}}
 
-blddir="${blddir:-/projects/builds/}"
+blddir=${blddir:-/projects/builds/}
 
 if [[ $UPDATE == "1" ]]; then
     echo -e "\n\t${bldylw}Updating all AUR packages${txtrst}"
     targs=($(cower -qu --ignore=kernel26-ck,marlin-bin --nossl --color=never))
 else
-    declare -a targs=("$@")
+    declare -a targs=($@)
 fi
-
-[[ BUILD_DEPS == "1" ]] && get_deps ${targs}
 
 for i in ${targs[*]} ; do
     [[ BUILD_DEPS == "1" ]] && get_deps ${i}
@@ -135,9 +133,10 @@ for i in ${targs[*]} ; do
         done
     fi
     echo -e "\n\t ${bldgrn}${MSG} ${i}${txtrst} \n"
+    eval ${COWERCMD} ${i} &> /dev/null
     cd ${blddir}${i} || return 1
     ${MAKECMD}
-    [[ -n ${asdeps} ]] && install_built_package
+    #[[ -n ${asdeps} ]] && install_built_package
     [[ $LEAVE == "1" ]] && cd -
 done
 
