@@ -12,12 +12,13 @@ flag=""
 deps=""
 sped=""
 targs=""
-BUILD_DEPS=""
+BUILD_DEPS=0
 LEAVE=0
 MAKECMD=""
 MSG=""
 OPTIND=0
 UPDATE=0
+
 
 usage(){ # {{{
     cat << EOF
@@ -59,6 +60,11 @@ get_deps() { # {{{
 
 while getopts ":dimoucfsht:" flag ; do # {{{
     case $flag in
+        #a)
+            #MSG="Building and installing (as dependency)"
+            #MAKECMD="makepkg"
+            #asdeps=1
+            #;;
         d)
             MSG="Getting PKGBUILD for"
             MAKECMD="echo -e ${bldgrn}\t Done\n${txtrst}"
@@ -78,7 +84,8 @@ while getopts ":dimoucfsht:" flag ; do # {{{
             ;;
         u)
             COWERCMD+=" -u --ignore=kernel26-ck,marlin-bin"
-            MSG="Updating all AUR packages"
+            MSG="Building and installing"
+            #MSG="Updating all AUR packages"
             MAKECMD="makepkg -is --noconfirm"
             UPDATE=1
             LEAVE=1
@@ -98,13 +105,13 @@ while getopts ":dimoucfsht:" flag ; do # {{{
             BUILD_DEPS=1
             ;;
         t)
-            blddir="$OPTARG"
+            blddir=${OPTARG}
             ;;
         h)
             usage 
             ;;
         *)
-            echo "Unrecognised option "$OPTARG""
+            echo "Unrecognised option ${OPTARG}"
             usage
             return 1
             ;;

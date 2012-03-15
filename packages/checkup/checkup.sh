@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Checkup Ver 3.0.1
+# Checkup Ver 3.0.2
 
 # {{{ Blurb
 # 
@@ -80,8 +80,8 @@ ask_both() {  # {{{
     local choice
     echo -e "${bldwht}===>${bldcyn} There is a kernel update Do you want to..." 
     echo
-    echo -e "${bldwht}===>${bldcyn} Do you want to:${bldwht} (1)${bldcyn} Update everyting and rebuild Nvidia${txtwht} (default)" 
-    echo -e "\t\t    ${bldwht} (2)${bldcyn} Update everyting without rebuilding Nvidia"
+    echo -e "${bldwht}===>${bldcyn} Do you want to:${bldwht} (1)${bldcyn} Update everyting and rebuild Nvidia${txtwht}" 
+    echo -e "\t\t    ${bldwht} (2)${bldcyn} Update everyting without rebuilding Nvidia (default)"
     echo -e "\t\t    ${bldwht} (3)${bldcyn} Update everything but the kernel"
     echo -e "\t\t    ${bldwht} (4)${bldcyn} Update just the kernel and rebuild Nvidia"
     echo -e "\t\t    ${bldwht} (5)${bldcyn} Update just the kernel without rebuilding Nvidia"
@@ -90,7 +90,7 @@ ask_both() {  # {{{
     echo -en "${bldwht}===>${bldcyn} What'll it be...:${txtrst}"
     read -n 1 choice
     echo
-    choice=${choice:-1}   ## default to option 1
+    choice=${choice:-2}   ## default to option 2
 
     case $choice in
         1)
