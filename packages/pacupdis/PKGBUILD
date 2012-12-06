@@ -26,5 +26,5 @@ package() {
 md5sums=('86ee268186ec69430ca4ac0a89d25f07'
          'bc9b4d032447dad9b9a77c28f666bfbd'
          '643af37942bfec3655efb8d0ba018263'
-         '1493e8d225d6245f9b88b544e0a2daca'
-         '8b8bf688a158dc66564868914a6366ba')
+         'e7c53fc1beebe5163403ea0146c5cca6'
+         '634e23a47bd89f122794f542a29b03bf')

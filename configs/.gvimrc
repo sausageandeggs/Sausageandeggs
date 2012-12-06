@@ -4,7 +4,7 @@ if v:progname =~? "evim"
   finish
 endif
 
-colorscheme darkfix
+colorscheme darkZ
 
 "set spell
 
@@ -12,9 +12,9 @@ colorscheme darkfix
 " Gvim specific stuff "
 """""""""""""""""""""""
 
-set guifont=droid\ sans\ mono\ 10
+"set guifont=droid\ sans\ mono\ 10
 
-set lines=40
+set lines=45
 set columns=100
 
 """"""""""""""""""""""""
