@@ -1,7 +1,7 @@
 #!/bin/bash
 dlds=/tmp/$RANDOM
 sudo /usr/bin/pacman -Sy 1>/dev/null 2>&1
-declare -a updts=($(pacman -Quq)) # | sed 's|\ |\-|g'))
+declare -a updts=($(pacman -Qqu))
 
 if [[ ${#updts[*]} != "0" ]]; then
 	a=0
@@ -20,7 +20,7 @@ if [[ ${#updts[*]} != "0" ]]; then
 		(( b++ ))
 	done
 	if [[ ${#newdown[*]} != "0" ]]; then
-		sudo powerpill -wu ${newdown[*]} 1>/dev/null 2>&1
+		sudo powerpill -Swu ${newdown[*]} 1>/dev/null 2>&1
 		rm -rf $dlds
 	fi
 fi

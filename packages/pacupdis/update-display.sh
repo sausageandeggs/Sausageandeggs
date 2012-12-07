@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### GPLv3
 ### pacupdis Ver 0.95 ###
 ###### Config bit ######################################################################### {{{
 left_font="\${goto 59}\${font liberation:bold:size=8}"  ## Font for Pkg name and version ##
