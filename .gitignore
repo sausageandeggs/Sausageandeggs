@@ -4,5 +4,6 @@
 pkg/
 src/
 *.swp
+*.swo
 *.pkg.tar.*
-
+.*

@@ -223,6 +223,18 @@ set sessionoptions=tabpages,winsize,blank,unix,localoptions,buffers,resize
 """"""""""""""""""""""""
 silent! call repeat#set("\<Plug>MappingToRepeatCommand",3)
 
+"""""""""""""""""""""""
+" Bkup and swap files "
+"""""""""""""""""""""""
+set backupdir=~/.vim/bkup//
+set dir=~/.vim/swap//
+
+"""""""""""""""""""
+" Persistant undo "
+"""""""""""""""""""
+set undodir=~/.vim/undo//
+set undofile
+
 """"""""""""""""
 " Key Mappings "
 """"""""""""""""
