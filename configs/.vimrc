@@ -4,6 +4,9 @@ if v:progname =~? "evim"
   finish
 endif
 
+call pathogen#infect() 
+"call pathogen#infect('/home/simon/.vim/bundle') 
+
 "set spell
 
 colorscheme mango
@@ -199,7 +202,13 @@ let MRU_Max_Menu_Entries = 15
 "	winsize,	  Save the size of all open windows.
 
 set sessionoptions=tabpages,winsize,blank,unix,localoptions,buffers,resize
-"set sessionoptions=globals,folds,buffers,resize,help
+set sessionoptions+=resize
+set sessionoptions-=help
+set sessionoptions-=options
+
+let g:session_autoload = 'no'
+let g:session_default_to_last = '1'
+let g:session_autosave = 'yes'
 
 """"""""""""""""""""""""
 " Shortcuts Documented "
@@ -281,28 +290,29 @@ map <leader>. `.
 " Nerdtree
 map <leader>;; :NERDTreeToggle<CR>
 
-nmap <leader>so :wa<CR>:so ~/.vim/sessions/
+" leader so open session
+nmap <leader>so :OpenSession
 
-" save sesion
-nmap <leader>ss :wa<CR>:mksession! ~/.vim/sessions/
+" leader ss save session
+nmap <leader>ss :SaveSession
+
+" leader sc close session
+nmap <leader>sc :CloseSessin
 
 " leader tt opens blank tab
 nmap <leader>tt :tabnew<CR>
 
-" leader nn opens new
-nmap <leader>nn :enew<CR>
+" leader n switchs tab
+nmap <leader>, gt
 
 " leader bb inserts bash shebang
 nmap <leader>bb a#!/bin/bash<CR><esc>
 
-" leader bb inserts python2 shebang
+" leader pp inserts python2 shebang
 nmap <leader>pp a#!/usr/bin/env python2<CR><esc>
 
-" leader bb inserts python3 shebang
+" leader ppp inserts python3 shebang
 nmap <leader>ppp a#!/usr/bin/env python3<CR><esc>
-
-" leader tt opens blank tab
-nmap <leader>tt :tabnew<CR>
 
 " Go 10 lines up
 map <leader>u 10k
@@ -318,6 +328,12 @@ nmap <leader>] :w<CR>
 
 " Save and close
 nmap <leader>[ :wq<CR>
+
+" Save and close all open files
+nmap <leader>= :wqa<CR>
+
+" Close all open files
+nmap <leader>- :qa<CR>
 
 " Nerdtree
 map <leader>;; :NERDTreeToggle<CR>
@@ -352,8 +368,8 @@ map <leader>2 ysW'
 " Wrap word in braces (no space)
 map <leader>{ ysW{
 
-" Wrap word in [something] (add to end of shortcut)(no space)
-map <leader>W ysiW
+" Wrap word in [something] (add to end of shortcut)
+map <leader><leader> ysiW
 
 " Quick comment single line
 map <C-c> <leader>cc

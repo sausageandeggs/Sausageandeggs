@@ -5,6 +5,7 @@
 ## Ver 186 ##
 
 ### clr_mem ###
+. /usr/lib/sas/bash-errs
 
 clr_mem () {
   #pagecache, dentries and inodes

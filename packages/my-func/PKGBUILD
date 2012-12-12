@@ -1,6 +1,6 @@
 # Contributor: Sausageandeggs <s.stoakley@gmail.com>
 pkgname=my_func
-pkgver=169
+pkgver=188
 pkgrel=1
 pkgdesc="My functions"
 arch=(any)
@@ -9,13 +9,15 @@ license=('GPL')
 groups=('sas')
 depends=('tar' 'gvim' 'ranger')
 #install=($pkgname.install)
-source=($pkgname 'funcdo')
+source=("${pkgname}" 'funcdo' 'bash-errs')
 noextract=()
 package() {
   cd $srcdir
 	install -Dm 644 my_func 		$pkgdir/usr/lib/sas/my_func
 	install -Dm 755 funcdo		$pkgdir/usr/lib/sas/funcdo
+	install -Dm 755 bash-errs		$pkgdir/usr/lib/sas/bash-errs
 }
 
-md5sums=('65b3143a56adacddaaced2672d4a5deb'
-         'aa954393fdd7d198133fb04fe0f9c9c9')
+md5sums=('4d8cc144e2030b104701c52b58761fbc'
+         'aa954393fdd7d198133fb04fe0f9c9c9'
+         '18af9dd828c7ba7021ba9249275ee622')

@@ -7,13 +7,15 @@ arch=('any')
 license=('GPL')
 groups=('sas')
 depends=('cower')
-source=($pkgname $pkgname.sh)
+source=("$pkgname" "text-colors" "$pkgname.sh")
 
 package() {
   cd "$srcdir"
   install -Dm 755 "$pkgname" "$pkgdir/usr/bin/$pkgname"
   install -Dm 755 "$pkgname.sh" "$pkgdir/usr/lib/sas/$pkgname.sh"
+  install -Dm 755 text-colors  $pkgdir/usr/lib/sas/text-colors
 }
 
 md5sums=('7853663c5abb5e545d769c1b78207da1'
+         '0250d6b122cf556bcc61972450f5b6be'
          '96b7caa61ca0881b7622715dd44b7971')
